@@ -1,0 +1,59 @@
+The hypothesis of this research is that "\textit{Individual and population level air pollutant exposure can be estimated using time-activity surveys, GIS and routing tools, coupled with high resolution spatio-temporal air quality models, facilitating a greater understanding of the health impacts of air pollution and how public health risks can be reduced}". The research objectives that will need to be met to achieve this goal are as follows:
+
+\begin{enumerate}
+\item Reconstruct the time-space activity of London's population
+\item Link modelled air quality, estimate exposure, and compare with traditional methods
+\item Refine the models estimates of London Underground exposure
+\item Evaluate the results
+\end{enumerate}
+
+In more detail I will model the movements of the subject's in the TfL dataset, reconstruct their days on a fine temporal and spatial scale, and then use this data in conjunction with a novel exposure model. The air quality input will be a CMAQ-UK model (see Section \ref{sec:cmaq_urban}. The results of the model will allow interrogation of exposure by individual, or grouped by various demographics, which will enable epidemiologists to increase their understanding of exposure miss-classification. Results will be compared to static modelling approaches of the type discussed in Section \ref{sec:staticexposurehealth}. The model will then be improved with personal monitoring on the London Undergound, before an introduction to validation/testing of the results will be undertaken. The objectives will be met by following the work-plan below:
+
+\section{Reconstructing the  time-space activity of the population of London on a minute-by-minute basis from the London Transport Demand Survey (LTDS)}
+
+\begin{enumerate}
+\item Explore the LTDS dataset and identify key data
+\item Move data from local Microsoft Access database into a PostgreSQL + PostGIS database
+\item Clean data
+\item Complete modal specific routing (interrogation, querying, storage) between origin and destinations
+\item Quality check the routing results and do further data cleaning
+\item Create and populate final dynamic location database table
+\item Analysis of results
+\end{enumerate}
+
+\section{Link  air  quality  to  Londoner's  reconstructed  days (LTDS-X),  and  compare  with traditional exposure models }
+
+\begin{enumerate}
+\item Link data to CMAQ-Urban UK, incorporate IO ratios and micro-environmental factors (The 'LHEM')
+\item Create a postcode comparison dataset
+\item Create a address-point comparison dataset
+\item Create a monitoring sites comparison dataset
+\item Analysis and comparison of results
+\end{enumerate}
+
+Thus far, these aims cover the first half of the conceptual exposure model shown in Figure \ref{fig:james_exposure_diagram} (which is repeated here for convenience). The following two sections will be on improving exposure estimates, and evaluating them respectively.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{james_exposure_diagram_v2}
+\caption{A conceptual dynamic exposure model}
+\label{fig:james_exposure_diagram_v2}
+\end{figure}
+
+\section{Exposure to \texorpdfstring{PM$_{2.5}$}{} on the London Underground}
+
+\begin{enumerate}
+\item Measure PM$_{2.5}$ across the London Underground network
+\item Transcribe a time-location diary and link to pollutant data
+\item Import other relevant data
+\item Analyse data to characterise PM$_{2.5}$ on the London Underground
+\end{enumerate}
+
+\section{Evaluation of the dynamic exposure model using personal monitoring}
+
+\begin{enumerate}
+\item Use monitoring site data to estimate how many repeat journeys are required to estimate exposure on a specific route i.e. eliminate day to day variation
+\item Select routes from the LHEM
+\item Conduct repeated personal exposure monitoring on those routes
+\item Compare outputs from LHEM to the personal exposure monitoring
+\end{enumerate} 

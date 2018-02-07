@@ -1,0 +1,119 @@
+\documentclass[12pt]{report}
+
+\usepackage{array,pdflscape}
+\newcolumntype{R}{>{\raggedright\arraybackslash}p}
+
+% Load required packages
+\usepackage{etoolbox}
+\apptocmd{\sloppy}{\hbadness 10000\relax}{}{}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{lscape}
+\usepackage{hyperref}
+\usepackage{ulem}
+\graphicspath{ {images/} }
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[left=4cm,top=2cm,right=2cm,bottom=2cm]{geometry}
+\usepackage{setspace}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage[usenames,dvipsnames]{color}    
+ \lstset{ 
+  language=R,                     % the language of the code
+  basicstyle=\tiny\ttfamily,     % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{Blue},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it is 1, each line
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks                                      % within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  keywordstyle=\color{RoyalBlue}, % keyword style
+  commentstyle=\color{YellowGreen},   % comment style
+  stringstyle=\color{ForestGreen} % string literal style
+} 
+\lstloadlanguages{R}
+
+
+
+\onehalfspacing
+
+\title{
+	{Using a dynamic exposure model to improve understanding of exposure to urban air pollution}\\
+	{\large King's College London}\\
+}
+\author{James D Smith, MSc, BA, PgCert, PgDip}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\chapter*{Abstract (Max 300 words)}
+Abstract goes here
+
+\chapter*{Dedication}
+Standard text needs inserting here.
+
+\chapter*{Acknowledgements}
+I would like to express my gratitude to my supervisors Dr Benjamin Barratt and Dr Heather Walton for their guidance, ideas and support. I would also like to thank Dr Christina Mitsakou, Dr Nutthida Kitwiroon, Mr Andrew Beddows and Dr Sean Beevers for their practical assistance with various SQL, R and general coding queries.
+
+Special thanks go to my family, friends and in particular my partner Aimee for putting up with my elevated stress levels for so long.
+
+I would also like to mention the online PostGIS, PostgreSQL, R, Ubuntu, D3, CartoDB and QGIS support networks, who were able to offer advice and suggestions when I ran into practical problems that nobody else could help with. 
+
+\chapter*{Terminology and Acronyms}
+To be inserted.
+
+\tableofcontents
+\listoffigures
+
+\chapter{Introduction}
+\input{chapters/1_introduction}
+\label{chap:intro}
+
+\chapter{Background}
+\input{chapters/2_background}
+\label{chap:background}
+\input{chapters/2a_dynamic_exposure}
+\label{chap:dynamic_exposure}
+
+\chapter{My research aims}
+\input{chapters/3_research_aims}
+
+\chapter{Methods and tools}
+\input{chapters/4_methods_and_tools}
+
+\chapter{Reconstructing the  time-space activity of the population of London on a minute-by-minute basis from the London Transport Demand Survey (LTDS)}
+\input{chapters/5_reconstruction}
+
+\chapter{Linking air quality to Londoners reconstructed days, and comparison with traditional exposure models}
+\input{chapters/6_exposure_linkage}
+
+\chapter{Exposure to \texorpdfstring{PM$_{2.5}$}{} on the London Underground}
+\label{chap:monitoring_on_underground}
+\input{chapters/7_london_underground}
+
+\chapter{Evaluating the London Hybrid Exposure Model}
+\input{chapters/8_evaluation}
+
+\bibliographystyle{bibtex/elsarticle-harv.bst}
+\bibliography{bibtex/PhD-KCL.bib}
+
+\appendix
+
+\chapter{Code Listing}
+\input{chapters/9_code_listings}
+
+\end{document}
