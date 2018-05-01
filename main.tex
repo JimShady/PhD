@@ -51,33 +51,48 @@
 \onehalfspacing
 
 \title{
-	{Using a dynamic exposure model to improve understanding of exposure to urban air pollution}\\
-	{\large King's College London}\\
-}
-\author{James D Smith, MSc, BA, PgCert, PgDip}
-\date{\today}
+	{Using a dynamic exposure model to improve understanding of exposure to urban air pollution}
+	\author{James D Smith, Sc, BA, PgCert, PgDip}
+	\vspace{3cm}
+	{\large Environmental Research Group}
+	{\large School of Analytical \& Environmental Sciences}
+	{\large Faculty of Life Sciences \& Medicine}
+	{\large King's College London}
+	}
+
+
 
 \begin{document}
 \maketitle
-
-\chapter*{Abstract (Max 300 words)}
-Abstract goes here
+\chapter*{Abstract}
+Epidemiological studies of the negative effects on health of poor air quality are typically based on subjects' residential address. These 'static' methods may be assigning exposure to subjects/populations incorrectly. Possible sources of error include the coarse spatial and temporal scale of the pollutant data, failing to account for lack of movement of the subjects, and not adequately modelling the effects of microenvironments. This PhD takes a large Transport for London (TfL) survey (the 'LTDS') of Londoners daily activities and uses geographical information science (GIS) techniques to create a detailed model (the 'LTDS-X') of Londoners typical movements including time of day, location and microenvironment. This model is then combined with the King’s version of the Community Multiscale Air Quality model (CMAQ-Urban), which is a multi-pollutant and multi-source high resolution spatial and temporal model of UK air quality. By combining the LTDS-X with CMAQ-Urban and then undertaking further micro-environmental modelling on top of this (in-car, in-train, indoors, the London Underground) detailed exposure estimates to a range of pollutants for the population of London are calculated and then compared to the 'static' exposure method. Results show that exposure indoors, and whether or not subjects use the London Underground, were important determinants of Londoners daily exposure. The exposure modelling for when subjects were on the London Underground was therefore investigated further with a measurement campaign across the network, resulting in a GIS routing model of the network ('TubeAir'). As a stand-alone model this will be extremely useful for future exposure studies in London, and it’s use in the LHEM was demonstrated on a sample journey. This research concludes by exploring the difficulty of evaluating hybrid exposure models in terms of the representativeness of any exposure calculated, by measuring the PM$_{2.5}$ exposure of a repeated number of cycling journeys and comparing these to modelled exposure.
 
 \chapter*{Dedication}
-Standard text needs inserting here.
+
+This dissertation is dedicated to my wife, Aimee Smith (n\'ee Stoller). This thesis is over 250 pages long, and I would need all of them and more to properly express the love and support you give me every day.
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{images/nffc_logo.png}
+\label{fig:nffc_logo}
+\end{figure}
+
 
 \chapter*{Acknowledgements}
-I would like to express my gratitude to my supervisors Dr Benjamin Barratt and Dr Heather Walton for their guidance, ideas and support. I would also like to thank Dr Christina Mitsakou, Dr Nutthida Kitwiroon, Mr Andrew Beddows and Dr Sean Beevers for their practical assistance with various SQL, R and general coding queries.
-
-Special thanks go to my family, friends and in particular my partner Aimee for putting up with my elevated stress levels for so long.
+I would like to express my gratitude to my supervisors Dr Benjamin Barratt and Dr Heather Walton for their guidance, ideas and support. I would also like to thank current and previous staff of our research group who have helped me in one way or another, mainly Dr Sean Beevers, Dr Christina Mitsakou, Dr Nutthida Kitwiroon, Dr Andrew Beddows, Dr Gregor Stewart, Dr David Dajnak, Dr David Green, Dr Ian Mudway and Dr Gary Fuller. Special thanks go to my family, friends and in particular my wife Aimee for putting up with my elevated stress levels for so long.
 
 I would also like to mention the online PostGIS, PostgreSQL, R, Ubuntu, D3, CartoDB and QGIS support networks, who were able to offer advice and suggestions when I ran into practical problems that nobody else could help with. 
 
-\chapter*{Terminology and Acronyms}
-To be inserted.
-
 \tableofcontents
 \listoffigures
+\listoftables
 
 \chapter{Introduction}
 \input{chapters/1_introduction}
@@ -95,17 +110,18 @@ To be inserted.
 \chapter{Methods and tools}
 \input{chapters/4_methods_and_tools}
 
-\chapter{Reconstructing the  time-space activity of the population of London on a minute-by-minute basis from the London Transport Demand Survey (LTDS)}
+\chapter{Modelling Londoners movements}
 \input{chapters/5_reconstruction}
 
-\chapter{Linking air quality to Londoners reconstructed days, and comparison with traditional exposure models}
+\chapter{Dynamic exposure modelling}
+\label{chap:the_lhem}
 \input{chapters/6_exposure_linkage}
 
 \chapter{Exposure to \texorpdfstring{PM$_{2.5}$}{} on the London Underground}
 \label{chap:monitoring_on_underground}
 \input{chapters/7_london_underground}
 
-\chapter{Evaluating the London Hybrid Exposure Model}
+\chapter{Evaluating dynamic exposure models}
 \input{chapters/8_evaluation}
 
 \bibliographystyle{bibtex/elsarticle-harv.bst}
