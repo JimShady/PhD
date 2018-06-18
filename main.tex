@@ -21,6 +21,7 @@
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{subcaption}
+\usepackage{datetime}
 \usepackage[usenames,dvipsnames]{color}    
  \lstset{ 
   language=R,                     % the language of the code
@@ -35,7 +36,7 @@
   showstringspaces=false,         % underline spaces within strings
   showtabs=false,                 % show tabs within strings adding particular underscores
   frame=single,                   % adds a frame around the code
-  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks                                      % within not-black text (e.g. commens (green here))
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks                                       % within not-black text (e.g. commens (green here))
   tabsize=2,                      % sets default tabsize to 2 spaces
   captionpos=b,                   % sets the caption-position to bottom
   breaklines=true,                % sets automatic line breaking
@@ -46,30 +47,35 @@
 } 
 \lstloadlanguages{R}
 
-
-
 \onehalfspacing
 
-\title{
-	{Using a dynamic exposure model to improve understanding of exposure to urban air pollution}
-	\author{James D Smith, Sc, BA, PgCert, PgDip}
-	\vspace{3cm}
-	{\large Environmental Research Group}
-	{\large School of Analytical \& Environmental Sciences}
-	{\large Faculty of Life Sciences \& Medicine}
-	{\large King's College London}
-	}
+\large \title{Using a dynamic exposure model to improve understanding of exposure to urban air pollution}
 
+\author{James D Smith, MSc, BA, PgCert, PgDip \vspace{2cm} \\ 
+\multicolumn{1}{p{.7\textwidth}}{\centering Environmental Research Group, School of Analytical \& Environmental Sciences, Faculty of Life Sciences \& Medicine, King's College London}} 
 
+\date{Thesis submitted to King's College London in fulfillment of the requirements for the degree of Doctor of Philosophy \vspace{2cm} \\ 
+July 2018}
 
 \begin{document}
+
 \maketitle
+
 \chapter*{Abstract}
-Epidemiological studies of the negative effects on health of poor air quality are typically based on subjects' residential address. These 'static' methods may be assigning exposure to subjects/populations incorrectly. Possible sources of error include the coarse spatial and temporal scale of the pollutant data, failing to account for lack of movement of the subjects, and not adequately modelling the effects of microenvironments. This PhD takes a large Transport for London (TfL) survey (the 'LTDS') of Londoners daily activities and uses geographical information science (GIS) techniques to create a detailed model (the 'LTDS-X') of Londoners typical movements including time of day, location and microenvironment. This model is then combined with the King’s version of the Community Multiscale Air Quality model (CMAQ-Urban), which is a multi-pollutant and multi-source high resolution spatial and temporal model of UK air quality. By combining the LTDS-X with CMAQ-Urban and then undertaking further micro-environmental modelling on top of this (in-car, in-train, indoors, the London Underground) detailed exposure estimates to a range of pollutants for the population of London are calculated and then compared to the 'static' exposure method. Results show that exposure indoors, and whether or not subjects use the London Underground, were important determinants of Londoners daily exposure. The exposure modelling for when subjects were on the London Underground was therefore investigated further with a measurement campaign across the network, resulting in a GIS routing model of the network ('TubeAir'). As a stand-alone model this will be extremely useful for future exposure studies in London, and it’s use in the LHEM was demonstrated on a sample journey. This research concludes by exploring the difficulty of evaluating hybrid exposure models in terms of the representativeness of any exposure calculated, by measuring the PM$_{2.5}$ exposure of a repeated number of cycling journeys and comparing these to modelled exposure.
+Epidemiological studies of the negative effects on health of poor air quality are typically based on subjects' residential address. These 'static' methods may be assigning exposure to subjects/populations incorrectly. Possible sources of error include the coarse spatial and temporal scale of the pollutant data, failing to account for lack of movement of the subjects, and not adequately modelling the effects of microenvironments. This PhD takes a large Transport for London (TfL) survey (the 'LTDS') of Londoners daily activities and uses geographical information science (GIS) techniques to create a detailed model (the 'LTDS-X') of Londoners typical movements including time of day, location and microenvironment. This model is then combined with the King’s version of the Community Multiscale Air Quality model (CMAQ-Urban), which is a multi-pollutant and multi-source high resolution spatial and temporal model of UK air quality. By combining the LTDS-X with CMAQ-Urban and then undertaking further micro-environmental modelling on top of this (in-car, in-train, indoors, the London Underground) detailed exposure estimates to a range of pollutants for the population of London are calculated and then compared to the 'static' exposure method. Results show that exposure indoors, and whether or not subjects use the London Underground, were important determinants of Londoners daily exposure. The exposure modelling for when subjects were on the London Underground was therefore investigated further with a measurement campaign across the network, resulting in a GIS routing model of the network ('TubeAir'). As a stand-alone model this will be useful for future exposure studies in London, and it’s use in the LHEM was demonstrated on a sample journey. This research concludes by exploring the difficulty of evaluating hybrid exposure models in terms of the representativeness of any exposure calculated, by measuring the PM$_{2.5}$ exposure of a repeated number of cycling journeys and comparing these to modelled exposures.
 
 \chapter*{Dedication}
 
-This dissertation is dedicated to my wife, Aimee Smith (n\'ee Stoller). This thesis is over 250 pages long, and I would need all of them and more to properly express the love and support you give me every day.
+For Aimee.
+%This dissertation is dedicated to my wife, Aimee Smith (n\'ee Stoller). This thesis is over 250 pages long, and I would need all of them and more to properly express the love and support you give me every day.
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
 \\
 \\
 \\
@@ -80,15 +86,25 @@ This dissertation is dedicated to my wife, Aimee Smith (n\'ee Stoller). This the
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.3]{images/nffc_logo.png}
+\includegraphics[scale=0.1]{images/nffc_logo.png}
 \label{fig:nffc_logo}
 \end{figure}
 
 
 \chapter*{Acknowledgements}
-I would like to express my gratitude to my supervisors Dr Benjamin Barratt and Dr Heather Walton for their guidance, ideas and support. I would also like to thank current and previous staff of our research group who have helped me in one way or another, mainly Dr Sean Beevers, Dr Christina Mitsakou, Dr Nutthida Kitwiroon, Dr Andrew Beddows, Dr Gregor Stewart, Dr David Dajnak, Dr David Green, Dr Ian Mudway and Dr Gary Fuller. Special thanks go to my family, friends and in particular my wife Aimee for putting up with my elevated stress levels for so long.
+I would like to express gratitude to my supervisors, Dr Benjamin Barratt and Dr Heather Walton. Their guidance, ideas and support have been crucial. I would also like to thank Professor Frank Kelly. who gave me the opportunity to start this part-time PhD programee in the first place. In may 'day job', current and previous work colleagues in our group have helped me at various times, mainly Dr Sean Beevers, Dr Christina Mitsakou, Dr Nutthida Kitwiroon, Dr Andrew Beddows, Dr Gregor Stewart, Dr David Dajnak, Dr David Green, Dr Ian Mudway and Dr Gary Fuller. University aside, special thanks go to my family, friends and in particular my wife Aimee for putting up with my elevated stress levels for so long. Also to Frankie Manning, for giving me a way to express myself in a totally different environment.
 
-I would also like to mention the online PostGIS, PostgreSQL, R, Ubuntu, D3, CartoDB and QGIS support networks, who were able to offer advice and suggestions when I ran into practical problems that nobody else could help with. 
+Finally, a little thank you to the various online communities that I have interacted with and sought advice from over the year, who were able to offer advice and suggestions when I ran into practical problems that nobody else could help with.
+
+\chapter*{Declaration}
+
+I, James David Smith declare that all the work submitted in this thesis is my own and that all references are cited accordingly.\\
+\\
+\\
+Signed: \underline{\hspace{6cm}}
+\\
+\\
+Date: \hspace{0.16cm} \underline{\hspace{6cm}}
 
 \tableofcontents
 \listoffigures
@@ -111,6 +127,7 @@ I would also like to mention the online PostGIS, PostgreSQL, R, Ubuntu, D3, Cart
 \input{chapters/4_methods_and_tools}
 
 \chapter{Modelling Londoners movements}
+\label{chap:the_ltdsx}
 \input{chapters/5_reconstruction}
 
 \chapter{Dynamic exposure modelling}
@@ -122,14 +139,21 @@ I would also like to mention the online PostGIS, PostgreSQL, R, Ubuntu, D3, Cart
 \input{chapters/7_london_underground}
 
 \chapter{Evaluating dynamic exposure models}
+\label{chap:evaluating_dynamic_exposure_models}
 \input{chapters/8_evaluation}
+
+\chapter{Discussion \& future work}
+\input{chapters/9_discussion_future_work}
+
+\chapter{Conclusions}
+\input{chapters/10_conclusions}
 
 \bibliographystyle{bibtex/elsarticle-harv.bst}
 \bibliography{bibtex/PhD-KCL.bib}
 
 \appendix
 
-\chapter{Code Listing}
-\input{chapters/9_code_listings}
+\chapter{Code Listings}
+\input{chapters/11_code_listings}
 
 \end{document}
