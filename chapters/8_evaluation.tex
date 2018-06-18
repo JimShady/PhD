@@ -26,15 +26,14 @@ The focus of this PhD research so far has been on developing a dynamic exposure 
 
 I defined the features that a hybrid exposure model should have in Section \ref{sec:dynamic_hybrid_models} as \textit{"It should have highly temporal and spatially resolved air quality inputs which consider both indoor and outdoor sources (including regional and local source for the latter), it should be able to model infiltration rates for different modes of transport and building types, it should reflect the multiple micro-environments that people spend their time in (and take account of the temporal resolution of these) and finally it should (for linkage through to epidemiological end-points) be able to consider different breathing rates to quantify exposure and dose for multiple pollutants"}. Section \ref{sec:dynamic_hybrid_models} examined models that were within this wider field (of varying levels of complexity), but it was noticeable that there was little evaluation of the exposure predictions that they made. There are to my knowledge no established protocols for evaluating exposure predictions from a hybrid/dynamic exposure model, as this type of method and field of research is relatively new. In addition, as the field grows the exact approaches are being refined and vary between studies, meaning one evaluation method would unlikely be fit for the next study. Possible sources of error in this type of model are classified in Table \ref{tab:exposure_error_table}, with a brief description, and whether they are unique to exposure models of this kind.
 
-\newgeometry{margin=0.7cm}
+\newgeometry{margin=0.6cm}
 \thispagestyle{empty}
 \begin{landscape}
 
-\begin{table}[]
-\centering
-\begin{tabular}{ | p{3cm} | p{13.2cm} | p{7.7cm} |}
+\begin{table}[ht]
+\begin{tabular}{ | p{3.2cm} | p{13.2cm} | p{7.9cm} |}
 \hline
-\textbf{Type of uncertainty/error} & \textbf{Description} & \textbf{Hybrid specific} \\ \hline
+\textbf{Type of error} & \textbf{Description} & \textbf{Hybrid specific} \\ \hline
         Air quality annual average monitoring site predictions  &  Evaluation exercises of air quality models using high quality monitoring site data demonstrate that they (in our case CMAQ-UK) can make predictions of annual averages of most pollutants with reasonable accuracy.         &  No, CMAQ-UK and other similar models are commonly used in static exposure studies.         \\ \hline
         
         Air quality annual average non-monitoring site predictions  &  How air quality models predict concentrations in locations that are not readily available for evaluation via monitoring sites is not well understood.         &   No, CMAQ-UK and other similar models are commonly used in static exposure studies.        \\ \hline
@@ -49,6 +48,7 @@ I defined the features that a hybrid exposure model should have in Section \ref{
 \end{tabular}
 \caption{Errors and uncertainty in exposure models}
 \label{tab:exposure_error_table}
+\vspace{-1pt}
 \end{table}
 
 \end{landscape}
@@ -462,7 +462,7 @@ Focusing on the equipment, an unforeseen issue in collecting the monitoring data
 
 Though this would of course be constrained by the settings available in the sampling device.
 
-Within the GIS and data processing section of this work, the main issue was the lack of accuracy of the GPS points that were output from the device, how to snap these appropriately to roads (where to get the road data from), and how to link this to CMAQ-UK concentration grid squares for analysis. This was time-consuming and required manual editing at times. Automating this for a large scale campaign would be challenging but necessary. Junctions were a particular difficulty, for instance snapping GPS points at a left-turn always means that the point is snapped to part of the road either side of the junction and never at the actual junction itself (Figure \ref{fig:gps_snapping_error}); which might be where the highest concentrations occur and the researcher is most interested.
+Within the GIS and data processing section of this work, the main issue was the lack of accuracy of the GPS points that were output from the device, how to snap these appropriately to roads (presuming an available roads dataset), and how to link this to CMAQ-UK concentration grid squares for analysis. This was time-consuming and required manual editing at times. Automating this for a large scale campaign would be challenging but necessary. Junctions were a particular difficulty, for instance snapping GPS points at a left-turn always means that the point is snapped to part of the road either side of the junction and never at the actual junction itself (Figure \ref{fig:gps_snapping_error}); which might be where the highest concentrations occur and the researcher is most interested.
 
 \begin{figure}[H]
 \centering
@@ -470,8 +470,6 @@ Within the GIS and data processing section of this work, the main issue was the 
 \caption{Accurate GPS points shown in green, GPS error shown in red. Correction should move the point to location shown by green arrow, but simple ‘snapping’ will move it to direction of red arrow.}
 \label{fig:gps_snapping_error}
 \end{figure}
-
-Add in discussion /thoughts on why model difference above. Roads not modelled properly? Maube I needed more journeys?]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions}

@@ -178,6 +178,9 @@ Inbetween Trips subjects were presumed to be stationary and indoors at the final
 
 The hybrid location table was used to examine the movements of the subjects of the LTDS on a fine temporal and spatial scale. The data was explored to better understand the detail available, to check that it was suitable for use as the basis of a dynamic exposure model, and to see whether there were any interesting results already present before air quality was considered.
 
+\subsection{Visual inspection of individuals}
+\label{sec:visual_inspection_of_individuals}
+
 Before starting to summarise data and look for patterns in large groups of people, Figures \ref{fig:routed_results_example} and \ref{fig:routed_results_example2} were created and show the results of two randomly selected individuals from the dataset. The first (\ref{fig:routed_results_example}) shows a fairly simple reconstructed day. The Person made two car journeys around the local neighbourhood, as well as one walking trip to a few streets away. Other than visiting those three local locations, they spent their time at home. The second (\ref{fig:routed_results_example2}) shows a much more complicated picture. The individual lives near Norbiton. In the morning they walked to Norbiton station, took a train to Waterloo, and then caught a bus to Clerkenwell (presumably for work). At lunchtime they walked around the local neighbourhood (buying lunch?). At 20:13 they took a taxi back to Waterloo, where they got a train back to Norbiton, and walked home from the station to their house.
 
 \begin{landscape}
@@ -200,64 +203,79 @@ Before starting to summarise data and look for patterns in large groups of peopl
 
 \end{landscape}
 
-By grouping the start times of the stages by the hour i.e. 5:30am becomes '5', and then summarising by the number of stages within that hour, a histogram (Figure \ref{fig:when_people_start_trips}) was created (Noting that the expansion factors of the LTDS were used to scale the numbers of people from around 45,000 to around 6.8 million). THIS NEEDS DOING AGAIN TO REMOVE THE SCALING FACTOR.
+\subsection{Journey start and end times}
+\label{sec:journey_start_and_end_times}
+
+By grouping the start times of the stages by hour, and then summarising by the number of stages within that hour, a histogram of journey start times was created (Figure \ref{fig:when_people_start_trips}).
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.35]{when_people_start_trips}
+\includegraphics[scale=0.48]{when_people_start_trips}
 \caption{Histogram of when the population of London start trips}
 \label{fig:when_people_start_trips}
 \end{figure}
 
-A similar method was also used for the ending times of stages, and is shown in Figure \ref{fig:when_people_end_trips}.
+A similar method was also used for the ending times (Figure \ref{fig:when_people_end_trips}).
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.35]{when_people_end_trips}
+\includegraphics[scale=0.48]{when_people_end_trips}
 \caption{Histogram of when the population of London end trips}
 \label{fig:when_people_end_trips}
 \end{figure}
 
-The figures show peaks of travel around peak travel times that might be expected in the morning and evening rush hours, however it is interesting to note that considerable travel occurs during the day (although at this stage the data is not split by specific days, so this may be influenced by travel on a Saturday and Sunday). It was also interesting to see how trips during the evening (4pm-8pm) are much more dispersed than in the morning, suggesting that people tend to leave work over a longer time-frame than when they start work. 
+Figures \ref{fig:when_people_start_trips} and \ref{fig:when_people_end_trips} show peaks of travel around peak travel times that might be expected in the morning and evening rush hours, however it is interesting to note that considerable travel occurs during the day (although at this stage the data is not split by specific days, so this may be influenced by travel on a Saturday and Sunday). It was also interesting to see how trips during the evening (4pm-8pm) are much more dispersed than in the morning, suggesting that people tend to leave work over a longer time-frame than when they start work. 
 
-By summing the total distance travelled by each person over 24 hours, expanding the results with the expansion factors, and then grouping by gender, graph \ref{fig:mean_distance_by_sex} was then made using the ggplot2 library of R (as were all the graphs in this research).
+\subsection{Journey distances by sex}
+\label{sec:journey_distances_by_sex}
+
+By summing the total distance travelled by each person over 24 hours, and then grouping by gender, graph \ref{fig:mean_distance_by_sex} shows differences in total travel distance.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{mean_distance_by_sex}
-\caption{Distances travelled, by gender (outliers \textgreater 100 km omitted for clarity)}
+\caption{Boxplot of distances travelled, by gender (outliers \textgreater 100 km omitted for clarity, red line links each mean)}
 \label{fig:mean_distance_by_sex}
 \end{figure}
 
-Although the difference was not huge (Male mean of 18.28 km, Female mean of 13.89 km), there was a statistical difference (using a t-test) between the kilometres that each gender travels in a day. Whether this is because women stay at home more than men, or whether the journeys that men are required to do during their day take them further, was not clear (but could be investigated further as the dataset contains a great deal of contextual information).
+Although the difference was not huge (Male mean of 18.28 km, Female mean of 13.89 km), there was a significant difference (using a t-test) between the kilometres that each gender travels in a day. Whether this is because women stay at home more than me, or whether the journeys that men are required to do during their day take them further was not clear (but could be investigated further as the dataset contains a great deal of contextual information).
+
+\subsection{Journey distances by income}
+\label{sec:journey_distances_by_income}
 
 A similar method was then used but the demographic of household income was used as the variable to be considered rather than gender (individual-level income variables were unfortunately not collected). The result is shown in Figure \ref{fig:mean_distance_by_income}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{mean_distance_by_income}
-\caption{Mean distances travelled by income group  (outliers \textgreater 100 km omitted for clarity)}
+\caption{Boxplot of distances travelled by income group  (outliers \textgreater 100 km omitted for clarity, red line links each mean)}
 \label{fig:mean_distance_by_income}
 \end{figure}
 
 Interestingly the dataset showned that subjects that live in households with a higher income actually travel further than households with a lower income level (albeit with a levelling off and even slight dip around the \textsterling75,000 mark).
 
-The distances that people of different age groups was then considered and Figure \ref{fig:mean_distance_by_age} produced.
+\subsection{Journey distances by age group}
+\label{sec:journey_distances_by_age_group}
+
+Distance of travel by age group was now plotted in Figure \ref{fig:mean_distance_by_age}.
 
 \begin{landscape}
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.7]{mean_distance_by_age}
-\caption{Mean distances travelled by age group (outliers \textgreater 100 km omitted for clarity)}
+\caption{Mean distances travelled by age group (outliers \textgreater 100 km omitted for clarity, red line links each mean)}
 \label{fig:mean_distance_by_age}
 \end{figure}
 
 \end{landscape}
 
-Figure \ref{fig:mean_distance_by_age} showed a clear rise in the distance that people travel each day as they get into their late teens, which then becomes fairly steady until mid-50s at which point the distances start to decline again. That said, a clear cut-off was not visible. The gradient of the slops between 60 and 90 is much more steady that at the other end of the age range.
+Figure \ref{fig:mean_distance_by_age} showed a clear rise in the distance that people travel each day as they get into their late teens, which then becomes fairly steady until mid-50s at which point the distances start to decline again. That said, a clear cut-off was not visible. The gradient of the slops between 60 and 90 is much more steady that at the other end of the age range, perhaps showing that the ages that people retire are more dispersed than the ages at which people start work.
 
-The distances that the people of London travel, depending on their Borough of residence, was then considered. The centre of London was defined (the monument outside of Charing Cross station) and then the distance between this point and the centroid of each London Borough was calculated (Figure \ref{fig:borough_centroids}). Figure \ref{fig:mean_distance_by_borough} was then plotted, with the Boroughs ordered by this distance metric i.e. the centroid of the City of London is the closest Borough centroid to Charing Cross, so was plotted first.
+\subsection{Journey distances by Borough of residence}
+\label{sec:journey_distances_by_borough_of_residence}
+
+The distances that the people of London travel, depending on their Borough of residence, was now considered. The centre of London was defined (the monument outside of Charing Cross station) and then the distance between this point and the centroid of each London Borough was calculated (Figure \ref{fig:borough_centroids}). Figure \ref{fig:mean_distance_by_borough} was then created, with the Boroughs ordered by this distance metric i.e. the centroid of the City of London is the closest Borough centroid to Charing Cross, so was plotted first. This ordering was undertaken as I theorised that individuals living nearer the centre of London would spend less time travelling than those in outer London.
 
 \begin{figure}[H]
 \centering
@@ -277,9 +295,12 @@ The distances that the people of London travel, depending on their Borough of re
 
 \end{landscape}
 
-There did not appear to be any clear pattern between where people live and the distance that they travel each day. As the Boroughs were plotted in order, if it was true that people living in outer London Boroughs travel more, then the medians and means of the graph should rise from left (closest to centre of London) to right (furthest from centre of London). The Borough with the lowest mean was actually found to be Greenwich, perhaps reflecting that the people who live in Greenwich tend to work more locally. The boroughs with the highest means were Havering, Richmond and Merton.
+There did not appear to be any clear pattern between where people live and the distance that they travel each day. As the Boroughs were plotted in order, if it was true that people living in outer London Boroughs travel more, then the medians and means of the graph should rise from left (closest to centre of London) to right (furthest from centre of London). The Borough with the lowest mean was actually found to be Greenwich, perhaps reflecting that the people who live in Greenwich tend to work more locally (this could be investigated using the dataset). The boroughs with the highest mean travelling distance were Havering, Richmond and Merton.
 
-Focusing now on transport mode choice, I calculated the percentage of time that each person spends within each micro-environment, namely bus, car, cycling, train, underground and walking. The indoors environment was found to be very dominant i.e. people spent most of their days indoors. For clarity of the other modes, that was therefore ignored for now and then the results were grouped by age bracket, shown in Figure \ref{fig:age_barplots_time_transport}.
+\subsection{Transport mode choice by age group}
+\label{sec:transport_mode_choice_by_age_group}
+
+Focusing now on transport mode choice, the percentage of time that each person spends within each micro-environment, namely bus, car, cycling, train, underground and walking, was calculated. The indoors environment was found to be very dominant i.e. people spent most of their days indoors. For clarity of visualisation, the indoor environment was removed, and the remaining ones plotted by age bracket (Figure \ref{fig:age_barplots_time_transport}).
 
 \begin{figure}[H]
 \centering
@@ -288,9 +309,12 @@ Focusing now on transport mode choice, I calculated the percentage of time that 
 \label{fig:age_barplots_time_transport}
 \end{figure}
 
-This graph agrees well with Figure \ref{fig:mean_distance_by_age} shown earlier which showed a bell-curve like distribution, with a leaning towards the upper age groups. Additionally however Figure \ref{fig:age_barplots_time_transport} shows how use of transport modes changes with age. Except for the 0--10 age group, bus transport is used the same amount by all ages. Walking has a similar pattern, being used frequently by people even up to the ages of 80 and above. Cycling is popular with the 20 to 60 year old's, but then hardly used by people older than that. The underground results are interesting in that it is almost never used by anyone in the 0-10 age bracket, or the 80+ age bracket. Despite free travel being granted to people in those age groups.
+This graph agrees well with Figure \ref{fig:mean_distance_by_age} (travel distances by age group) which showed a bell-curve like distribution, with a leaning towards the upper age groups. Additionally however Figure \ref{fig:age_barplots_time_transport} shows how use of transport modes changes with age. Except for the 0--10 age group, bus transport is used the same amount by all ages. Walking has a similar pattern, being used frequently by people even up to the ages of 80 and above. Cycling is popular with the 20 to 60 year old's, but then hardly used by people older than that. The underground results are interesting in that it is almost never used by anyone in the 0-10 age bracket, or the 80+ age bracket. Despite free travel being granted to people in those age groups.
 
-One of the main motivations behind this research was to examine where people spend time, and therefore accumulate their exposure, and whether using address or postcodes for exposure assessment was valid. To examine this, a 1 km buffer was created in PostGIS around each residents recorded residential address (example shown in Figure \ref{fig:one_km_buffer_house}).
+\subsection{Time near residence}
+\label{sec:time_near_residence}
+
+One of the main motivations behind this research was to examine where people spend time, and therefore accumulate their exposure, and whether using address or postcodes (or dynamic methods) for exposure assessment was valid. To examine this, a 1 km buffer was created around each residents recorded residential address (example shown in Figure \ref{fig:one_km_buffer_house}).
 
 \begin{figure}[H]
 \centering
@@ -306,7 +330,7 @@ Then the percent of time that each occupant of each house spends within that buf
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.9]{time_with_one_km_home_by_age}
-\caption{Percent of time within 1 km of home address}
+\caption{Boxplot of percent of time within 1 km of home address, means shown by red line}
 \label{fig:time_with_one_km_home_by_age}
 \end{figure}
 
@@ -331,21 +355,21 @@ For illustrative purposes three simple animations of the data--set were made. Th
 \end{itemize}
 \end{itemize}
 
-These illustrations allow a much better understanding of the data--set than was possible before. Instead of rows of an abstract database, the data can be viewed and understood. When used in presentations to colleagues and external stakeholders (such as the TfL staff who collect the LTDS data), it was particularly useful in helping them become more familiar with the results of the process. Particularly interesting to note in the animations is the spatial distribution of the LTDS subjects, with their movements on the day of the survey clearly not limited to the geographical area of London (and thus justifying the need for a UK-wide CMAQ model of air quality concentrations). Also the number of people who travel from London to outside of London for work or otherwise.
+These illustrations allow a much better understanding of the data--set than was possible before. Instead of rows of an database, the data can be viewed and understood. When used in presentations to colleagues and external stakeholders (such as the TfL staff who collect the LTDS data), it was particularly useful in helping them become more familiar with the results of the process. Particularly interesting to note in the animations is the spatial distribution of the LTDS subjects, with their movements on the day of the survey clearly not limited to the geographical area of London (and thus justifying the need for a UK-wide CMAQ model of air quality concentrations). Also the number of people who travel from London to outside of London for work or otherwise.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
 \label{sec:1Discussion}
 
-Generating or manipulating the LTDS with the methods and tools discussed in this Chapter proved complicated, particularly in writing the SQL and R scripts to interrogate the APIs, and then the spatial and temporal interpolation techniques to re-define the data in the resolution required. However having initially attempted to build custom transport networks using PostGIS and PgRouting (the PostgreSQL extensions), the methods attempted were much more productive in that they allowed a far higher percentage of routes to be solved, and with much higher accuracy. 
+Generating or manipulating the LTDS with the methods and tools discussed in this chapter proved complicated, particularly in writing the SQL and R scripts to interrogate the APIs, and then the spatial and temporal interpolation techniques to re-define the data in the resolution required. However having initially attempted to build custom transport networks using PostGIS and PgRouting (the PostgreSQL extensions), the methods attempted were much more productive in that they allowed a far higher percentage of routes to be solved, and with much higher accuracy. 
 
-The dataset that has been produced is, to my knowledge, unparallelled in this area of study. Few studies have produced similar datasets, a notable one being \cite{Dhondt2012} and their 5 million subjects in the 'FEATHERS' dataset, however the temporal resolution of that model was only hourly and the spatial resolution down to 16 km by 16 km zones of Flanders (Belgium) rather than exact coordinates. Conversely, it could be argued that the hybrid\textunderscore location table actually be more highly resolved that it is. Time intervals of one-minute were chosen for convenience, when 30 seconds or even 1 second could have been used. However this seemed the most sensible choice on the basis that the dataset is already very large. Further research to assess the impact of perhaps changing to 30 second intervals could be worthwhile. The linked demographic data to the people and households of this data was also very useful in examining travelling patterns and mobility by different characteristics, which has been done in many studies before however normally by using crude measures such as euclidean distances between households and recorded workplaces, rather than by using routing solutions.
+The dataset that has been produced is, to my knowledge, unparalleled in this area of study. Few studies have produced similar datasets, a notable one being \cite{Dhondt2012} and their 5 million subjects in the 'FEATHERS' dataset, however the temporal resolution of that model was only hourly and the spatial resolution down to 16 km by 16 km zones of Flanders (Belgium) rather than exact coordinates. Conversely, it could be argued that the hybrid\textunderscore location table actually be more highly resolved that it is. Time intervals of one-minute were chosen for convenience, when 30 seconds or even 1 second could have been used. However this seemed the most sensible choice on the basis that the dataset is already very large. Further research to assess the impact of perhaps changing to 30 second intervals could be worthwhile. The linked demographic data to the people and households of this data was also very useful in examining travelling patterns and mobility by different characteristics, which has been done in many studies before however normally by using crude measures such as euclidean distances between households and recorded workplaces, rather than by using routing solutions.
 
-The limitations of this approach include the lack of finely-detailed control over the routing process and solution. Whilst most of the APIs allowed for different transport modes to be selected, and some of them give options such as 'avoid major roads', they do not allow costs-factors to be dynamically assigned to roads or for the network to be manipulated such as removing specific routes from the choices available. Whilst not an issue at this stage, a situation can be envisaged whereby low exposure routing would be desirable, and this will prove difficult. Similarly, there is currently no way of validating the routes that were chosen by the subjects, as being representative of the actual routes taken. For some transport modes this seems less of a worry than for others. A subject taking a tube from London Bridge to Elephant and Castle for example has very little choice of their route (without significantly adding time to their journey), and much would be the same for other journeys using public transport. Private modes such as driving and walking would be less certain, however the time taken for the route matches the time in the LTDS, so whilst small detours are possible, large detours are unlikely.
+The limitations of this approach include the lack of finely-detailed control over the routing process and solution. Whilst most of the APIs allowed for different transport modes to be selected, and some of them give options such as 'avoid major roads', they do not allow cost-factors to be dynamically assigned to roads or for the network to be manipulated such as removing specific routes from the choices available. Whilst not an issue at this stage of this research, a situation can be envisaged whereby low exposure routing would be desirable, and this will prove difficult. Similarly, there is currently no way of validating the routes that were chosen by the subjects, as being representative of the actual routes taken. For some transport modes this seems less of a worry than for others. A subject taking a tube from London Bridge to Elephant and Castle for example has very little choice of their route (without significantly adding time to their journey), and much would be the same for other journeys using public transport. Private modes such as driving and walking would be less certain, however the time taken for the route matches the time in the LTDS, so whilst small detours are possible, large detours are unlikely.
 
 The way that time inbetween trips is considered might be leading to an over-estimation of the amount of time that subjects spend indoors each day. This is because when subjects finish trips the model presumes that they are then inside until the next trip begins. Time spent not travelling but in outdoor spaces, is therefore neglected (for example in a park). Intersecting an Ordnance Survey land-use map with the dataset could lead to improvements in this area of the model. Further efforts could also be made to 'recover' discarded data which was removed in the data-cleaning process, for example subjects with miss-aligned trip start and end times were removed, but further investigation may have been able to resolve these issues.
 
-Going forward, this dataset will now be referred to for simplicity as the LTDS-Expanded dataset, or the LTDS-X for short.  Specifically, the dataset created (expanded) by processing of the original LTDS data through routing algorithms and services.
+Going forward, this dataset will now be referred to for simplicity as the LTDS-Expanded dataset, or the LTDS-X for short.  Specifically, the dataset created (expanded) by processing of the original LTDS data through routing algorithms and GIS.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions}
