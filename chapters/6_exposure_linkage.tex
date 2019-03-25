@@ -3,7 +3,13 @@
 \label{sec:2aim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Model exposure to PM$_{2.5}$ and NO$_{2}$ of the LTDS-X subjects, and compare  with traditional exposure models 
+Model exposure to \gls{pm25} and \gls{no2} of the \gls{ltdsx} subjects, and compare  with traditional exposure methods.
+
+n.b.  Some of the research in the previous chapter, and most of the research in this current chapter, has been published as:
+
+\begin{itemize}
+\item Smith, J. D., Mitsakou, C., Kitwiroon, N., Barratt, B. M., Walton, H. A., Taylor, J. G., Beevers, S. D. (2016). The London Hybrid Exposure Model (\gls{lhem}): Improving human exposure estimates to \gls{no2} and \gls{pm25} in an urban setting. Environmental Science \& Technology, acs.est.6b01817. \url{https://doi.org/10.1021/acs.est.6b01817}
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Objectives}
@@ -11,12 +17,12 @@ Model exposure to PM$_{2.5}$ and NO$_{2}$ of the LTDS-X subjects, and compare  w
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{itemize}
-\item Link the LTDS-X to CMAQ-Urban UK
+\item Link the \gls{ltdsx} to CMAQ-Urban UK
 \item Incorporate I/O ratios and micro-environmental factors
 \item Create a postcode comparison dataset
 \item Create a address-point comparison dataset
-\item Create a monitoring sites comparison dataset
-\item Analysis and compare the results
+\item Create a monitoring site comparison dataset
+\item Analysis and compare results
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,69 +30,63 @@ Model exposure to PM$_{2.5}$ and NO$_{2}$ of the LTDS-X subjects, and compare  w
 \label{sec:2background}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Chapter One focused on processing, checking and exploring the spatial data that was created from the LTDS, leading to the LTDS-X. The daily journeys of around 45,000 people were recreated on a fine spatial and temporal scale from survey data. This data-set was created to allow investigation of exposure in urban environments, and also miss-classification, as described in Section \ref{sec:dynamicexposurehealth}, namely the differences between assigning someone a static exposure value based on their home location, postcode, nearest monitoring site or otherwise, compared with a model which considers all the micro-environments and varying concentrations during the subjects daily movements.
+Chapter One (\nameref{chap:the_ltdsx}) focused on processing, checking and exploring the spatial data that was created from the LTDS, leading to the \gls{ltdsx}. The daily journeys of around 45,000 people were recreated on a fine spatial and temporal scale from survey data. This data-set was created to allow investigation of exposure in urban environments, and also miss-classification, as described in Section \ref{sec:dynamicexposurehealth} (\nameref{sec:dynamicexposurehealth}), namely the differences between assigning someone a static exposure value based on their home location, postcode, nearest monitoring site or otherwise, compared with a model which considers all the micro-environments and varying concentrations during the subjects daily movements.
 
-The thrust of this chapter will therefore be to link the LTDS-X dataset to the CMAQ-Urban dataset (described in \ref{sec:cmaq_urban}), and then to undertake micro-environmental modelling for when the subjects are indoors and for when they are in transport. The completed model of exposure is henceforth referred to as the London Hybrid Exposure Model or LHEM. The LHEM will then be used to explore exposure variations within the subjects, to attempt to identify and understand any patterns, and to consider exposure missclassification that may be occurring using standard exposure methods. Potential policy uses of the LHEM, and ways in which it might be useful to the general public, are then discussed.
+This chapter will link the \gls{ltdsx} dataset to the CMAQ-Urban dataset (described in Section \ref{sec:cmaq_urban}, '\nameref{sec:cmaq_urban}'), and then undertake micro-environmental modelling for when the subjects are indoors or in transport. The completed model of exposure is henceforth referred to as the London Hybrid Exposure Model or \gls{lhem}. The \gls{lhem} will be used to explore exposure variations within the subjects, to attempt to identify and understand any patterns, and to consider exposure missclassification that may be occurring using standard exposure methods. Potential policy uses of the \gls{lhem}, and ways in which it might be useful to the general public, are then discussed.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Methods}
 \label{sec:2methods}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In order to calculate the 'static' exposure estimates which will be compared to the LHEM estimates, a number of input data-sets and methods/processes needed to be completed. They are now listed and explained below, with the methods and input data-sets grouped by the final dataset under construction.
+In order to calculate the 'static' exposure estimates which will be compared to the \gls{lhem} estimates, a number of input data-sets and methods/processes needed to be completed. First the methods of completing the \gls{lhem} are explained, then of creating a postcode-level exposure model, followed by address-point exposure model, and finally monitoring-site exposure model.
 
 %%%%%%%%%%%%%%%%%%%%%%
     \subsection{Running the London Hybrid Exposure Model}
     \label{sec:running_the_lhem}
 %%%%%%%%%%%%%%%%%%%%%%
 
-        \subsubsection{Linking LTDS-X to outdoor concentrations}
+        \subsubsection{Linking \gls{ltdsx} to outdoor concentrations}
         \label{sec:linking_ltdsx_to_cmaq}
 
-During Methods section \ref{sec:cmaq_urban} the CMAQ-Urban air quality model was introduced. It was explained how this model outputs daily (weekday/Saturday/Sunday), hourly concentrations for a 20 metre by 20 metre grid covering the UK. The concentration of a range of pollutants at the location of each individuals minute-by-minute location over 24 hours was therefore now extracted from this model output i.e. the LTDS-X was linked to a CMAQ-Urban layer. Due to the memory and processing power needed to run the CMAQ-Urban model, and the language that it is written in (Fortran with SQL inputs), linking CMAQ-Urban directly to the PostgreSQL database that the LTDS-X data is held in was not possible. A CSV file of the LTDS-X in lat/long format along with a date-time-stamp was thus exported from the database. To avoid duplication at this stage, a SQL query was written to only export unique points. To explain, if someone stayed in the same location between 07:00 and 07:45 on a Saturday, only one point was exported as the temporal resolution of the CMAQ-Urban model is monthly, daily, hourly and thus the concentration at that point would not change during that time-frame. If however the same person was in constant movement between 07:00 and 07:45, then 45 points were outputted (as concentrations would be different in different locations for each minute). By taking the temporal resolution of the CMAQ-Urban model into account when doing the export query, the number of points that needed concentrations extracting from the CMAQ-Urban model was reduced from around 64 million (45,079 people multiplied by 24 hours multiplied by 60 minutes) to just over 4 million. Dr Kitwiroon of the Environmental Research Group at King's College London processed this dataset with the CMAQ-Urban model, and returned a CSV file with additional columns for a range of pollutants (including crucially NO$_{2}$ and PM$_{2.5}$). This data was then re-imported back to the PostgreSQL database and linked to the LTDS-X data.
+During Methods section \ref{sec:cmaq_urban} the CMAQ-Urban air quality model was introduced. It was explained how this model outputs daily (weekday/Saturday/Sunday), hourly concentrations for a 20 metre by 20 metre grid covering the UK. The concentration of a range of pollutants at the location of each individuals minute-by-minute location over 24 hours was therefore now extracted from this model output i.e. the \gls{ltdsx} was linked to a CMAQ-Urban layer by time and location. Due to the memory and processing power needed to run the CMAQ-Urban model, and the language that it is written in (Fortran with SQL inputs), linking CMAQ-Urban directly to the PostgreSQL database that the \gls{ltdsx} data is held in was not possible so a CSV file of the \gls{ltdsx} in lat/long format along with a timestamp was exported from the database. To avoid duplication at this stage, a SQL query was written to only export unique points. To explain, if someone stayed in the same location between 07:00 and 07:45 on a Saturday, only one point was exported as the temporal resolution of the CMAQ-Urban model is monthly, daily, hourly and thus the concentration at that point would not change during that time-frame. If however the same person was in constant movement between 07:00 and 07:45, then 45 points were outputted (as concentrations would be different in different locations for each minute). By taking the temporal resolution of the CMAQ-Urban model into account when doing the export query, the number of points that needed concentrations extracting from the CMAQ-Urban model was reduced from around 64 million (45,079 people multiplied by 24 hours multiplied by 60 minutes) to just over 4 million. Dr Kitwiroon of the Environmental Research Group at King's College London processed this dataset with the CMAQ-Urban model, and returned a CSV file with additional columns for a range of pollutants (including crucially \gls{no2} and \gls{pm25}). This CSV was then re-imported back to the PostgreSQL database and linked to the \gls{ltdsx} data.
 
         \subsubsection{Modelling for in-building exposure}
         \label{sec:modelling_in_building}
 
-While LTDS-X subjects are indoors, the air quality that they are exposed to is different to outdoor air. A method to estimate exposure to outdoor air when indoors was therefore required, particularly given that subjects spend so much of their time indoors (See Figure \ref{fig:age_barplots_time_transport} in Section \ref{sec:reconstruction_results}). We decided to use an indoor/outdoor (I/O) model to estimate concentrations inside buildings, by taking ratios and applying them to the outdoor CMAQ-Urban concentrations. The model that was chosen for this was developed by Dr J. Taylor of UCL, in which he assumes 15 building types derived from the English Housing Survey, and then creates building physic models using the location of the dwelling, window opening and closing behaviour, occupant behaviour, deposition rates and penetration factors. This model was chosen as it was specifically developed for London (and therefore the building archetypes are representative), was recent (2014), and due to our close relationship with Dr Taylor meaning that we were able to ask for minor customisations to the model to be completed, and for a bestoke number of model runs to be udertaken to examine sensitivity of the model (not covered here). The methods are more fully described in \cite{Taylor2014}, and the data was  provided by personal communication with Dr Taylor (with minor customisations as mentioned  to provide hourly results and the addition of NO$_{2}$ instead of just PM). A map of the PM$_{2.5}$ ratios with the London Underground overlaid to help with the readers orientation is shown below in Figure \ref{fig:ratios_underground}.
+While \gls{ltdsx} subjects are indoors, the air quality that they are exposed to is different to outdoor air. A method to estimate exposure to outdoor air when indoors was therefore required, particularly given that subjects spend so much of their time indoors. An indoor/outdoor (I/O) model to estimate concentrations inside buildings, by taking ratios and applying them to the outdoor CMAQ-Urban concentrations, was used to achieve this. The model that was chosen for this was developed by Dr J. Taylor of UCL, in which he assumes 15 building types derived from the English Housing Survey, and then creates building physic models using the location of the dwelling, window opening and closing behaviour, occupant behaviour, deposition rates and penetration factors. This model was chosen as it was specifically developed for London (and therefore the building archetypes are representative), was recent (2014), and due to our close relationship with Dr Taylor meaning that we were able to ask for minor customisations to the model to be completed, and for a number of repeat model runs to be undertaken to examine sensitivity of the model (not covered here). The methods are more fully described in \cite{Taylor2014}, and the data was provided by personal communication with Dr Taylor (with minor customisations as mentioned  to provide hourly results and the addition of \gls{no2} instead of just PM). The process of incorporating this dataset with our model is now briefly described.
+
+            \paragraph{1. Importing I/O ratios}
+            \label{sec:importing_io_ratios}
+	
+The data-set was provided by Dr Taylor as a CSV file with hourly I/O averages for each district level postcode in London. The data was re-organised slightly, before being imported to the PostgreSQL database.
+
+            \paragraph{2. Linking postcodes boundaries to Indoor/outdoor ratios}
+            \label{sec:linking_postcodes_to_ratios}
+
+In order to link the provided I/O ratios to the locations in the \gls{ltdsx}, the areas that each postcode covers was required (the file provided by Taylor contained a ratio, and a postcode but no geographical data). The geographical postcode data-set that was used is described in Section \ref{sec:import_postcode_boundaries} (\nameref{sec:import_postcode_boundaries}), and was linked to the ratios dataset using the postcode field common in both files. Figure \ref{fig:ratios_underground} (below) shows the data at this step in the process for one hour of the day (with the London Underground superimposed to aid orientation of the map).
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.5]{ratios_underground}
-\caption{Map of average indoor/outdoor (I/O) ratios used in the LHEM. Superimposed on the map is the London Underground network to aid orientation}
+\includegraphics[scale=0.2]{ratios_underground}
+\caption{Map of average indoor/outdoor (I/O) ratios used in the \gls{lhem}. Superimposed on the map is the London Underground network to aid orientation}
 \label{fig:ratios_underground}
 \end{figure}
 
-            \paragraph{Importing I/O ratios}
-            \label{sec:importing_io_ratios}
-	
-The data-set was provided as a CSV file which gave hourly I/O averages for each district level postcode in London. The data was re-organised slightly, before being imported to the PostgreSQL database.
-
-            \paragraph{Linking postcodes boundaries to Indoor/outdoor ratios}
-            \label{sec:linking_postcodes_to_ratios}
-
-In order to link the provided I/O ratios to the locations in the LTDS-X, the areas that each postcode covers was required (the I/O file provided by Taylor contained a ratio, and a postcode i.e. SE173DA, 0.6 -- but did not contain geographical data defining the area that this postcode covers). The geographical postcode data-set that was used is described in Section \ref{sec:import_postcode_boundaries}, and linked to the ratios dataset using the postcode field common in both files.
-
-            \paragraph{Take each point and link to the correct I/O on time/place}
+            \paragraph{3. Take each point and link to the correct I/O on time/place}
             \label{sec:linking_points_to_postcode_ratios}
 
-To then link the LTDS-X data to the postcode I/O ratios, a spatial SQL query to join the two tables was written. The join was performed using the location of the LTDS-X point, as well as the time of day (as the I/O dataset had this level of temporal resolution). This process is summarised in the bullet-points below:
+To then link the \gls{ltdsx} data to the postcode I/O ratios, a spatial SQL query to join the two tables was written. The join was performed using the location of the \gls{ltdsx} point, as well as the time of day.
 
-\begin{enumerate}
-\item Take the LTDS-X location (Easting and Northing) and locate the postcode boundary that contains the point
-\item Now take the hour of the day that the LTDS-X is for (0-24)
-\item Extract the I/O ratio
-\end{enumerate}
-
-            \paragraph{Multiply I/O ratio by CMAQ-Urban concentration}
+            \paragraph{4. Multiply I/O ratio by CMAQ-Urban concentration}
             \label{sec:multiple_io_by_cmaq}
 
-The appropriate I/O ratio was then multiplied by the CMAQ unique point value for that location, day and hour, the result being the indoor exposure at that minute. This process was repeated for all the LTDS-X data-points that are noted as being indoors in the dataset (approximately 62 million points)
+The appropriate I/O ratio was then multiplied by the CMAQ pollutant concentration for that location, day and hour, the result being the indoor exposure at that minute. This process was repeated for all the \gls{ltdsx} data-points that are recorded as being indoors in the dataset (approximately 62 million points)
 
-        \subsubsection{Modelling for in-vehicle exposure}
-        \label{sec:in_vehicle_modelling}
+\subsubsection{Modelling for in-vehicle exposure}
+\label{sec:in_vehicle_modelling}
 
-Locations in the LTDS-X that were recorded as travelling inside vehicles (buses, cars, trains etc.) needed further micro-environmental modelling to take into account that the air quality is different from the outside air. This concept was introduced in Section \ref{subsubsec:invehicle} and then exposure studies that considered this area of modelling and exposure were examined in Section \ref{sec:transport}. To calculate in-vehicle exposure in this model, the pollutant concentration (C$_{in}$) was derived by solving the following mass balance equation below (Equation \ref{eq:mass_balance}).
+Locations in the \gls{ltdsx} recorded as travelling inside vehicles needed further micro-environmental modelling to take into account that the air quality is different from the outside air. This concept was introduced in Section \ref{subsubsec:invehicle} (\nameref{subsubsec:invehicle}) and then exposure studies that considered this area of modelling and exposure were examined in Section \ref{sec:transport} (\nameref{sec:transport}). To calculate in-vehicle exposure in this model, the pollutant concentration (C$_{in}$) was derived by solving the following mass balance equation below (Equation \ref{eq:mass_balance}).
 
 \begin{equation}
 \frac{dC_{in}}{dt} = \lambda _{win} (C_{out} - C_{in}) - n\lambda _{HVAC} C_{in} - V_{g} (A\textsuperscript{*}/V) C_{in} + Q/V
@@ -111,17 +111,14 @@ C_{in} = (C_{in_{0}} - \frac{b_{0}}{a_{0}}) \cdot exp(-a \cdot t) + \frac{b}{a}
 \label{eq:solved_mass_balance}
 \end{equation}
 
-The parameters for this model change as the subjects move, and for different vehicle types. For an example of how this module of the LHEM operates, please find a standalone piece of R code in Appendix \autoref{code:in_vehicle_example}.
+The parameters for this model change as the subjects move, and for different vehicle types. For an example of how this module of the \gls{lhem} operates, please find a standalone piece of R code in Appendix \autoref{code:in_vehicle_example}.
             
-            \paragraph{The London Underground}
-            \label{sec:the_london_underground}
+For subjects locations in the \gls{ltdsx} that are described as being on the London Underground, fixed concentrations were used due to a lack of the data required to create a model of adequate spatial and temporal resolution. These fixed concentrations were derived from measurements conducted at underground platforms and on trains, in a separate as yet unpublished study within the Environmental Research Group at King's College London (Dr. Barratt, personal communication). For \gls{pm25} the values of 94 $\mu \text{g m}^{-3}$ (winter) and 68 $\mu \text{g m}^{-3}$ (summer) were used, and for NO$_{x}$ the value of 51 $\mu \text{g m}^{-3}$ was used. n.b Chapter \ref{chap:monitoring_on_underground} aims to refine the estimation of exposure while on the London Underground.
 
-For subjects locations in the LTDS-X that are described as being on the London Underground, fixed concentrations were used due to a lack of the data required to create a model of adequate spatial and temporal resolution. These fixed concentrations were derived from measurements conducted at underground platforms and on trains, in a separate as yet unpublished study within the Environmental Research Group at King's College London (Dr. Barratt, personal communication). For PM$_{2.5}$ the values of 94 $\mu \text{g m}^{-3}$ (winter) and 68 $\mu \text{g m}^{-3}$ (summer) were used, and for NO$_{x}$ the value of 51 $\mu \text{g m}^{-3}$ was used. n.b Chapter \ref{chap:monitoring_on_underground} aims to refine the estimation of exposure while on the London Underground. NEED TO ADD PARIS REFERENCE HERE ABOUT NO2
-
-        \subsubsection{Summary of LTDS-X to LHEM}
+        \subsubsection{Summary of \gls{ltdsx} to \gls{lhem}}
         \label{sec:summary_of_ltdsx_to_lhem}
 
-The LTDS-X data is processed, as described above, using the appropriate method for each micro-environment. Once complete a dataset of 1,440 records (24 hours x 60 minutes) including time, location and exposure is output for each individual and then the 1-minute resolution data are averaged into hour of the day or full 24 hour period to obtain the typical exposure for each individual. These are then grouped or disaggregated as appropriate depending on the analysis required.
+The \gls{ltdsx} data is processed, as described above, using the appropriate method for each micro-environment. Once complete a dataset of 1,440 records (24 hours x 60 minutes) including time, location and exposure is output for each individual and then the 1-minute resolution data are averaged into hour of the day or full 24 hour period to obtain the typical exposure for each individual. These are then grouped or disaggregated as appropriate depending on the analysis required. Methods of exposure using 'standard' methods are now explained, for comparison with this dynamic method.
 
 %%%%%%%%%%%%%%%%%%%%%%
     \subsection{Creation of a postcode comparison dataset}
@@ -131,7 +128,7 @@ The LTDS-X data is processed, as described above, using the appropriate method f
         \subsubsection{Importing postcode boundaries}
         \label{sec:import_postcode_boundaries}
 
-To be able to calculate annual average pollutant concentrations for each London postcode, a dataset of postcodes was required, and specifically one which contains the geographical information describing the boundary of the postcode polygon. In the UK the Royal Mail is the organisation with authority for maintaining a list of all postcodes, specifically the dataset is called the Postcode Address File or PAF. However this dataset does not contain the geographical information to link the postcodes to any other spatial data. Therefore the Ordnance Survey dataset, Code-Point Open (\cite{OrdnanceSurvey2015a}), was considered. This is a dataset maintained by the Ordnance Survey, derived from the Postcode Address File, which adds the Easting and Northing of the postcode centroid to each of the Royal Mail postcodes. Although geographical coordinates now allow plotting of this dataset as points, to calculate postcode polygon averages a boundary is required, and therefore this dataset was also not suitable. Fortunately the organisation Edina, part of the "EDINA and Data Library" division of the Information Services Department at the University of Edinburgh, and funded by the UK Higher Education Authorities Joint Information and Systems Committee, has derived postcode polygon boundaries from this dataset and makes this dataset freely available to other UK Higher Education Institutions as a file called 'Code-Point with Polygons' (\cite{OrdnanceSurvey2015}). This dataset was therefore downloaded as an ESRI shapefiles and then the shp2pgsql tool used to load the shapefiles into a PostgreSQL/PostGIS database. The area of Waterloo is shown in Figure \ref{fig:postcode_polygons_example} to illustrate the detail of the final postcodes dataset.
+To be able to calculate annual average pollutant concentrations for each London postcode, a dataset of postcodes was required, and specifically one which contains the geographical information describing the boundary of the postcode polygon. In the UK the Royal Mail is the organisation with authority for maintaining a list of all postcodes, specifically the dataset is called the Postcode Address File or PAF. However this dataset does not contain the geographical information to link the postcodes to any other spatial data. Therefore the Ordnance Survey dataset, Code-Point Open (\cite{OrdnanceSurvey2015a}), was considered. This is a dataset maintained by the Ordnance Survey, derived from the Postcode Address File, which adds the Easting and Northing of the postcode centroid to each of the Royal Mail postcodes. Although geographical coordinates now allow plotting of this dataset as points, we needed areas (polygons), and therefore this dataset was also not suitable. Fortunately the organisation Edina, part of the "EDINA and Data Library" division of the Information Services Department at the University of Edinburgh, and funded by the UK Higher Education Authorities Joint Information and Systems Committee, has derived postcode polygon boundaries from this dataset and provides the result freely to other UK Higher Education Institutions as a file called 'Code-Point with Polygons' (\cite{OrdnanceSurvey2015}). This dataset was downloaded as an ESRI shapefile and then the shp2pgsql tool used to load the shapefiles into the PostgreSQL/PostGIS database. The area of Waterloo, London is shown in Figure \ref{fig:postcode_polygons_example} to illustrate the detail of the final postcodes dataset.
 
 \begin{figure}[H]
 \centering
@@ -162,14 +159,14 @@ To calculate the mean annual pollutant concentration within each postcode polygo
         \subsubsection{Calculating the mean concentration for each postcode}
         \label{calculating_mean_postcode_data}
 
-To calculate the mean concentration for each postcode, the mean of the concentration of all the 20m x 20m cells that intersected the postcode were taken. Each of the LTDS subjects home address Easting and Northing was then taken, spatially joined with the postcode dataset to establish which postcode they lived in, and then the relevant annual mean concentration taken from the previously mentioned join/method.
+To calculate the mean concentration for each postcode, the mean area-weighted concentration of all the 20m x 20m cells that intersected each postcode polygon were calculated. Each of the LTDS subjects' home address (based on easting and northing) was then spatially joined with the postcode dataset to establish which postcode they lived in, and the annual mean concentration for their postcode.
 
 %%%%%%%%%%%%%%%%%%%%%%
     \subsection{Creation of address-point comparison dataset}
     \label{sec:creating_address_point_dataset}
 %%%%%%%%%%%%%%%%%%%%%%
 
-To calculate the address-point comparison dataset, the home address location (Easting/Northing) of each LTDS participant was first taken, as well as the day of the week that the participant was surveyed (translated into weekday/Saturday/Sunday as this was the temporal resolution of CMAQ-Urban). This data was then extracted as a CSV for similar reasons to the section \ref{sec:linking_ltdsx_to_cmaq} and processed by Dr Kitwiroon who returned a CSV with additional columns for a range of pollutants at each location. The 24 hour average for each of the LTDS subjects addresses was then calculated for each pollutant.
+To calculate the address-point comparison dataset, the home address location (Easting/Northing) of each LTDS participant was first taken, as well as the day of the week that the participant was surveyed (translated into weekday/Saturday/Sunday as this was the temporal resolution of CMAQ-Urban). This data was then extracted as a CSV and processed by Dr Kitwiroon who returned a CSV with additional columns for a range of pollutants at each location. The 24 hour average for each of the LTDS subjects addresses was then calculated for each pollutant.
 
 %%%%%%%%%%%%%%%%%%%%%%
     \subsection{Creating of monitoring sites comparison dataset}
@@ -179,7 +176,7 @@ To calculate the address-point comparison dataset, the home address location (Ea
         \subsubsection{Monitoring site data}
         \label{sec:monitoring_site_data}
 
-As discussed in Section \ref{subsec:monitoringstation}, monitoring stations have often been used as a measure of exposure for a population, particularly in time-series studies e.g. \cite{Atkinson2010}, but also in some cohort studies e.g. \cite{Dockery1993}. Comparisons between the annual average of a London 'roadside' monitoring station and a London 'background' monitoring station were therefore chosen to compare with the LHEM results. The data for these sites was downloaded using OpenAir from the London Air Quality Network (\cite{LondonAir}) for the sites of Marylebone Road (roadside) and North Kensington (background) respectively (shown in Figure \ref{fig:background_roadside_monitors}).
+As discussed in Section \ref{subsec:monitoringstation} (\nameref{subsec:monitoringstation}), air quality monitoring stations have often been used as a measure of exposure for a population, particularly in time-series studies (\cite{Atkinson2010}), but also in some cohort studies (\cite{Dockery1993}). Comparisons between the annual average of a London 'roadside' monitoring station and a London 'background' monitoring station were therefore chosen to compare with the \gls{lhem} results. The data for these sites was downloaded using the R OpenAir package from the London Air Quality Network (\cite{LondonAir}) for the sites of Marylebone Road (roadside) and North Kensington (background) (shown in Figure \ref{fig:background_roadside_monitors}).
 
 \begin{figure}[H]
 \centering
@@ -188,37 +185,35 @@ As discussed in Section \ref{subsec:monitoringstation}, monitoring stations have
 \label{fig:background_roadside_monitors}
 \end{figure}
 
-Specifically, the hourly means for 2011, for each site, for PM$_{2.5}$ and NO$_{2}$ were downloaded. Providing that there was at least a 75\% capture rate for the year for each pollutant (which there was) then the mean of the hours was taken as per DEFRA guidance (\cite{DEFRA2009}). The results are shown in Table \ref{tab:mean_monitoring_site_concentrations}:
+Specifically, the hourly means for 2011, for each site, for \gls{pm25} and \gls{no2} were downloaded. After checking the quality of the data (as per DEFRA guidance (\cite{DEFRA2009}), the mean of all the hours was taken to calculate the annual average pollutant concentration at that location. The results are shown in Table \ref{tab:mean_monitoring_site_concentrations}:
 
 \begin{table}[H]
+\caption{Annual mean pollutant concentrations for North Kensington and Marylebone Road monitoring sites}
 \centering
     \begin{tabular}{ | l | l | l |}
     \hline 
-     \bfseries{Site} & \bfseries{PM$_{2.5}$ ($\mu \text{g m}^{-3}$)} & \bfseries{NO$_{2}$ ($\mu \text{g m}^{-3}$}  \\ \hline
+     \bfseries{Site} & \bfseries{\gls{pm25} ($\mu \text{g m}^{-3}$)} & \bfseries{\gls{no2} ($\mu \text{g m}^{-3}$)}  \\ \hline
      North Kensington & 16.33 & 35.96\\ \hline
      Marylebone Road & 24.45 & 97.05\\ \hline
     \end{tabular}
-\caption{Mean pollutant concentrations from London monitoring sites for 2011}
 \label{tab:mean_monitoring_site_concentrations}
 \end{table}
 
-%Although the LTDS data being analysed covers questionnaires of households during the period 2005-2010, sufficient NO$_{x}$ and PM$_{2.5}$ data for a whole year, and for both the background and roadside monitoring sites, was only available for the year 2011. Therefore, as described above, this dataset was chosen for comparison (Should I calculate some other annual means for these sites to justify that using 2011 isn't much different to using 2008 or say 2010? If indeed that is the case?)
+\subsubsection{Methods summary}
+\label{subsubsec:methods_summary}
 
-        \subsubsection{Summary}
-        \label{subsubsec:methods_summary}
-
-Now that the LHEM has been created, it allows detailed interrogation and investigation of the exposure of \textasciitilde45,000 Londoners (and the demographic and geographic information linked to them). Calculations can be made to answer many questions. To give an indication of it's capabilities, some examples are listed below:
+The result of these methods is a dynamic exposure model (the \gls{lhem}), and a number of comparison 'static' exposure models. In addition to comparisons with other models, the \gls{lhem} allows detailed interrogation and investigation of the exposure of \textasciitilde45,000 Londoners (and the demographic and geographic information linked to them). Calculations can be made to answer many questions. To give an indication of it's capabilities, some examples are listed below:
 
 \begin{itemize}
-\item What is the average NO$_{2}$ exposure of those under 18, compared to those over 18
-\item What is the average PM$_{2.5}$ exposure of people of Indian ethnic origin living in Southwark
-\item What is the difference between exposure taken from monitoring sites, compared to exposure using the LHEM
-\item What percentage of Londoners daily PM$_{2.5}$ exposure comes from their morning commute
-\item How much less (or more?) NO$_{2}$ is someone exposed to by working at home instead of in the office
+\item What is the average \gls{no2} exposure of those under 18, compared to those over 18
+\item What is the average \gls{pm25} exposure of people of Indian ethnic origin living in Southwark
+\item What is the difference between exposure taken from monitoring sites, compared to exposure using the \gls{lhem}
+\item What percentage of Londoners daily \gls{pm25} exposure comes from their morning commute
+\item How much less (or more?) \gls{no2} is someone exposed to by working at home instead of in the office
 \item Which Borough of London residents have the lowest exposure
 \item Is household income and air quality exposure related
 \item Do children get most of their daily exposure from within 1km of their house
-\item What is the difference between exposure using address-point methods, compared to exposure using the LHEM
+\item What is the difference between exposure using address-point methods, compared to exposure using the \gls{lhem}
 \item During which hour of the day, do people aged between 30-40 years old get most of their daily exposure
 \end{itemize}
 
@@ -231,27 +226,28 @@ Now that the LHEM has been created, it allows detailed interrogation and investi
 \label{sec:2results}
 %%%%%%%%%%%%%%%%%%%%%%
 
-The results presented here are illustrations of potential uses, focused on exploring exposure classification and missclassification in the study subjects.
+The results presented here are illustrations of potential uses, focused on exploring exposure classification to \gls{pm25} and \gls{no2}.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{The effect of microenvironments on exposure}
 \label{subsec:time_exposure_microenvironments}
 %%%%%%%%%%%%%%%%%%%%%%
 
-Figure \ref{fig:age_barplots_time_transport} in Section \ref{sec:reconstruction_results} showed the amount of time that people in different age groups spend in various microenvironments during their day. Although the results varied by age group, generally the time that people spent indoors was around the 95\% mark, perhaps adding weight to the sort of exposure estimates discussed in Section \ref{sec:staticexposurehealth} whereby concentrations at the subjects home or general area of residence are used to investigate the negative health effects of air quality (with the caveat that they tend to take the outdoors concentration at the area of residence, rather than attempt to model or measure the indoors concentration). Using the LHEM model, we are now able to investigate the actual exposure that occurs from each microenvironment, and examine the contribution that all microenvironments make to a subjects daily exposure. Table \ref{tab:results_microenvironments_exposure} therefore summarises the time spent in each microenvironment for NO$_{2}$ and PM$_{2.5}$ by age category for the 45,709 people in the dataset, and compares the figures to the exposure they accrue in the same environment during their day (as a percent of their total exposure).
+Section \ref{sec:reconstruction_results} (\nameref{sec:reconstruction_results}) of the previous chapter calculated the amount of time that people of different age groups spend in various microenvironments during their day. Although the results varied by age group, generally the time that people spent indoors was around the 95\% mark; adding weight to the sort of exposure estimates discussed in Section \ref{sec:staticexposurehealth} (\nameref{sec:staticexposurehealth}) whereby concentrations at the subjects home or general area of residence are used to investigate the negative health effects of air quality (with the caveat that they tend to take the outdoors concentration at the area of residence, rather than attempt to model or measure the indoors concentration). Using the \gls{lhem} model, we are now able to investigate the actual exposure that occurs from each micro-environment, and examine the contribution that all microenvironments make to a subjects daily exposure. Table \ref{tab:results_microenvironments_exposure} summarises the time spent in each micro-environment for \gls{no2} and \gls{pm25} by age category for the 45,709 people in the dataset, and compares these figures to the exposure they accrue in the same environment during their day (as a percent of their total exposure).
 
 \newgeometry{margin=1cm}
 \thispagestyle{empty}
 \begin{landscape}
 
 \begin{table}[H]
+\caption{Time (\% of day) and exposure ($\mu \text{g m}^{-3}$) in microenvironments by age category from the \gls{lhem} model}
 \centering
     \begin{tabular}{ | p{3.5cm} | p{3.3cm} | p{3.9cm} | p{3.3cm} | p{3.1cm} | p{3.1cm} |}
     \hline 
      & \multicolumn{4}{|c|}{\bfseries{Age category}} & \\ \hline
      & \bfseries{Child} (5-17) & \bfseries{Young adult} (18-29) & \bfseries{Adult (30-59)} & \bfseries{Elderly (\textgreater=60)} & \bfseries{Overall} \\ \hline
      People & 10856 & 7474 & 18370 & 8379 & 45079 \\ \hline
-     \multicolumn{6}{|l|}{\bfseries{Percent of time in microenvironment (mean, Interquartile range)}} \\ \hline
+     \multicolumn{6}{|l|}{\bfseries{Percent of time in micro-environment (mean, interquartile range)}} \\ \hline
      Driving & 0.77, 0-0 & 1.36, 0-1.32 & 2.24, 0-3.12 & 1.54, 0-2.08 & 1.63, 0-2.08 \\ \hline
      Indoor & 97.72, 96.39-100 & 94.94, 92.23-98.82 & 94.69, 92.16-98.47 & 96.41, 94.86-100 & 95.73, 93.55-100 \\ \hline
      Walking & 0.86, 0-1.53 & 1.66, 0-2.5 & 1.49, 0-2.22 & 1.15, 0-1.6 & 1.31, 0-2.01 \\ \hline
@@ -260,7 +256,7 @@ Figure \ref{fig:age_barplots_time_transport} in Section \ref{sec:reconstruction_
      Cycle & 0.02, 0-0 & 0.07, 0-0 & 0.1, 0-0 & 0.01, 0-0 & 0.06, 0-0 \\ \hline
      Train & 0.03, 0-0 & 0.24, 0-0 & 0.2, 0-0 & 0.06, 0-0 & 0.15, 0-0 \\ \hline
      Motorcycle & 0, 0-0 & 0.02, 0-0 & 0.04, 0-0 & 0, 0-0 & 0.02, 0-0 \\ \hline
-     \multicolumn{6}{|l|}{\bfseries{Percentage of daily NO$_{2}$ exposure from microenvironment (mean, Interquartile range)}} \\ \hline
+     \multicolumn{6}{|l|}{\bfseries{Percentage of daily \gls{no2} exposure from micro-environment (mean, interquartile range)}} \\ \hline
      Driving & 3, 0-0 & 5.32, 0-4.37 & 8.52, 0-12.62 & 5.64, 0-6.94 & 6.21, 0-7.49 \\ \hline
      Indoor & 92.01, 87.35-100 & 82.04, 71.22-96.46 & 81.2, 70.58-94.99 & 87.97, 81.58-100 & 85.02, 75.21-100 \\ \hline
      Walking & 2.64, 0-4.36 & 5.42, 0-8.41 & 4.66, 0-7.24 & 3.3, 0-4.64 & 4.08, 0-6.28 \\ \hline
@@ -269,7 +265,7 @@ Figure \ref{fig:age_barplots_time_transport} in Section \ref{sec:reconstruction_
      Cycle & 0.07, 0-0  & 0.26, 0-0 & 0.39, 0-0 & 0.05, 0-0 & 0.24, 0-0 \\ \hline
      Train & 0.07, 0-0 & 0.64, 0-0 & 0.54, 0-0 & 0.15, 0-0 & 0.38, 0-0  \\ \hline
      Motorcycle & 0, 0-0 & 0.08, 0-0 & 0.19, 0-0 & 0.02, 0-0 & 0.10, 0-0 \\ \hline
-     \multicolumn{6}{|l|}{\bfseries{Percentage of daily PM$_{2.5}$ exposure from microenvironment (mean, Interquartile range)}} \\ \hline
+     \multicolumn{6}{|l|}{\bfseries{Percentage of daily \gls{pm25} exposure from micro-environment (mean, interquartile range)}} \\ \hline
      Driving & 1.3, 0-0 & 2.34, 0-2 & 3.81, 0-5.38 & 2.52, 0-3.15 & 2.77. 0-3.34 \\ \hline
      Indoor & 95.89, 93.97-100 & 87.77, 82.96-98.04 & 88.59, 84.75-97.54 & 93.4, 91.47-100 & 90.98, 87.88-100 \\ \hline
      Walking & 1.39, 0-2.36 & 2.51, 0-3.8 & 2.28, 0-3.4 & 1.74, 0-2.48 & 2.02, 0-3.06 \\ \hline
@@ -279,7 +275,6 @@ Figure \ref{fig:age_barplots_time_transport} in Section \ref{sec:reconstruction_
      Train & 0.04, 0-0 & 0.35, 0-0 & 0.3, 0-0 & 0.08, 0-0 & 0.21, 0-0 \\ \hline
      Motorcycle & 0, 0-0 & 0.03, 0-0 & 0.08, 0-0 & 0.01, 0-0 & 0.04, 0-0 \\ \hline
     \end{tabular}
-\caption{Time and exposure ($\mu \text{g m}^{-3}$) in microenvironments by age category from the LHEM model}
 \label{tab:results_microenvironments_exposure}
 \end{table}
 
@@ -287,68 +282,68 @@ Figure \ref{fig:age_barplots_time_transport} in Section \ref{sec:reconstruction_
 
 \restoregeometry
 
-The results of comparing time in microenvironments to exposure in those same microenvironments shows that the contribution of the indoor environment is very important to people's overall exposure -- people spend \textasciitilde95\% of their time indoors. However when taken as a percentage of their daily exposure, it's importance is slightly diminished, overall the people only accumulated \textasciitilde85\% of their daily NO$_{2}$ and \textasciitilde90\% of their daily PM$_{2.5}$ while in that microenvironment.
+The results of comparing time in microenvironments to exposure in those same microenvironments shows that the contribution of the indoor environment is very important to exposure -- people spend \textasciitilde95\% of their time indoors. However when taken as a percentage of their daily exposure, it's importance is diminished, people accumulated \textasciitilde85\% of their daily \gls{no2} and \textasciitilde90\% of their daily \gls{pm25} while in that micro-environment.
 
-In balance to this, the time that people spend in transit is small, but becomes more important when daily exposure to pollutants is considered. For example time spent driving is less than 2\% of time, but over 6\% of NO$_{2}$ exposure, and the underground accounts for less than 0.5\% of time, but contributes almost 3\% of PM$_{2.5}$ exposure.
+In contrast to this, the time that people spend in transit is small, but becomes more important when daily exposure to pollutants is considered. Across the population time spent driving is less than 2\%, but over 6\% of \gls{no2} exposure, and travel on the London underground accounts for less than 0.5\% of time, but contributes almost 3\% of \gls{pm25} exposure.
 
-The variation of time and exposure between age groups varies. For NO$_{2}$, children and the elderly accumulate more of their daily exposure indoors (92.01\% and 87.97\%) than young adults and adults (82.04\% and 81.2\%) reflecting the differences in time they spend in that environment and the pollutant concentrations they are exposed too during their day. This pattern is similar for PM$_{2.5}$ exposure.
+The variation of time in micro-environments and exposure in micro-environments between age groups varies. For \gls{no2}, children and the elderly accumulate more of their daily exposure indoors (92.01\% and 87.97\%) than young adults and adults (82.04\% and 81.2\%) reflecting the differences in time they spend in that environment and the pollutant concentrations they are exposed too during their day. This pattern is similar for \gls{pm25} exposure.
 
-With regard to which transport modes contribute most to exposure, for PM$_{2.5}$ the ranking is driving, underground \& DLR, walking and then the bus, with all other transport modes less than 1\% of daily contribution to exposure. For NO$_{2}$ the ranking is slightly different, being driving, then walking, then the bus, then the underground \& DLR -- reflecting the balance of pollutant types in different environments. Noticeably when comparing age groups, young adults get ten times more of their daily PM$_{2.5}$ exposure (5.22\%) from the underground than children do (0.44\%), and four times more than the elderly (1.19\%). Comparisons between active and passive travel are also interesting, for example when looking at the subjects overall, passive travel constitutes 6.84\% of someones daily PM$_{2.5}$ exposure, compared to 2.85\% of their time, but for active travel these figures are 2.13\% and 1.19\% respectively, meaning that on a minute-by-minute basis, active travel results in lower exposure. This pattern is similar for NO$_{2}$, where 10.52\% of exposure comes from passive travel in 2.85\% of their time, compared to 4.32\% of exposure from 1.19\% of time.
+With regard to which transport modes contribute most to exposure, for \gls{pm25} the ranking in this model is driving, underground \& DLR, walking and then the bus, with all other transport modes less than 1\% of daily contribution to exposure. For \gls{no2} the ranking is slightly different, being driving, then walking, then the bus, then the underground \& DLR -- reflecting the varying levels of pollutant types in different environments. Noticeably when comparing age groups, young adults get ten times more of their daily \gls{pm25} exposure (5.22\%) from the underground than children do (0.44\%), and four times more than the elderly (1.19\%). Comparisons between active and passive travel are also interesting, for example when looking at the subjects overall, passive travel constitutes 6.84\% of daily \gls{pm25} exposure, compared to 2.85\% of their time, but for active travel these figures are 2.13\% and 1.19\% respectively, meaning that on a minute-by-minute basis, active travel results in lower exposure. This pattern is similar for \gls{no2}, where 10.52\% of exposure comes from passive travel in 2.85\% of their time, compared to 4.32\% of exposure from 1.19\% of time.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Comparing methods of exposure estimation}
 \label{subsec:comparing_exposure_methods}
 %%%%%%%%%%%%%%%%%%%%%%
 
-As discussed extensively so far in previous chapters, the primary function of the development of the LHEM is to consider the variation and potential exposure miss-classification occurring by using different exposure metrics. Table \ref{tab:comparing_methods} below summarises (mean, median and interquartile range) the exposures of the 45,079 people in the LTDS dataset using five different exposure metrics to provide side-by-side comparison. Notably all but the LHEM methods work on a static-outdoor basis, only the LHEM attempts to model movements and the mitigating effect of the indoor environment.
+As discussed extensively so far in previous chapters, the primary function of the development of the \gls{lhem} is to consider the variation and potential exposure miss-classification which occurrs in the use of different exposure metrics. Table \ref{tab:comparing_methods} below summarises (mean, median and inter-quartile range) the exposures of the 45,079 people in the LTDS dataset using five different exposure metrics to provide side-by-side comparison. All except the \gls{lhem} work on a static-outdoor basis, whereas the \gls{lhem} attempts to model movements and the effects of micro-environments.
 
 \begin{table}[H]
+\caption{Comparing results of exposure methodologies (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \centering
     \begin{tabular}{ | l | l | l | l | }
     \hline 
-& Mean & Median & Interquartile Range \\ \hline
-\multicolumn{4}{|l|}{\bfseries{PM2.5}}                            \\ \hline
-Background monitoring site & 16.33 & 12     & 8-19                \\ \hline
-Roadside monitoring site   & 24.45 & 22     & 14-32               \\ \hline
-Postcode                   & 13.49 & 13.53  & 13.14-13.84         \\ \hline
-Residential address        & 13.54 & 13.62  & 12.99-14.16         \\ \hline
-LHEM Model                 & 8.48  & 8.23   & 7.80  8.66         \\ \hline
-\multicolumn{4}{|l|}{\bfseries{NO2}}                              \\ \hline
-Background monitoring site & 35.96 & 30.08  & 19.1-49.18          \\ \hline
-Roadside monitoring site   & 97.05 & 90.25  & 61.12-126.5         \\ \hline
-Postcode                   & 34.56 & 34.59  & 31.20-37.59         \\ \hline
-Residential address        & 34.34 & 34.45  & 30.65-38.29         \\ \hline
-LHEM Model                 & 13    & 12.34  & 10.82-14.64         \\ \hline
+exposure model & mean & median & inter-quartile range                              \\ \hline
+\multicolumn{4}{|l|}{\bfseries{\gls{pm25}}}                         \\ \hline
+Background monitoring site & 16.33 & 12     & 8 - 19                \\ \hline
+Roadside monitoring site   & 24.45 & 22     & 14 - 32               \\ \hline
+Postcode                   & 13.49 & 13.53  & 13.14 - 13.84         \\ \hline
+Residential address        & 13.54 & 13.62  & 12.99 - 14.16         \\ \hline
+\gls{lhem} Model                 & 8.48  & 8.23   & 7.80 - 8.66           \\ \hline
+\multicolumn{4}{|l|}{\bfseries{\gls{no2}}}                           \\ \hline
+Background monitoring site & 35.96 & 30.08  & 19.1 - 49.18          \\ \hline
+Roadside monitoring site   & 97.05 & 90.25  & 61.12 - 126.5         \\ \hline
+Postcode                   & 34.56 & 34.59  & 31.20 - 37.59         \\ \hline
+Residential address        & 34.34 & 34.45  & 30.65 - 38.29         \\ \hline
+\gls{lhem} Model                 & 13    & 12.34  & 10.82 - 14.64         \\ \hline
 \end{tabular}
-\caption{Comparing results of exposure methodologies (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \label{tab:comparing_methods}
 \end{table}
 
-For both NO$_{2}$ and PM$_{2.5}$ the LHEM calculates lower exposure than any of the other exposure metrics. The roadside monitoring site gives the highest general exposures, followed by the background monitoring site, followed by postcode and residential address which are almost identical (although with residential address giving a larger inter-quartile range), and then the LHEM. Figures \ref{fig:address_point_v_lhem_no2_hist} and \ref{fig:address_point_v_lhem_pm25_hist} below show histogram plots of exposure at the residential address, compared to exposure using the LHEM, for NO$_{2}$ and PM$_{2.5}$ respectively, to aid understanding of the distribution of exposures (residential address exposure method is chosen for comparison to the LHEM, rather than say postcode or monitoring site, as this is currently seen as the most accurate method due to it's fine spatial detail).
+For both \gls{no2} and \gls{pm25} the \gls{lhem} calculates lower exposure than any of the other exposure metrics. The roadside monitoring site method results in the highest general exposure, followed by the background monitoring site method, followed by postcode and residential address methods which are almost identical (although with residential address giving a larger inter-quartile range). Figures \ref{fig:address_point_v_lhem_no2_hist} and \ref{fig:address_point_v_lhem_pm25_hist} below show histogram plots of exposure at the residential address, compared to exposure using the \gls{lhem}, for \gls{no2} and \gls{pm25}. Residential address (rather than postcode or monitoring site) was chosen for this visual comparison to the \gls{lhem} as this is currently seen as the most accurate method due to it's fine spatial detail.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{address_point_v_lhem_no2_hist}
-\caption{Daily mean exposure to NO$_{2}$ comparing residential address exposure with the LHEM}
+\caption{Daily mean exposure to \gls{no2} comparing residential address exposure with the \gls{lhem}}
 \label{fig:address_point_v_lhem_no2_hist}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{address_point_v_lhem_pm25_hist}
-\caption{Daily mean exposure to PM$_{2.5}$ comparing residential address exposure with the LHEM}
+\caption{Daily mean exposure to \gls{pm25} comparing residential address exposure with the \gls{lhem}}
 \label{fig:address_point_v_lhem_pm25_hist}
 \end{figure}
 
-When looking at the 90th to 10th percentile range of exposures from these two methods as oppose to the 
-inter-quartile ranges, there is little difference in the relative size of the range for PM2.5 (2.08 ($\mu \text{g m}^{-3}$) for LHEM and 2.15 ($\mu \text{g m}^{-3}$) for residential address). However for NO2 the range is twice as large in the residential method than it is in the LHEM ( 14.36 ($\mu \text{g m}^{-3}$) compared to 7.64 ($\mu \text{g m}^{-3}$))
+When looking at the 10th to 90th percentile range of exposures from these two methods as oppose to the 
+inter-quartile ranges, there is little difference in the relative size of the range for \gls{pm25} (2.08 ($\mu \text{g m}^{-3}$) for \gls{lhem} and 2.15 ($\mu \text{g m}^{-3}$) for residential address). However for \gls{no2} the range is twice as large in the residential method than it is in the \gls{lhem} ( 14.36 ($\mu \text{g m}^{-3}$) compared to 7.64 ($\mu \text{g m}^{-3}$))
 
-If we now plot each individuals NO$_{2}$ and PM$_{2.5}$ exposure using the residential method, against the LHEM method, and colour-code the plots by whether the person left their house or not during the day of the survey, we can see that the change in exposure seems to be due to their movement around the urban environment away from their house (See Figure \ref{fig:lhem_address_whether_leave_house} below).
+If we now plot each individuals \gls{no2} and \gls{pm25} exposure using the residential method, against the \gls{lhem} method, and colour-code the plots by whether the person left their house or not during the day of the survey, we can see that the change in exposure seems to be due to their movement around the urban environment away from their house (See Figure \ref{fig:lhem_address_whether_leave_house} below).
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{lhem_address_whether_leave_house}
-\caption{Comparing LHEM v. residential address exposure results, colour-coded by whether the subject left their house or not}
+\caption{Comparing \gls{lhem} v. residential address exposure results, colour-coded by whether the subject left their house or not}
 \label{fig:lhem_address_whether_leave_house}
 \end{figure}
 
@@ -357,106 +352,107 @@ If we now plot each individuals NO$_{2}$ and PM$_{2.5}$ exposure using the resid
 \label{subsec:highly_exposed_people}
 %%%%%%%%%%%%%%%%%%%%%%
 
-Table \ref{tab:whopmandno2levels} is reproduced from Section \ref{subsec:urbanenvironments} below for convenience and shows the acceptable mean daily and annual PM and NO$_{2}$ concentrations as prescribed by the World Health Organisation. They are now used as a reference number with which to identify the numbers of people in the LTDS who have high average exposures when using the residential address method, and then when using the LHEM method. This comes with the caveat that the WHO limits are designed to be referenced against outdoor air quality, and so are suitable for the residential address method, but are not for the LHEM which introduces indoor and in-transport microenvironments to modelling exposure. However there are not limits by the WHO or EU or indeed any regulatory body currently that take account of this type of exposure modelling, and so are used as indicative values for comparison only. Specifically, the annual average values are used as the LTDS data is designed to be typical of a days movements and activities of each person.
+Table \ref{tab:whopmandno2levels} is reproduced from Section \ref{subsec:urbanenvironments} (\nameref{subsec:urbanenvironments}) below for convenience and shows the acceptable mean daily and annual \gls{pm25} and \gls{no2} concentrations as prescribed by the World Health Organisation. They are now used as a reference number with which to identify the numbers of people in the LTDS who have high average exposures when using the residential address method, and then when using the \gls{lhem} method. This comes with the caveat that the WHO limits are designed to be referenced against outdoor air quality, and so are suitable for the residential address method, but are not as suitable for the \gls{lhem} which introduces indoor and in-transport microenvironments to modelling exposure. However there are currently no regulatory limits that take account of this type of exposure modelling, and so are used as indicative values for comparison only. Specifically, the annual average values are used as the LTDS data is designed to be typical of a days movements and activities of each person.
 
 \begin{table}[H]
+\caption{Table of 'acceptable' WHO\gls{pm25} and \gls{no2} levels}
 \centering
-    \begin{tabular}{ | l | l | l |}
+    \begin{tabular}{ | c | c | c |}
     \hline 
      & Annual mean ($\mu \text{g m}^{-3}$) & 24 hour mean ($\mu \text{g m}^{-3}$) \\ \hline
-     PM$_{2.5}$ & 10 & 25\\ \hline
-     PM$_{10}$ & 20 & 50\\ \hline
-     NO$_{2}$ & 40 & 200\\ \hline
+     \gls{pm25} & 10 & 25\\ \hline
+     \gls{pm10} & 20 & 50\\ \hline
+     \gls{no2} & 40 & 200\\ \hline
     \end{tabular}
-\caption{Table of 'acceptable' WHO PM$_{2.5}$ and NO$_{2}$ levels}
 \label{tab:whopmandno2levels}
 \end{table}
 
-Exposure estimates undertaken using a residential address exposure method find that 14\% of the subjects (6,469 out of 45,079) have a daily NO$_{2}$ exposure higher than the WHO value of 40 $\mu \text{g m}^{-3}$. However using the LHEM model, less than 1\% (18 people) have an average exposure over this value. For PM$_{2.5}$ the residential exposure method finds that 100\% of the subjects in London have an average exposure of higher than 10 $\mu \text{g m}^{-3}$. Whereas the LHEM finds only 8\% (3,491 out of 45,079) of people above this limit.
+Exposure estimates undertaken using the residential address exposure method find that 14\% of the subjects have a daily \gls{no2} exposure higher than the WHO value of 40 $\mu \text{g m}^{-3}$. However using the \gls{lhem} model, less than 1\% (18 subjects) have an  exposure over this value. For \gls{pm25} the residential exposure method finds that 100\% of the subjects in London have an average exposure of higher than 10 $\mu \text{g m}^{-3}$., whereas the \gls{lhem} finds only 8\% of subjects above this limit.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Exposure peaks}
 \label{subsec:exposure_peaks_by_age_group}
 %%%%%%%%%%%%%%%%%%%%%%
 
-In the background section \ref{subsec:longtermvshortterm} which considered the relative importance of short-term exposure compared to longer-term exposure to an individual, it was noted that hyper-short-term exposure had not been explored in epidemiological style health studies so far due to the difficulties in collecting this data and subsequent linkages to health records and outcomes. Whilst the LHEM does not have the capability to fully answer this question, it can be used to explore the variation in concentrations between micro-environments, and the time that each of the 45,079 subjects spend in environments of elevated concentrations. The table below therefore classifies the percentage of time that, on averages across the people in that age group, is spent in environments where the concentration is higher than the WHO annual mean levels for 'acceptable' (with the same caveat as noted in the previous section about it's use in the LHEM). This is 10 $\mu \text{g m}^{-3}$ for PM$_{2.5}$, and 40 $\mu \text{g m}^{-3}$ for NO$_{2}$.
+In the background section \ref{subsec:longtermvshortterm} (\nameref{subsec:longtermvshortterm}) which considered the relative importance of short-term exposure compared to longer-term exposure to an individual, it was noted that hyper-short-term exposure had not been explored in epidemiological style health studies so far due to the difficulties in collecting this data and subsequent linkages to health records and outcomes. Whilst the \gls{lhem} does not have the capability to fully answer this question, it can be used to explore the variation in concentrations between micro-environments, and the time that each of the 45,079 subjects spend in environments of elevated concentrations. The table below therefore classifies the percentage of time that, on averages across the people in that age group, is spent in environments where the concentration is higher than the WHO annual mean levels for 'acceptable'. This is 10 $\mu \text{g m}^{-3}$ for \gls{pm25}, and 40 $\mu \text{g m}^{-3}$ for \gls{no2}.
 
 \begin{table}[H]
+\caption{Table of time of day in environments above 'acceptable' WHO \gls{pm25} and \gls{no2} levels (I/Q range in brackets)}
 \centering
-    \begin{tabular}{ | l | l | l | }
+    \begin{tabular}{ | l | c | c | }
     \hline 
-     Age category & Percent of time in high PM$_{2.5}$ & Percent of time in high NO$_{2}$ \\ \hline
+     Age category & Percent of time in high \gls{pm25} & Percent of time in high \gls{no2} \\ \hline
      Child (5-17) & 13.1\% (8.8\%-16.7\%) & 1.3\% (0\%-1.7\%) \\ \hline
      Young adult (18-29) & 16.0\% (12.5\%-16.1\%) & 3.8\% (0\%-6.1\%) \\ \hline
      Adult (30-59) & 15.8\% (11.9\%-20.3\%) & 3.7\% (0.1\%-5.8\%) \\ \hline
      Elderly (\textgreater=60) & 13.7\% (8.9\%-17.3\%) & 2.0\% (0\%-2.6\%) \\ \hline
     \end{tabular}
-\caption{Table of time of day in environments above 'acceptable' WHO PM$_{2.5}$ and NO$_{2}$ levels (I/Q range in brackets)}
 \label{tab:people_time_above}
 \end{table}
 
-In Section \ref{subsec:comparing_exposure_methods} the LHEM calculated that residential address-based exposure estimates appeared to be over-estimating exposure, showing LHEM histogram plots with much lower distributions of exposure to both PM$_{2.5}$ and NO$_{2}$. However despite these lower daily averages, we can see that the LHEM also finds that, depending on age category, between 13.1\% and 16\% of people's time is spent in high concentrations of PM$_{2.5}$, and between 1.3\% and 3.8\% for NO$_{2}$.
+In Section \ref{subsec:comparing_exposure_methods} (\nameref{subsec:comparing_exposure_methods}) the \gls{lhem} calculated that residential address-based exposure estimates appeared to be over-estimating exposure, showing \gls{lhem} histogram plots with much lower distributions of exposure to both \gls{pm25} and \gls{no2}. However despite these lower daily averages, the \gls{lhem} also finds that, depending on age category, between 13.1\% and 16\% of people's time is spent in high concentrations of \gls{pm25}, and between 1.3\% and 3.8\% for \gls{no2}.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Geographical missclassification}
 \label{subsec:geographical_missclassification}
 %%%%%%%%%%%%%%%%%%%%%%
 
-As the LTDS dataset contains the residential address of the subjects, the percentage difference between the residential and LHEM models can be calculated and then mapped to investigate whether there are any geographical patterns in the data that are not apparent from the results presented so far e.g. do people that live in North London have greater missclassification than those that live in inner London? A cumulative distribution function plot of the missclassification between the two models, expressed as a percentage, is shown first in Figure \ref{fig:cumulative_missclass_dist} (below), in order to examine the range of values.
+As the LTDS dataset contains the residential address of the subjects, the percentage difference between the residential and \gls{lhem} models can be calculated and then mapped to investigate whether there are any geographical patterns in the data that are not apparent from the results presented so far e.g. do people that live in North London have greater missclassification than those that live in inner London? A cumulative distribution function plot of the missclassification between the two models, expressed as a percentage, is shown in Figure \ref{fig:cumulative_missclass_dist} below.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{cumulative_missclass_dist}
-\caption{Percentage missclassification between LHEM and residential address exposure methods, plotted as a cumulative distribution plot}
+\caption{Percentage missclassification between \gls{lhem} and residential address exposure methods, plotted as a cumulative distribution plot}
 \label{fig:cumulative_missclass_dist}
 \end{figure}
 
-As is evident from these plots, for the majority of subjects in the dataset, for both PM$_{2.5}$ and NO$_{2}$, the LHEM calculates their exposure as being around 30\% - 50\% lower than the residential address method. There are many ways in which this aspect of the LHEM results could be interrogated, but as an example, a map of the addresses of the subjects where the LHEM calculates an \textbf{increase} in exposure compared to residential address was now created to look for obvious spatial patterns (Figure \ref{fig:address_lhem_increases}).
+As is evident from these plots, for the majority of subjects in the dataset, for both \gls{pm25} and \gls{no2}, the \gls{lhem} calculates their exposure as being around 30\% - 50\% lower than the residential address method. There are many ways in which this aspect of the \gls{lhem} results could be interrogated, but as an example, a map of the addresses of the subjects where the \gls{lhem} calculates an \textbf{increase} in exposure compared to residential address was created to look for any obvious spatial patterns (Figure \ref{fig:address_lhem_increases}).
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{address_lhem_increases}
-\caption{The residential address of subjects whose exposure increased by using the LHEM method compared to residential address}
+\caption{The residential address of subjects whose exposure increased by using the \gls{lhem} method compared to residential address}
 \label{fig:address_lhem_increases}
 \end{figure}
 
-Looking at the NO$_{2}$ map first (shown right), there appears to be fewer people with an increased NO$_{2}$ LHEM exposure in the South-East of London. Whether this is a interesting result and perhaps to do with travel behaviour, or whether it is a result of the number of LTDS subjects being less in that region, is examined by plotting out all the respondants below in Figure \ref{fig:addresses}.
+Looking at the \gls{no2} map first (shown right), there appears to be fewer people with an increased \gls{no2} \gls{lhem} exposure in the South-East of London. Whether this is a interesting result and perhaps to do with travel behaviour, or whether it is a result of the number of LTDS subjects being less in that region, is examined by plotting out all the respondents below in Figure \ref{fig:addresses}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{addresses}
-\caption{The residential address of subjects whose exposure increased by using the LHEM method compared to residential address}
+\caption{The residential address of subjects whose exposure increased by using the \gls{lhem} method compared to residential address}
 \label{fig:addresses}
 \end{figure}
 
-As can be seen, there appears to be slightly less people in the dataset in the South-East of London, which may explain this pattern (and is reflective of the general population of london (\url{http://londondatastore-upload.s3.amazonaws.com/instant-atlas/borough-profiles/atlas.html})). There could also be additional factors as work, however this would require much more detailed analysis of this aspect of the LHEM, and some sort of regression analysis, so is not attempted in this introduction to the model.
+As can be seen, there appears to be slightly fewer people in the dataset in the South-East of London, which may explain this pattern. There could also be additional factors as work, however this would require much more detailed analysis of this aspect of the \gls{lhem}, and some sort of regression analysis, so is not attempted in this introduction to the uses of the model.
 
-For the PM$_{2.5}$ map, it appears that the people living in Central London are less likely to have increased PM$_{2.5}$ using the LHEM exposure method compared to the residential method, than those living further outside of central London. It seems likely that as high levels of PM$_{2.5}$ are found on the London Underground, and that people living in central London would not need to use the London Underground as frequently or for as long time periods compared to those living in outer London, that this is the reason for this geographical pattern. Although as with the NO$_{2}$ discussion above, this is not investigated further here and is merely suggested as an area for future exploration and as a demonstration of the LHEMs capabilities.
+For the \gls{pm25} map, it appears that the people living in Central London are less likely to have increased \gls{pm25} using the \gls{lhem} exposure method compared to the residential method, than those living further outside of central London. It seems likely that as high levels of \gls{pm25} are found on the London Underground, and that people living in central London would not need to use the London Underground as frequently or for as long time periods compared to those living in outer London, that this is the reason for this geographical pattern. Although as with the \gls{no2} discussion above, this is not investigated further here and is merely suggested as an area for future exploration and as a demonstration of the \gls{lhem} capabilities.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Pollutant correlation}
 \label{subsec:pollutant_correlation}
 %%%%%%%%%%%%%%%%%%%%%%
 
-A further area that the LHEM may be of use in health studies is in the separation of health effects from different pollutants. \cite{Brunekreef2007} for example notes that many cohort studies have looked at the negative health effects of NO$_{2}$, but he questions whether NO$_{2}$ is a surrogate for other pollutants such as PM$_{2.5}$, which may be actually causing the health effects. The studies he reviewed found it difficult to look at the relative effects of each pollutant, as they are so strongly correlated. Indeed, using the residential address method, our exposure estimates of the LTDS subjects find that, as the other studies do, NO$_{2}$ and PM$_{2.5}$ are well correlated with a Pearson's R of 0.90 (95\% CI 0.90 to 0.90) (shown left in Figure \ref{fig:correlation_comparisons_no2_pm25} below). In contrast, using the LHEM (Figure \ref{fig:correlation_comparisons_no2_pm25}, right) shows a much more complicated picture of the relationship/correlation between NO$_{2}$ and PM$_{2.5}$, and produces a Pearson's R of 0.66 (95\% CI 0.66 to 0.67). Though as the relationship is not of a linear fashion using the LHEM, Pearson's R is not a valid comparison any longer, and a more complex statistical examination would be required - probably along the lines of a regression model as briefly discussed in Section \ref{subsec:geographical_missclassification} - but again that is not attempted here.
+A further area that the \gls{lhem} may be of use in health studies is in the separation of health effects from different pollutants. \cite{Brunekreef2007} notes that many cohort studies have looked at the negative health effects of \gls{no2}, but questions whether \gls{no2} is a surrogate for other pollutants such as \gls{pm25}, which may actually be causing the detrimental health effects. The studies Brunekreef reviewed found it difficult to look at the relative effects of each pollutant, as they are so strongly correlated. Using our residential address exposure method we found, as other studies do, that \gls{no2} and \gls{pm25} are well correlated with a Pearson's R of 0.90 (95\% CI 0.90 to 0.90) (shown left in Figure \ref{fig:correlation_comparisons_no2_pm25} below). In contrast, using the \gls{lhem} (Figure \ref{fig:correlation_comparisons_no2_pm25}, right) we see a more complicated picture of the relationship/correlation between \gls{no2} and \gls{pm25}, and a Pearson's R of 0.66 (95\% CI 0.66 to 0.67). Though as the relationship is not of a linear fashion using the \gls{lhem}, Pearson's R is not a valid comparison any longer, and a more complex statistical examination would be required - probably along the lines of a regression model as briefly discussed in Section \ref{subsec:geographical_missclassification}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{correlation_comparisons_no2_pm25}
-\caption{Daily mean exposure to PM$_{2.5}$ v. NO$_{2}$ using residential address exposure method (left) and the LHEM (right)}
+\caption{Daily mean exposure to \gls{pm25} v. \gls{no2} using residential address exposure method (left) and the \gls{lhem} (right)}
 \label{fig:correlation_comparisons_no2_pm25}
 \end{figure}
 
-This difference between using the LHEM and residential address estimates is an important finding since it has the potential to separate the health effects of NO2 and PM2.5, as part of any ongoing public health research.
+This difference between using the \gls{lhem} and residential address estimates is an important finding since it has the potential to separate the health effects of \gls{no2} and \gls{pm25} as part of future public health research.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Susceptible groups and exposure}
 \label{subsec:susceptible_groups}
 %%%%%%%%%%%%%%%%%%%%%%
 
-Studies have shown that the elderly and children are more susceptible to adverse health effects as a result of poor air quality than other age groups (\cite{Wang2015}, \cite{WorldHealthOrganization2013a}). Given this increased risk, the two tables below show summary statistics of exposure to air quality using the LHEM (Table \ref{tab:lhem_comparing_age_categories}) by age-category, for PM$_{2.5}$ and NO$_{2}$, compared to using the residential address method (Table \ref{tab:address_comparing_age_categories}).
+Studies have shown that the elderly and children are more susceptible to adverse health effects as a result of poor air quality than other age groups (\cite{Wang2015}, \cite{WorldHealthOrganization2013a}). Given this increased risk, the two tables below show summary statistics of exposure to air quality using the \gls{lhem} (Table \ref{tab:lhem_comparing_age_categories}) by age-category, for \gls{pm25} and \gls{no2}, compared to using the residential address method (Table \ref{tab:address_comparing_age_categories}).
 
 \begin{table}[H]
+\caption{\gls{pm25} and \gls{no2} residential address exposure results by age category (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \centering
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
@@ -470,11 +466,11 @@ Studies have shown that the elderly and children are more susceptible to adverse
                        & Adult (30-59)            & 34.40 & 34.53 & 30.67 to 38.35    & 24.72-42.52 \\ \cline{2-5} 
                        & Elderly (\textgreater60) & 33.53 & 33.58 & 29.76 to 37.52    & 24.13-42.01 \\ \hline
 \end{tabular}
-\caption{PM$_{2.5}$ and NO$_{2}$ residential address exposure results by age category (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \label{tab:address_comparing_age_categories}
 \end{table}
 
 \begin{table}[H]
+\caption{\gls{pm25} and \gls{no2} \gls{lhem} exposure results by age category (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \centering
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
@@ -488,13 +484,13 @@ Studies have shown that the elderly and children are more susceptible to adverse
                        & Adult (30-59)            & 13.53   & 12.99  & 11.10 to 15.43  & 8.83-19.64 \\ \cline{2-5} 
                        & Elderly (\textgreater60) & 12.17   & 11.77  & 10.36 to 13.43  & 8.34-17.25 \\ \hline
 \end{tabular}
-\caption{PM$_{2.5}$ and NO$_{2}$ LHEM exposure results by age category (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \label{tab:lhem_comparing_age_categories}
 \end{table}
 
 This next table (Table \ref{tab:percent_change_comparing_age_categories}) now shows percentage change between the two exposure methods i.e. percentage change between Tables \ref{tab:lhem_comparing_age_categories} and \ref{tab:address_comparing_age_categories}.
 
 \begin{table}[H]
+\caption{\gls{pm25} and \gls{no2} residential address exposure results by age category (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \centering
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
@@ -508,11 +504,10 @@ This next table (Table \ref{tab:percent_change_comparing_age_categories}) now sh
                        & Adult (30-59)            & -60.67\% & -62.38\% & -63.81\% to -59.77\%    & 64.28\%-53.81\% \\ \cline{2-5} 
                        & Elderly (\textgreater60) & -63.70\% & -64.95\% & -65.19\% to -64.21\%    & 65.44\%-58.94\% \\ \hline
 \end{tabular}
-\caption{PM$_{2.5}$ and NO$_{2}$ residential address exposure results by age category (n=45,079, concentrations in $\mu \text{g m}^{-3}$)}
 \label{tab:percent_change_comparing_age_categories}
 \end{table}
 
-Firstly, these results show that there is more variation in exposure between age groups when using the LHEM compared to using the residential address method. Secondly, they allow us to consider the different exposure of each age group from each method, and lastly they find different patterns e.g. when using the LHEM exposure method, children have the lowest exposure of all age groups to both PM$_{2.5}$ and NO$_{2}$ (and young adults the highest) -- however when using the residential address method, the lowest exposure is found in the elderly instead of the children.
+Firstly, these results show that there is more variation in exposure between age groups when using the \gls{lhem} compared to using the residential address method. Secondly, they allow us to consider the different exposure of each age group from each method, and lastly they find different patterns e.g. when using the \gls{lhem} exposure method, children have the lowest exposure of all age groups to both \gls{pm25} and \gls{no2} (and young adults the highest) -- however when using the residential address method, the lowest exposure is found in the elderly instead of the children.
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%\subsection{Deprivation and exposure}
@@ -546,20 +541,19 @@ Firstly, these results show that there is more variation in exposure between age
 \label{sec:2Discussion}
 %%%%%%%%%%%%%%%%%%%%%%
 
-The LHEM exposure model developed in this chapter, using inputs from the LTDS-X in the previous Chapter, calculates detailed spatial and temporally defined exposure estimates on a level not seen in similar studies. The detail in the inputs separates it in particular, such as the number of participants, the time-activity and demographic detail for them, hourly and spatially resolved CMAQ-Urban data, mass-balance modelling of some of the transport modes, and a very detailed model of indoor exposure. The closest study at this time is that of \cite{Dhondt2012}, who modelled 8000 people, at 15 minute intervals, with only four microenvironments, and less detailed spatial air pollutant inputs. The results in Dhondt were quite different to the results presented here however. For NO$_{2}$ they found that the static address-method was underestimating by an average of 1.2\%, unlike the LHEM which finds an overestimation (13 $\mu \text{g m}^{-3}$ for residential address, and 8.48 $\mu \text{g m}^{-3}$ with the LHEM, meaning the address method is overestimating). Interestingly \cite{DeNazelle2013}, discussed in Section \ref{sec:dynamic_hybrid_models} and in Figure \ref{fig:time_no2_activity_spaces}, found fairly similar NO$_{2}$ results to the LHEM in Barcelona in their measurements-based study. They found that people spend 94\% of their time indoors, and 6\% in transport, where they accumulated 83\% and 7\% of their exposure. Their study population all worked at the University, and as such are likely to fall in the 18-59 age-group categories, and therefore the LHEM results fit very well with these modelled results.
+The \gls{lhem} exposure model developed in this chapter, using inputs from the \gls{ltdsx} in the previous Chapter, calculates detailed spatial and temporally defined exposure estimates on a level not seen in similar studies. The detail in the inputs separates it in particular, such as the number of subjects, the time-activity and demographic detail for them, hourly and spatially resolved CMAQ-Urban data, mass-balance modelling of some of the transport modes, and a very detailed model of indoor exposure. The closest study at this time is that of \cite{Dhondt2012}, who modelled 8000 people, at 15 minute intervals, with only four microenvironments, and less detailed spatial air pollutant inputs. The results in Dhondt were quite different to the results presented here; for \gls{no2} they found that the static address-method was underestimating by an average of 1.2\%, unlike the \gls{lhem} which finds an overestimation (13 $\mu \text{g m}^{-3}$ for residential address, and 8.48 $\mu \text{g m}^{-3}$ with the \gls{lhem}, meaning the address method is overestimating). Interestingly \cite{DeNazelle2013}, discussed in Section \ref{sec:dynamic_hybrid_models} and in Figure \ref{fig:time_no2_activity_spaces}, found fairly similar \gls{no2} results to the \gls{lhem} in their measurements-based study in Barcelona. They found that people spend 94\% of their time indoors, and 6\% in transport, where they accumulated 83\% and 7\% of their exposure. Their study population all worked at the University, and as such are likely to fall in the 18-59 age-group categories, and therefore the \gls{lhem} results fit very well with these modelled results.
 
-As was demonstrated in the results section \ref{sec:2results}, the LHEM exposure model can allow detailed investigation and calculation of exposure and exposure missclassification. It was used to take a 'first glance' at the relative importance of microenvironments on exposure, the calculation of exposure for different age groups, exposure missclassification, highly exposed people, exposure peaks, whether there were any geographical patterns to exposure missclassification, correlating pollutants, and susceptible groups. Each of these areas was only briefly explored to demonstrate the potential of the model, and further analysis is needed. The model has other uses however, for example each of the LTDS subjects has many more demographic attributes that have not been explored such as ethnicity, income, gender, how many cars the household owns, distance from tube stations etc. that all may play an important role in better understanding exposure. The model can also be used for policy applications which are not explored here, for example what effect would changing 5\% of the subjects journeys from car to walking have on their overall exposure, and how would this vary by age group?
+As was demonstrated in the results section \ref{sec:2results}, the \gls{lhem} exposure model can allow detailed investigation and calculation of exposure and exposure missclassification. It was used to take a 'first glance' at the relative importance of microenvironments on exposure, the calculation of exposure for different age groups, exposure missclassification, highly exposed people, exposure peaks, whether there were any geographical patterns to exposure missclassification, correlating pollutants, and susceptible groups. Each of these areas was only briefly explored to demonstrate the potential of the model, and further analysis is needed. The model also has further uses, for example each of the LTDS subjects has many more demographic attributes that have not been explored including ethnicity, income, gender, how many cars the household owns, distance from tube stations etc. all which may influence exposure. The model can also be used for policy applications which are not explored in detail here, for example what effect would changing 5\% of the subjects journeys from car to walking have on their overall exposure, and how would this vary by age group?
 
-There are a number of ways in which the LHEM could be improved and some elements of the model that might be considered for change in the next iteration.
-Firstly, the number of people could be increased, as extra LTDS data is now available from TfL. Adding large numbers of people is likely to increase the strength of the conclusions arrived at, however as many of the exposure results are only marginally different including new subjects may actually change this. It is difficult to say at this stage.
-Another area that could be reconsidered is the use of the building I/O ratios from \cite{Taylor2014}. This was an excellent dataset for this research, and to my knowledge unparallelled at this time, however it calculates average ratios on a postcode level, for residential buildings, and therefore may not be suitable for modelling other types of buildings such as office blocks. A new iteration of this dataset might be an option, or indeed developing of an entirely new method.
-With regard to the transport modelling, the use of static numbers for the London Underground also seem far from ideal. The figures used for PM$_{2.5}$ were taken from a small number of measurements on one stretch of the Underground by researchers at KCL, when clearly the concentrations will vary on different lines, in different sections of those lines, and perhaps by time of day and season. For NO$_{2}$ the concentrations were taken from a study in Paris, and face similar problems about their applicability to London, and across the network. Refining this aspect of the model will be the focus of the next Chapter.
+There are a number of ways in which the \gls{lhem} could be improved and some elements of the model that might be considered for change in the next iteration. Firstly, the number of subjects could be increased, as extra LTDS data is now available from TfL. Increasing the number of subjects is likely to increase the strength of the conclusions arrived at, however as many of the exposure results are only marginally different including new subjects may not actually change this. It is difficult to say at this stage.
+Another area that could be reconsidered is the use of the building I/O ratios from \cite{Taylor2014}. This was an excellent dataset for this research, however it calculates average ratios at a postcode level, for residential buildings, and therefore may not be suitable for modelling other types of buildings such as office blocks. A new iteration of this dataset might be an option, or indeed developing of an entirely new method.
+With regard to the transport exposure modelling, the use of set numbers for the London Underground is a drawback. The figures used for \gls{pm25} were the mean of a small number of measurements on one stretch of the Underground by researchers at King's, when actually the concentrations vary on different lines, in different sections of those lines, and perhaps by time of day and season. For \gls{no2} the concentrations were taken from a study in Paris, and face similar problems about their applicability to London, and across the network. An intermediate step before creating a bespoke London Underground model could be be to run sensitivity analysis on the \gls{lhem} using the maximum and minimums from the measurement campaign, however refining this aspect of the model will now be the focus of the next chapter.
 
-Perhaps most importantly for the long-term future of this type of model, and perceptions of the results that it produces, is how to validate the estimates. The most likely route to do this would seem to be using personal mobile monitoring, and then comparing this dataset to what the LHEM outputs for similar journeys and days of the subjects.
+Perhaps most importantly for the long-term future of this type of model, and perceptions of the results that it produces, is how to validate the estimates. The most likely route to do this would seem to be using personal mobile monitoring, and then comparing this dataset to what the \gls{lhem} outputs for similar journeys and days of the subjects.
 
 %Start to talk about how this impacts on London as a whole
 
-%The results presented thus far have been examples of how the LHEM might be useful to an epidemiologist or exposure scientist investigating health effects and air quality. This section now looks at the question of route choice, and how questions that members of the general public might be interested in, and the ways in which the model can answer them. Specifically, route choice and it's effects on exposure is considered and then
+%The results presented thus far have been examples of how the \gls{lhem} might be useful to an epidemiologist or exposure scientist investigating health effects and air quality. This section now looks at the question of route choice, and how questions that members of the general public might be interested in, and the ways in which the model can answer them. Specifically, route choice and it's effects on exposure is considered and then
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions}
@@ -568,28 +562,28 @@ Perhaps most importantly for the long-term future of this type of model, and per
 
 %%%\textbf{Time activity}
 
-Results Section \ref{subsec:time_exposure_microenvironments} showed that the LTDS subjects spend most of their time indoors, and thus understanding indoor exposure and being able to model exposure to indoor pollutants (aswell as ingress from outdoor pollutants) is important in understanding exposure in general. With the caveat that the CMAQ-Urban input to the LHEM only models exposure to outdoor pollution, it finds that people are exposed to around 85\% of their daily NO$_{2}$ and 90\% of their daily PM$_{2.5}$ exposure while indoors - although this varied slightly by age group, with children and the elderly accumulating more of their daily exposure from the indoors environment that adults and young adults, due to the slightly increased time that they spend indoors, and naturally a reflection of this, the increased time that adults and young adults spend in transport in environments of higher concentrations that indoors. Comparing exposure in transport modes is difficult, as except for the underground, they are a function of the outdoor concentrations. However on a time/exposure basis, active travel can be seen to result in lower exposure than passive travel.
+Results Section \ref{subsec:time_exposure_microenvironments} (\nameref{subsec:time_exposure_microenvironments}) demonstrated that the LTDS subjects spend most of their time indoors, and thus understanding indoor exposure and being able to model exposure to indoor pollutants (aswell as ingress from outdoor pollutants) is important in understanding exposure in general. With the caveat that the CMAQ-Urban input to the \gls{lhem} only models exposure to outdoor pollution, it finds that people are exposed to around 85\% of their daily \gls{no2} and 90\% of their daily \gls{pm25} exposure while indoors - although this varied slightly by age group, with children and the elderly accumulating more of their daily exposure from the indoors environment that adults and young adults, due to the slightly increased time that they spend indoors, and naturally a reflection of this, the increased time that adults and young adults spend in transport in environments of higher concentrations that indoors. Comparing exposure in transport modes is difficult, as except for the underground, they are thought to be a function of outdoor concentrations. However on a time/exposure basis, active travel can be seen to result in lower exposure than passive travel.
 
 %%%\textbf{Exposure comparisons}
 
-The different exposure values found in results Section \ref{subsec:comparing_exposure_methods} should help epidemiologists understand that the means and ranges of exposures that are currently being used in health studies are perhaps not appropriate, and that they may be over-estimating exposure across the population (and using incorrect ranges). The LHEM finds that estimates based on monitoring sites, postcodes or residential address are all overestimating exposure for both PM$_{2.5}$ and NO$_{2}$, by varying degrees depending on the method in comparison. Interestingly, when comparing postcode and residential address estimates across the 45,079 people, they are found to be almost identical. Given this, perhaps the recent drive for individual residential addresses for completing exposure analysis is unrequired, and postcode estimates are sufficient to reflect the variation in exposure using static analysis methods (although studies discussed in the Introduction typically took annual averages, rather than the hourly variation that CMAQ-Urban models). When the LHEM exposure estimates are plotted against residential address estimates, with the points coloured by whether people left their house during the day, this factor appears to be the main reason for the differences between the LHEM and residential address method exposure estimates (instead of perhaps the indoor-outdoor ratios, which would only result in lower estimates but with the same overall profile). Introducing the LHEM to exposure estimates creates peaks and ranges in a persons daily exposure that are not seen using other methods.
+The different exposure values found in results Section \ref{subsec:comparing_exposure_methods} (\nameref{subsec:comparing_exposure_methods}) should help epidemiologists understand that the means and ranges of exposures that are currently being used in health studies are perhaps not appropriate, and that they may be over-estimating exposure across the population (and using incorrect ranges). The \gls{lhem} finds that estimates based on monitoring sites, postcodes or residential address are all overestimating exposure for both \gls{pm25} and \gls{no2}, by varying degrees depending on the method in comparison. Interestingly, when comparing postcode and residential address estimates across the LTDS subjects, they are found to be almost identical. Given this, perhaps the recent drive for individual residential addresses for completing exposure analysis is unneeded, and postcode estimates are sufficient to reflect the variation in exposure using static analysis methods (although studies discussed in the Introduction typically took annual averages, rather than the hourly variation that CMAQ-Urban models). When the \gls{lhem} exposure estimates are plotted against residential address estimates, with the points coloured by whether people left their house during the day, this factor appears to be the main reason for the differences between the \gls{lhem} and residential address method exposure estimates (instead of perhaps the indoor-outdoor ratios, which would only result in lower estimates but with the same overall profile). Using the \gls{lhem} method of modelling exposure, peaks, troughs and ranges in a persons daily exposure are captured which are not seen using other methods.
 
 %%%\textbf{Highly exposed people}
 
-In results section \ref{subsec:highly_exposed_people}, it was demonstrated how the LHEM can investigate the numbers of people who are accumulating daily mean exposures above the WHO limits for PM$_{2.5}$ and NO$_{2}$. As the static models of exposure do not take account of the subjects movements, or normally the effects of exposure being different when people are indoors, if a subjects house happens to be in an area of very high concentrations then that persons mean exposure is taken to be high. When actually the LHEM (compared to residential exposure method) demonstrates that when the subjects daily activities are taken into account, their daily mean exposure is actually (generally) lower. The result of this with the LHEM, is that much fewer subjects are found to be living in areas above the WHO limits.
+In results section \ref{subsec:highly_exposed_people} (\nameref{subsec:highly_exposed_people}), it was demonstrated how the \gls{lhem} can investigate the numbers of people who are accumulating daily mean exposures above the WHO limits for \gls{pm25} and \gls{no2}. As static models of exposure do not take account of the subjects movements, or normally the effects of exposure being different when people are indoors, if a subjects house happens to be in an area of very high concentrations then that persons mean exposure is taken to be high. When actually the \gls{lhem} (compared to residential exposure method) demonstrates that when the subjects daily activities are taken into account, their daily mean exposure is actually (generally) lower. The result of this with the \gls{lhem}, is that much fewer subjects are found to be living in areas above the WHO limits.
 
 %%%\textbf{Exposure peaks}
 
-As the LHEM calculates exposure on a minute-by-minute basis, Section \ref{subsec:exposure_peaks_by_age_group} showed how it can also be used to consider much shorter periods of high exposure in a subjects day that other models are generally unable to do. Using this aspect of the LHEM, we find that the LTDS subjects are exposed to levels of 'unacceptable' (as defined by the WHO) PM$_{2.5}$ and NO$_{2}$ levels for between 13.1\% and 16\% and 1.3\% and 3.8\% respectively, depending on age group.
+As the \gls{lhem} calculates exposure on a minute-by-minute basis, Section \ref{subsec:exposure_peaks_by_age_group} (\nameref{subsec:exposure_peaks_by_age_group}) showed how it can also be used to consider much shorter periods of high exposure in a subjects day that other models are generally unable to do. Using this advantage of the \gls{lhem}, we found that  LTDS subjects are exposed to levels of 'unacceptable' (as defined by the WHO) \gls{pm25} and \gls{no2} levels for between 13.1\% and 16\% and 1.3\% and 3.8\% of their day respectively, depending on age group.
 
 %%%\textbf{Geographical missclassification}
 
-By calculating the percentage difference between the residential address method, and the LHEM method, we were able to see how for most people the difference in exposure is between (approximately) -50\% and -20\%, but how there were was a long-tail of distributions and some people were found to have higher mean exposure estimates when using the LHEM. The people with higher LHEM than residential exposure estimates were mapped, to see if there was any specific geographical distribution to these results, but none was apparent.
+By calculating the percentage difference between the residential address exposure method, and the \gls{lhem} exposure method, we were able to see that for most people the difference in exposure is between -50\% and -20\% regardless of pollutant, but how there were long-tails in the distributions and that some people were found to have higher mean exposure estimates when using the \gls{lhem}. The people were plotted on a map to see if there was any specific geographical distribution to these results, but none was immediately apparent. Further spatial investigation may find associations e.g. proximity to roads or London Underground stations.
 
 %%%\textbf{Pollutant correlation}
 
-The LHEM was now used to see whether PM$_{2.5}$ and NO$_{2}$ exposures were found to be correlated, as they are in many other health effect studies (discussed in Section \ref{subsec:pollutant_correlation}. First the residential PM$_{2.5}$ and NO$_{2}$ were checked for correlation to see if the data and subjects in this research were similar to others, and they were found to have a R\textsuperscript{2} of 0.90, confirming that they were. The same analysis using the LHEM however resulted in an lower correlation of 0.66 i.e. poorly correlated. However there actually appear to be two different correlations within the scatter-plot, and thus this requires further investigation. This difference between pollutants using the LHEM may allow future health studies to better be able to estimate the differences in health effects from individual pollutants.
+The \gls{lhem} was also consider \gls{pm25} and \gls{no2} exposures correlations, as they are in many other health effect studies (discussed in Section \ref{subsec:pollutant_correlation} (\nameref{subsec:pollutant_correlation}). First the residential \gls{pm25} and \gls{no2} were checked to see if the exposures in this research were similar to others, and they were found to have a R\textsuperscript{2} of 0.90, confirming that they were. The same analysis using the \gls{lhem} resulted in a much lower correlation of 0.66. However there actually appeared to be two different correlations within the scatter-plot, and this needs further investigation. This difference between pollutants using the \gls{lhem} may allow future health studies to better be able to estimate the differences in health effects from individual pollutants.
 
 %%%\textbf{Susceptible groups}
 
-Finally the LHEM was used to investigate how exposure varies by age groups in Section \ref{subsec:susceptible_groups}. It demonstrated how each age group has fairly similar ranges and means of exposure, and similar missclassification between the LHEM and residential exposure estimates.
+Finally the \gls{lhem} was used to investigate how exposure varies by age groups in Section \ref{subsec:susceptible_groups} (\nameref{subsec:susceptible_groups}). It demonstrated how each age group has fairly similar ranges and means of exposure, and similar missclassification between the \gls{lhem} and residential exposure estimates.
