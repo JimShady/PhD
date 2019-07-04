@@ -5,11 +5,13 @@
 
 Model exposure to \gls{pm25} and \gls{no2} of the \gls{ltdsx} subjects, and compare  with traditional exposure methods.
 
-n.b.  Some of the research in the previous chapter, and most of the research in this current chapter, has been published as:
+\noindent\rule{10cm}{0.4pt}
 
-\begin{itemize}
-\item Smith, J. D., Mitsakou, C., Kitwiroon, N., Barratt, B. M., Walton, H. A., Taylor, J. G., Beevers, S. D. (2016). The London Hybrid Exposure Model (\gls{lhem}): Improving human exposure estimates to \gls{no2} and \gls{pm25} in an urban setting. Environmental Science \& Technology, acs.est.6b01817. \url{https://doi.org/10.1021/acs.est.6b01817}
-\end{itemize}
+The following paper was published in 2016 - it is primarily based on the research conducted in the previous and current chapters.
+
+Smith, J. D., Mitsakou, C., Kitwiroon, N., Barratt, B. M., Walton, H. A., Taylor, J. G., Beevers, S. D. (2016). The London Hybrid Exposure Model (\gls{lhem}): Improving human exposure estimates to \gls{no2} and \gls{pm25} in an urban setting. Environmental Science \& Technology, acs.est.6b01817. \url{https://doi.org/10.1021/acs.est.6b01817}
+
+\noindent\rule{10cm}{0.4pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Objectives}
@@ -17,12 +19,12 @@ n.b.  Some of the research in the previous chapter, and most of the research in 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{itemize}
-\item Link the \gls{ltdsx} to CMAQ-Urban UK
+\item Link population movement data to air quality data
 \item Incorporate I/O ratios and micro-environmental factors
 \item Create a postcode comparison dataset
 \item Create a address-point comparison dataset
 \item Create a monitoring site comparison dataset
-\item Analysis and compare results
+\item Analysis
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -32,7 +34,38 @@ n.b.  Some of the research in the previous chapter, and most of the research in 
 
 Chapter One (\nameref{chap:the_ltdsx}) focused on processing, checking and exploring the spatial data that was created from the LTDS, leading to the \gls{ltdsx}. The daily journeys of around 45,000 people were recreated on a fine spatial and temporal scale from survey data. This data-set was created to allow investigation of exposure in urban environments, and also miss-classification, as described in Section \ref{sec:dynamicexposurehealth} (\nameref{sec:dynamicexposurehealth}), namely the differences between assigning someone a static exposure value based on their home location, postcode, nearest monitoring site or otherwise, compared with a model which considers all the micro-environments and varying concentrations during the subjects daily movements.
 
-This chapter will link the \gls{ltdsx} dataset to the CMAQ-Urban dataset (described in Section \ref{sec:cmaq_urban}, '\nameref{sec:cmaq_urban}'), and then undertake micro-environmental modelling for when the subjects are indoors or in transport. The completed model of exposure is henceforth referred to as the London Hybrid Exposure Model or \gls{lhem}. The \gls{lhem} will be used to explore exposure variations within the subjects, to attempt to identify and understand any patterns, and to consider exposure missclassification that may be occurring using standard exposure methods. Potential policy uses of the \gls{lhem}, and ways in which it might be useful to the general public, are then discussed.
+This chapter will link the \gls{ltdsx} dataset to the CMAQ-Urban dataset (described in brief in Section \ref{subsec:cmaq_urban}, '\nameref{subsec:cmaq_urban}' below), and then undertake micro-environmental modelling for when the subjects are indoors or in transport. The completed model of exposure is henceforth referred to as the London Hybrid Exposure Model or \gls{lhem}. The \gls{lhem} will be used to explore exposure variations within the subjects, to attempt to identify and understand any patterns, and to consider exposure missclassification that may be occurring using standard exposure methods. Potential policy uses of the \gls{lhem}, and ways in which it might be useful to the general public, are then discussed.
+
+\subsection{CMAQ-Urban}
+\label{subsec:cmaq_urban}
+
+The 'Community Multi-scale Air Quality model' (\gls{cmaq}) is an ongoing open-source project, coordinated by the \gls{usepa} Atmospheric Science Modelling Division. It is made up of a variety of software packages and processes for simulating air quality. To quote from their website, "CMAQ combines current knowledge in atmospheric science and air quality modelling with multi-processor computing techniques in an open-source framework to deliver fast, technically sound estimates of ozone, particulates, toxics, and acid deposition" (\cite{UnitedStatesEnvironmentalProtectionAgency2014}). The three main components are as follows (\cite{CMASCentre}):
+
+\begin{enumerate}
+\item A meteorological modelling system for the description of atmospheric states and motions
+\item Emission models for man-made and natural emissions that are injected into the atmosphere
+\item A chemistry-transport modelling system for simulation of the chemical transformation and fate
+\end{enumerate}
+
+The Atmospheric Dispersion Modelling System (Urban) (\gls{admsurban}), is a separate air quality model which is distinctive as it is able to model a range of scales, from street to city, taking into account emissions sources such as traffic, industry and domestic sources. It incorporates advanced algorithms for the height-dependence of wind-speed, turbulence and stability to produce predictions. It also includes information on street canyons and mixing introduced by road traffic re-suspension  (\cite{CambridgeEnvironmentalResearchCounsultantsCERC2014a}).
+
+KCL-Urban (\cite{Beevers2013}), developed in the \gls{erg} of \gls{kcl}, outputs annual mean air quality predictions of \gls{no}, \gls{no2}, \gls{o3}, \gls{pm10} and \gls{pm25} on a regular 20 m x 20 m grid. This is combined with a \gls{cmaq} regional scale model to create 'CMAQ-Urban' providing predictions of the same pollutants at the same scale on an hourly temporal resolution. The two models are equipped with similar capabilities in that KCL-Urban is quick to run and can provide details of the poor air quality sources at any location within it's domain. By combining these two (CMAQ and KCL-Urban) the result is a model which is partly deterministic (uses fundamental physics and chemistry), but provides the same spatial detail as KCL-Urban. Importantly, it is therefore capable of predicting hourly concentrations (\cite{Beevers2013}). An example of the output of CMAQ-Urban is shown in Figures \ref{fig:kcl_urban_no2} and \ref{fig:cmaq_uk}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{kcl_urban_no2}
+\caption{Annual mean \gls{no2} concentrations in London for the year 2008 predicted onto a regular grid of 20 m x 20 m using the KCLurban model.}
+\label{fig:kcl_urban_no2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{cmaq_uk_v2}
+\caption{Annual mean \gls{no2} concentrations over England, Scotland and Wales at 20 m x 20 m resolution from CMAQ-Urban}
+\label{fig:cmaq_uk}
+\end{figure}
+
+CMAQ-urban was submitted to the \gls{uk} Model Intercomparison exercise run by the \gls{uk} Government department \gls{defra} (\cite{Carslaw2013}), where it performed well against other urban and regional models with r values of 0.9 for NO$_{X}$ and NO$_{2}$, and 0.77 for PM$_{2.5}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Methods}
@@ -46,10 +79,10 @@ In order to calculate the 'static' exposure estimates which will be compared to 
     \label{sec:running_the_lhem}
 %%%%%%%%%%%%%%%%%%%%%%
 
-        \subsubsection{Linking \gls{ltdsx} to outdoor concentrations}
+        \subsubsection{Linking ltdsx to outdoor concentrations}
         \label{sec:linking_ltdsx_to_cmaq}
 
-During Methods section \ref{sec:cmaq_urban} the CMAQ-Urban air quality model was introduced. It was explained how this model outputs daily (weekday/Saturday/Sunday), hourly concentrations for a 20 metre by 20 metre grid covering the UK. The concentration of a range of pollutants at the location of each individuals minute-by-minute location over 24 hours was therefore now extracted from this model output i.e. the \gls{ltdsx} was linked to a CMAQ-Urban layer by time and location. Due to the memory and processing power needed to run the CMAQ-Urban model, and the language that it is written in (Fortran with SQL inputs), linking CMAQ-Urban directly to the PostgreSQL database that the \gls{ltdsx} data is held in was not possible so a CSV file of the \gls{ltdsx} in lat/long format along with a timestamp was exported from the database. To avoid duplication at this stage, a SQL query was written to only export unique points. To explain, if someone stayed in the same location between 07:00 and 07:45 on a Saturday, only one point was exported as the temporal resolution of the CMAQ-Urban model is monthly, daily, hourly and thus the concentration at that point would not change during that time-frame. If however the same person was in constant movement between 07:00 and 07:45, then 45 points were outputted (as concentrations would be different in different locations for each minute). By taking the temporal resolution of the CMAQ-Urban model into account when doing the export query, the number of points that needed concentrations extracting from the CMAQ-Urban model was reduced from around 64 million (45,079 people multiplied by 24 hours multiplied by 60 minutes) to just over 4 million. Dr Kitwiroon of the Environmental Research Group at King's College London processed this dataset with the CMAQ-Urban model, and returned a CSV file with additional columns for a range of pollutants (including crucially \gls{no2} and \gls{pm25}). This CSV was then re-imported back to the PostgreSQL database and linked to the \gls{ltdsx} data.
+At this start of this chapter the CMAQ-Urban air quality model was introduced. It was explained how this model outputs daily (weekday/Saturday/Sunday), hourly concentrations for a 20 metre by 20 metre grid covering the UK. The concentration of a range of pollutants at the location of each individuals minute-by-minute location over 24 hours was therefore now extracted from this model output i.e. the \gls{ltdsx} was linked to a CMAQ-Urban layer by time and location. Due to the memory and processing power needed to run the CMAQ-Urban model, and the language that it is written in (Fortran with SQL inputs), linking CMAQ-Urban directly to the PostgreSQL database that the \gls{ltdsx} data is held in was not possible so a CSV file of the \gls{ltdsx} in lat/long format along with a timestamp was exported from the database. To avoid duplication at this stage, a SQL query was written to only export unique points. To explain, if someone stayed in the same location between 07:00 and 07:45 on a Saturday, only one point was exported as the temporal resolution of the CMAQ-Urban model is monthly, daily, hourly and thus the concentration at that point would not change during that time-frame. If however the same person was in constant movement between 07:00 and 07:45, then 45 points were outputted (as concentrations would be different in different locations for each minute). By taking the temporal resolution of the CMAQ-Urban model into account when doing the export query, the number of points that needed concentrations extracting from the CMAQ-Urban model was reduced from around 64 million (45,079 people multiplied by 24 hours multiplied by 60 minutes) to just over 4 million. Dr Kitwiroon of the Environmental Research Group at King's College London processed this dataset with the CMAQ-Urban model, and returned a CSV file with additional columns for a range of pollutants (including crucially \gls{no2} and \gls{pm25}). This CSV was then re-imported back to the PostgreSQL database and linked to the \gls{ltdsx} data.
 
         \subsubsection{Modelling for in-building exposure}
         \label{sec:modelling_in_building}
@@ -115,7 +148,7 @@ The parameters for this model change as the subjects move, and for different veh
             
 For subjects locations in the \gls{ltdsx} that are described as being on the London Underground, fixed concentrations were used due to a lack of the data required to create a model of adequate spatial and temporal resolution. These fixed concentrations were derived from measurements conducted at underground platforms and on trains, in a separate as yet unpublished study within the Environmental Research Group at King's College London (Dr. Barratt, personal communication). For \gls{pm25} the values of 94 $\mu \text{g m}^{-3}$ (winter) and 68 $\mu \text{g m}^{-3}$ (summer) were used, and for NO$_{x}$ the value of 51 $\mu \text{g m}^{-3}$ was used. n.b Chapter \ref{chap:monitoring_on_underground} aims to refine the estimation of exposure while on the London Underground.
 
-        \subsubsection{Summary of \gls{ltdsx} to \gls{lhem}}
+        \subsubsection{Summary of ltdsx to lhem}
         \label{sec:summary_of_ltdsx_to_lhem}
 
 The \gls{ltdsx} data is processed, as described above, using the appropriate method for each micro-environment. Once complete a dataset of 1,440 records (24 hours x 60 minutes) including time, location and exposure is output for each individual and then the 1-minute resolution data are averaged into hour of the day or full 24 hour period to obtain the typical exposure for each individual. These are then grouped or disaggregated as appropriate depending on the analysis required. Methods of exposure using 'standard' methods are now explained, for comparison with this dynamic method.
@@ -355,7 +388,7 @@ If we now plot each individuals \gls{no2} and \gls{pm25} exposure using the resi
 Table \ref{tab:whopmandno2levels} is reproduced from Section \ref{subsec:urbanenvironments} (\nameref{subsec:urbanenvironments}) below for convenience and shows the acceptable mean daily and annual \gls{pm25} and \gls{no2} concentrations as prescribed by the World Health Organisation. They are now used as a reference number with which to identify the numbers of people in the LTDS who have high average exposures when using the residential address method, and then when using the \gls{lhem} method. This comes with the caveat that the WHO limits are designed to be referenced against outdoor air quality, and so are suitable for the residential address method, but are not as suitable for the \gls{lhem} which introduces indoor and in-transport microenvironments to modelling exposure. However there are currently no regulatory limits that take account of this type of exposure modelling, and so are used as indicative values for comparison only. Specifically, the annual average values are used as the LTDS data is designed to be typical of a days movements and activities of each person.
 
 \begin{table}[H]
-\caption{Table of 'acceptable' WHO\gls{pm25} and \gls{no2} levels}
+\caption{Table of 'acceptable' WHO \gls{pm25} and \gls{no2} levels}
 \centering
     \begin{tabular}{ | c | c | c |}
     \hline 
@@ -442,7 +475,7 @@ A further area that the \gls{lhem} may be of use in health studies is in the sep
 \label{fig:correlation_comparisons_no2_pm25}
 \end{figure}
 
-This difference between using the \gls{lhem} and residential address estimates is an important finding since it has the potential to separate the health effects of \gls{no2} and \gls{pm25} as part of future public health research.
+This difference between using the \gls{lhem} and residential address estimates in London is an important finding since it has the potential to separate the health effects of \gls{no2} and \gls{pm25} as part of future public health research.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Susceptible groups and exposure}
@@ -578,12 +611,12 @@ As the \gls{lhem} calculates exposure on a minute-by-minute basis, Section \ref{
 
 %%%\textbf{Geographical missclassification}
 
-By calculating the percentage difference between the residential address exposure method, and the \gls{lhem} exposure method, we were able to see that for most people the difference in exposure is between -50\% and -20\% regardless of pollutant, but how there were long-tails in the distributions and that some people were found to have higher mean exposure estimates when using the \gls{lhem}. The people were plotted on a map to see if there was any specific geographical distribution to these results, but none was immediately apparent. Further spatial investigation may find associations e.g. proximity to roads or London Underground stations.
+By calculating the percentage difference between the residential address exposure method, and the \gls{lhem} exposure method, we were able to see that for most people the difference in exposure is between -50\% and -20\% regardless of pollutant, but how there were long-tails in the distributions and that some people were found to have higher mean exposure estimates when using the \gls{lhem} (similar to the findings of \cite{Reis2018}). The people were plotted on a map to see if there was any specific geographical distribution to these results, but none was immediately apparent. Further spatial investigation may find associations e.g. proximity to roads or London Underground stations.
 
 %%%\textbf{Pollutant correlation}
 
-The \gls{lhem} was also consider \gls{pm25} and \gls{no2} exposures correlations, as they are in many other health effect studies (discussed in Section \ref{subsec:pollutant_correlation} (\nameref{subsec:pollutant_correlation}). First the residential \gls{pm25} and \gls{no2} were checked to see if the exposures in this research were similar to others, and they were found to have a R\textsuperscript{2} of 0.90, confirming that they were. The same analysis using the \gls{lhem} resulted in a much lower correlation of 0.66. However there actually appeared to be two different correlations within the scatter-plot, and this needs further investigation. This difference between pollutants using the \gls{lhem} may allow future health studies to better be able to estimate the differences in health effects from individual pollutants.
+The \gls{lhem} was also able to consider \gls{pm25} and \gls{no2} exposure correlations, used in many other health effect studies (discussed in Section \ref{subsec:pollutant_correlation} (\nameref{subsec:pollutant_correlation}). First the residential \gls{pm25} and \gls{no2} were checked to see if the exposures in this research were similar to others, and they were found to have a R\textsuperscript{2} of 0.90, confirming that they were. The same analysis using the \gls{lhem} resulted in a much lower correlation of 0.66. However there actually appeared to be two different correlations within the scatter-plot, and this needs further investigation. This difference between pollutants using the \gls{lhem} may allow future health studies to better be able to estimate the differences in health effects from individual pollutants.
 
 %%%\textbf{Susceptible groups}
 
-Finally the \gls{lhem} was used to investigate how exposure varies by age groups in Section \ref{subsec:susceptible_groups} (\nameref{subsec:susceptible_groups}). It demonstrated how each age group has fairly similar ranges and means of exposure, and similar missclassification between the \gls{lhem} and residential exposure estimates.
+Finally, the \gls{lhem} was used to investigate how exposure varies by age groups in Section \ref{subsec:susceptible_groups} (\nameref{subsec:susceptible_groups}). It demonstrated how each age group has fairly similar ranges and means of exposure, and similar missclassification between the \gls{lhem} and residential exposure estimates.

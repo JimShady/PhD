@@ -7,6 +7,9 @@
 \usepackage{etoolbox}
 \apptocmd{\sloppy}{\hbadness 10000\relax}{}{}
 
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
 \usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{float}
@@ -25,6 +28,7 @@
 \usepackage{titlesec}
 \usepackage[parfill]{parskip}
 \usepackage{glossaries}
+\usepackage{verbatim}
 \usepackage[usenames,dvipsnames]{color,colortbl}    
  \lstset{ 
   language=R,                     % the language of the code
@@ -85,7 +89,7 @@ December 2018}
 
 \chapter*{Abstract}
 
-Epidemiological studies of the negative effects on health of poor air quality are typically based on subjects' residential address. These 'static' methods may be assigning exposure to subjects/populations incorrectly. Possible sources of error include the coarse spatial and temporal scale of the pollutant data, failing to account for lack of movement of the subjects, and not adequately modelling the effects of microenvironments. This PhD takes a large Transport for London (\gls{tfl}) survey (the '\gls{ltds}') of Londoners daily activities and uses geographical information science techniques to create a detailed model (the '\gls{ltdsx}') of Londoners typical movements including time of day, location and microenvironment. This model is then combined with the King’s version of the Community Multiscale Air Quality model (\gls{cmaq}-Urban), which is a multi-pollutant and multi-source high resolution spatial and temporal model of UK air quality. By combining the \gls{ltdsx} with\gls{cmaq}-Urban and then undertaking further micro-environmental modelling on top of this (in-car, in-train, indoors, the London Underground) detailed exposure estimates to a range of pollutants for the population of London are calculated and then compared to the 'static' exposure method. Results show that exposure indoors, and whether or not subjects use the London Underground, were important determinants of Londoners daily exposure. The exposure modelling for when subjects were on the London Underground was therefore investigated further with a measurement campaign across the network, resulting in a spatial routing model of the network ('TubeAir'). As a stand-alone model this will be useful for future exposure studies in London, and it’s use in the LHEM was demonstrated on a sample journey. This research concludes by exploring the difficulty of evaluating hybrid exposure models in terms of the representativeness of any exposure calculated, by measuring the PM$_{2.5}$ exposure of a repeated number of cycling journeys and comparing these to modelled exposures.
+Epidemiological studies of the negative effects on health of poor air quality are typically based on subjects' residential address. These 'static' methods may be assigning exposure to subjects/populations incorrectly. Possible sources of error include the coarse spatial and temporal scale of the pollutant data, failing to account for lack of movement of the subjects, and not adequately modelling the effects of microenvironments. This PhD takes a large Transport for London (\gls{tfl}) survey (the '\gls{ltds}') of Londoners daily activities and uses geographical information science techniques to create a detailed model (the '\gls{ltdsx}') of Londoners typical movements including time of day, location and microenvironment. This model is then combined with the King’s version of the Community Multiscale Air Quality model (\gls{cmaq}-Urban), which is a multi-pollutant and multi-source high resolution spatial and temporal model of UK air quality. By combining the \gls{ltdsx} with \gls{cmaq}-Urban and then undertaking further micro-environmental modelling on top of this (in-car, in-train, indoors, the London Underground) detailed exposure estimates to PM$_{2.5}$ and NO$_{2}$ for the population of London are calculated and then compared to the 'static' exposure method. Results show that exposure indoors, and whether or not subjects use the London Underground (for PM$_{2.5}$ exposure), were important determinants of Londoners daily exposure. The PM$_{2.5}$ exposure modelling for when subjects were on the London Underground was therefore investigated further with a measurement campaign across the network, resulting in a spatial routing model of the network ('TubeAir'). As a stand-alone model this will be useful for future exposure studies in London, and it’s use was demonstrated on a sample journey. This research concludes by exploring the difficulty of evaluating hybrid exposure models in terms of the representativeness of any exposure calculated, by comparing measured concentrations on a repeated number of cycling journeys with modelled exposures on the same journey.
 \\
 \\
 n.b. The LaTeX files for this thesis are available at : \url{https://github.com/JimShady/PhD}
@@ -122,12 +126,6 @@ Date: \hspace{0.16cm} \underline{\hspace{6cm}}
 \label{chap:background}
 \input{chapters/2a_dynamic_exposure}
 \label{chap:dynamic_exposure}
-
-\chapter{My research aims}
-\input{chapters/3_research_aims}
-
-\chapter{Methods and tools}
-\input{chapters/4_methods_and_tools}
 
 \chapter{Modelling Londoners movements}
 \label{chap:the_ltdsx}

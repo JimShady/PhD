@@ -44,7 +44,7 @@ This area of air pollution exposure research has, as Steinle notes, accelerated 
 
 As can be seen in Figure \ref{fig:broich_exposures} from \cite{Broich2011}, there were large variations between the personal exposure concentrations, and concentrations at nearby monitoring sites. The averages over 24 hour between participants varied from 27 to 322 $\mu \text{g m}^{-3}$, and like Dons they found that exposure levels were heavily dependant on the travel participants undertook, and the micro-environments they spent time in. Broich argues this is why direct personal exposure monitoring is needed for accurate exposure assessments rather than proxy methods (monitoring sites or address). Although for epidemiological studies that might relate patterns from monitoring sites to patterns in incidents of poor health, this may not necessarily the case. If the personal exposure results for instance are always say 40\% than the monitoring site, then the monitoring sites would still capture the trends and might be able to relate these trends to hospital admissions. 
 
-While these types of study are excellent at providing hyper-local and time resolved personal exposure data, they tend to struggle to provide data that is useful for considering alongside the harmful health effects of poor air quality. The studies give results for individuals or small groups of people which are not able to be used alongside health-related epidemiological data such as hospital admission records or incidences of asthma in a certain region. As \cite{Chaix2013} argues, improving measuring of exposure to environmental conditions by accounting for the movement of individuals is critical, however by using such small numbers I suggest that there is a danger of over-generalisation between exposure and health. Measuring 20 school-children's exposure to \gls{pm10} for example, and then making wide-ranging assumptions about the health effects of \gls{pm10} on all school children seems overly simplistic. It might be that those 20 children are in the top 5\% of exposures and not a good representation of school children in general.
+While these types of study are excellent at providing hyper-local and time resolved personal exposure data, they tend to struggle to provide data that is useful for considering alongside the harmful health effects of poor air quality. The studies give results for individuals or small groups of people which are not able to be used alongside health-related epidemiological data such as hospital admission records or incidences of asthma in a certain region. As \cite{Chaix2013} argues, improving measuring of exposure to environmental conditions by accounting for the movement of individuals is critical, however by using such small numbers there is a danger of over-generalisation between exposure and health. Measuring 20 school-children's exposure to \gls{pm10} for example, and then making wide-ranging assumptions about the health effects of \gls{pm10} on all school children seems overly simplistic. It might be that those 20 children are in the top 5\% of exposures and not a good representation of school children in general.
 
 \cite{Steinle2013} argues that the trend in the area of calculating accurate exposure estimates for large populations is for the development of the personal monitoring approach, i.e. distribution of low-cost, accurate \gls{gps} devices combined with accurate low-cost unobtrusive portable air quality measurement devices. In this way the amount of data collected through this 'gold-standard' method would be adequate to allow extrapolation to large groups of people i.e. if 80\% of school children carried a monitor for 12 months, then concerns about how representative the data is would be less valid. A model of their theoretical approach is shown in \ref{fig:steinle_full_assessment}.
 
@@ -297,11 +297,17 @@ Studies of exposure while people are in-transit between locations using transpor
 \subsection{Dynamic and Hybrid exposure models}
 \label{sec:dynamic_hybrid_models}
 
-Section \ref{sec:staticexposurehealth} (Static exposure studies) concluded that taking fixed-point or fixed-area measurements, often at one point in space or time, was insufficient to accurately quantify human exposure to air pollution. Exposure varies in space and time due to an individual’s activities, the time of day, and the location of the subject. Poor air quality an individual is exposed too will vary depending on how long they spend in public transport each day (and which mode of transport), how long they spend at home or at work, and the concentrations within those environments themselves (\cite{Ozkaynak2013}). Therefore models that look at these different environments, and their effects on health, are needed.
+Section \ref{sec:staticexposurehealth} (Static exposure studies) concluded that taking fixed-point or fixed-area measurements, often at one point in space or time, was insufficient to accurately quantify human exposure to air pollution. Exposure varies in space and time due to an individual’s activities, the time of day, and the location of the subject. Poor air quality an individual is exposed to will vary depending on how long they spend in public transport each day (and which mode of transport), how long they spend at home or at work, and the concentrations within those environments themselves (\cite{Ozkaynak2013}). Therefore one approach would be to deploy personal monitors to large numbers of people, then aggregate and analyse the data to better understand how exposure varies between people and environments.
 
-Section \ref{sec:personal_monitoring} (Personal monitoring) showed how personal monitoring devices can be used to better understand individual-level exposures, but concluded by discussing how collecting enough accurate data using this method for large health studies is difficult to do. The following Sections of \ref{sec:infiltration} (Infiltration) and \ref{sec:transport} (Transport) looked at models which enable researchers to quantify exposure to populations in those specific environments (and some discussed the health implications of those environments), but they were not 'joined-up' so as to enable estimates of total daily exposure alongside other micro-environments and times of the day.
+Section \ref{sec:personal_monitoring} (Personal monitoring) considered how personal monitoring devices can be used to do this; to better understand individual-level exposure to poor air quality and the drivers thereof. However it concluded by discussing how collecting large enough quantities of accurate data using this method is extremely difficult to do. The following Sections of \ref{sec:infiltration} (Infiltration) and \ref{sec:transport} (Transport) looked at modelling approaches which enable researchers to quantify exposure to populations in those specific environments (and some discussed the health implications of those environments), but they were not 'joined-up' so as to enable estimates of individuals total daily/annual exposure alongside other micro-environments and times of the day/year.
 
-This section now looks at a small number of research studies which use models to attempt to be more holistic and include all micro-environments as well as temporal and spatial variation in their inputs. This is a new area of research which is not yet established, and the nomenclature is thus still under development, but a trend towards discussion of 'hybrid' or 'dynamic' models has emerged. 'Hybrid' being a description of a combining of multiple approaches of exposure, such as time-activity diaries combined with modelled air quality data and micro-environmental modelling of transport modes, and 'Dynamic' reflecting the improved temporal scale of data available, for both the populations movement and the variation in pollutant concentrations. Also discussed below are publications by \cite{Ozkaynak2013}, \cite{Meliker2011} and \cite{Baxter2013} who have attempted to advance this field by reviewing recent approaches and suggesting key areas which need to be improved, or by identifying exactly what these new types of exposure model should do.
+This section now looks at a small number of research studies which are also modelling approaches, but that try to be more holistic in their exposure assessments, including many micro-environments as well as temporal and spatial variation of the subjects and air quality as inputs. 
+
+Models are of course an abstraction of the real world, and as such will almost certainly never represent it with 100\% accuracy, but using these methods it is possible to simulate the movements and exposure of a much larger number of subjects than would be possible otherwise. By being aware of the inaccuracies and drawbacks of the model and model inputs, it is also possible to quantify the error and propagation of error, and take this into account for any subsequent health impact studies. For example one key input to an air quality exposure model will normally be an air quality model. This can be evaluated against monitoring site data, and the RMSE noted, then calculated alongside other model parameters to understand the overall model uncertainty. This said, an area of the model which would be difficult to quantify in this manner is the spatial aspect. When modelling the movements of a individual it is hard to numerically quantify this in a form that can be included with the other model uncertainties. If an individual takes one route to work, but the model predicts another, this would be a difficult error to propagate due to the different units being used (metres rather than pollutant concentrations).
+
+This is a new area of research which is not yet established, and the nomenclature is thus still under development, but a trend towards discussion of 'hybrid' or 'dynamic' models has emerged. 'Hybrid' being a description of a combining of multiple approaches of exposure, such as time-activity diaries combined with modelled air quality data and micro-environmental modelling of transport modes, and 'Dynamic' reflecting the improved temporal scale of data available, for both the populations movement and the variation in pollutant concentrations. 
+
+The following sections are samples of current publications in this field to provide a 'baseline' for the model that this research describes. \cite{Kousa2002}, \cite{Dhondt2012}, \cite{DeNazelle2013}, \cite{Gerharz2013} and \cite{Reis2018} all attempt, with varying degrees of complexity, to model exposure of individuals over an entire day (rather than using measurements or only considering one micro-environment).
 
 %%%%%%%%%%%%
 
@@ -347,7 +353,7 @@ The following year \cite{DeNazelle2013} did a similar study for 7 days of 36 sub
 \label{fig:time_no2_activity_spaces}
 \end{figure}
 
-From the results we can see that the subjects spent most of their time at home and at work (left), supporting the use of static exposure models where these fixed locations are used, however when the actual exposure is considered the influence of the time spent in those locations diminishes (right) and 'Others' and 'Intransit' become important (supporting the conclusions of \cite{Dons2011} discussed in Section \ref{sec:transport}, '\nameref{sec:transport}'). The study concludes by discussing how these techniques could be developed and used for much larger populations (presumably as an input to health studies eventually). However I would suggest that the amount of post-processing of the geographical data, the manual translation of activity diaries to compliment the smartphone data, and the extra battery packs that needed adding to the phones makes this seem less likely. To upscale this to many hundreds or thousands of subjects would need a tremendous amount of coordination and equipment which would need to be distributed, collected and monitored. The data processing would also seem to be difficult without large human resources, and linking to health outcomes would mean the study needed to be designed so that the participants are a statistical representation of the wider study area population, or the numbers surveyed so close to the actual study population that they give a good representation anyway. 
+From the results we can see that the subjects spent most of their time at home and at work (left), supporting the use of static exposure models where these fixed locations are used, however when the actual exposure is considered the influence of the time spent in those locations diminishes (right) and 'Others' and 'In-transit' become important (supporting the conclusions of \cite{Dons2011} discussed in Section \ref{sec:transport}, '\nameref{sec:transport}'). The study concludes by discussing how these techniques could be developed and used for much larger populations (presumably as an input to health studies eventually). However the amount of post-processing of the geographical data, the manual translation of activity diaries to compliment the smartphone data, and the extra battery packs that needed adding to the phones makes this seem less likely. To upscale this to many hundreds or thousands of subjects would need a tremendous amount of coordination and equipment which would need to be distributed, collected and monitored. The data processing would also seem to be difficult without large human resources, and linking to health outcomes would mean the study needed to be designed so that the participants are a statistical representation of the wider study area population, or the numbers surveyed so close to the actual study population that they give a good representation anyway. 
 
 %%%%%%%%%%%%
 \subsubsection{Gerharz et al}
@@ -371,13 +377,13 @@ The major difference between this and the work of De Nazelle and Dons is that th
 \label{fig:gerharz_results}
 \end{figure}
 
-There is clearly some variation between the results, with P7 (person 7) being particularly strong, and P10 being particularly weak. Gerharz notes in their discussion that "Generally, the correlation between model average and measurements is high" which I would dispute with the mean of the correlations coming out as 0.44. However they are correct in saying that it does at least "clearly outperform the baseline approach of using urban background measurements as proxy for the personal exposure". Though in terms of using this modelled approach for larger groups of people, the post-processing of \gls{gps} data and activity-diaries, general data cleaning, and data linkage would seem to make this an unlikely approach (as with \cite{DeNazelle2013})
+There is clearly some variation between the results, with P7 (person 7) being particularly strong, and P10 being particularly weak. Gerharz notes that "Generally, the correlation between model average and measurements is high" which does not seem to tally with the mean of their correlations coming out as 0.44. However they are correct in saying that it does at least "clearly outperform the baseline approach of using urban background measurements as proxy for the personal exposure". Though in terms of using this modelled approach for larger groups of people, the post-processing of \gls{gps} data and activity-diaries, general data cleaning, and data linkage would seem to make this an unlikely approach (as with \cite{DeNazelle2013})
 
 %%%%%%%%%%%%
 \subsubsection{Reis et al}
 \label{sec:dynamic_models_reis}
 
-CONTENT ABOUT REIS PAPER
+The most contemporary study to the development of this research is the exposure modelling undertaken by \cite{Reis2018}. They combined hourly 1km by 1km estimates of air quality (for the whole of the UK) with 1km by 1km estimates of 'workday' population density v. 'home' population density (based on the UK Census 2011 and the UK Land Cover Map 2015). Calculating exposure for when the population is at home, compared to when they are at home + when they are at work. Given this study modelled the entire UK populations exposure, in a 'dynamic' way, this is a very impressive piece of research; at a much larger scale than any of the previous studies mentioned in this section and with high temporal air quality resolution. This approach has the benefits of being readily transferable to other countries in the world (where similar census and data exist, which are not uncommon), however it could be improved by a) including commute time/mode of transport in the exposure estimates b) including exposure/time spent in indoor microenvironments and c) by modelling movement and air quality at a finer scale than 1km. The model also only allows exposure statistics to be calculated at an aggregate level, making individual exposure estimates difficult, though perhaps example distributions for each 1km grid could somehow be included with further data manipulation.
 
 %%%%%%%%%%%%
 \subsubsection{Dynamic and hybrid model reviews}
@@ -402,11 +408,10 @@ They concluded that these new approaches can help refine the significance of air
   \item assessment and consideration of locational and attribute uncertainty
 \end{enumerate}
 
-\cite{Baxter2013} summarises this emerging area of research well by explaining how, when compared with the use of central-site monitoring data (or other fixed-location methods) the enhanced spatial (and temporal) resolution of air quality or exposure models can impact on resultant health effect estimates, especially for pollutants derived from local sources such as traffic.  They recommend that future research develops pollutant-specific infiltration data, improves existing data on human time-activity patterns and exposure to local sources, in order to enhance human exposure modelling estimates. Also that these new approaches are compared with existing approaches to exposure estimation to better characterise estimates in chronic health studies.
+\cite{Baxter2013} summarises this emerging area of research well by explaining how, when compared with the use of central-site monitoring data (or other fixed-location methods) the enhanced spatial (and temporal) resolution of air quality or exposure models can impact on resultant health effect estimates, especially for pollutants derived from local sources such as traffic.  They recommend that future research develops pollutant-specific infiltration data, improves existing data on human time-activity patterns and exposure to local sources, in order to enhance human exposure modelling estimates. Also that these new approaches are compared with existing approaches to exposure estimation to better characterise estimates in chronic health studies. This research attempt to take this field forward as described.
 
-\vspace{1cm}
 %%%%%%%%%%%%
-Figure \ref{fig:james_exposure_diagram} is proposed as a conceptual model of a hybrid/dynamic exposure model. It should have highly temporal and spatially resolved air quality inputs which consider both indoor and outdoor sources (including regional and local source for the latter), it should be able to model infiltration rates for different modes of transport and building types, it should reflect the multiple micro-environments that people spend their time in (and take account of the temporal resolution of these) and finally it should (for linkage through to epidemiological end-points) be able to consider different breathing rates to quantify exposure and dose for multiple pollutants.
+Figure \ref{fig:james_exposure_diagram} is proposed as a conceptual model of a hybrid/dynamic exposure model, in response to the review of the field by \cite{Baxter2013} and having reviewed the literature in the field during Section \ref{sec:dynamic_hybrid_models}. The model should have highly temporal and spatially resolved air quality inputs which consider both indoor and outdoor sources (including regional and local source for the latter), it should be able to model infiltration rates for different modes of transport and building types, it should reflect the multiple micro-environments that people spend their time in (and take account of the temporal resolution of these) and finally it should (for linkage through to epidemiological end-points) be able to consider different breathing rates to quantify exposure and dose for multiple pollutants.
 
 \begin{figure}[H]
 \centering
@@ -414,3 +419,89 @@ Figure \ref{fig:james_exposure_diagram} is proposed as a conceptual model of a h
 \caption{A conceptual dynamic exposure model}
 \label{fig:james_exposure_diagram}
 \end{figure}
+
+\section{Research aims and objectives}
+\label{sec:intro_aims_and_objectives}
+
+Having reviewed literature in the field of dynamic or hybrid air quality exposure modelling, and the general background areas of air quality and health, with the above model in mind, the hypothesis this research proposes is that "\textit{Individual and population level air pollutant exposure can be estimated using time-activity surveys, \gls{gis} and routing tools, coupled with high resolution spatio-temporal air quality models, facilitating a greater understanding of the exposure to air pollution in an urban environment}". The research was structured around four primary aims as follows:
+
+\begin{enumerate}
+\item Reconstruct the time-space activity of London's population
+\item Link modelled air quality, estimate exposure, and compare with traditional methods
+\item Refine the models estimates of London Underground exposure
+\item Evaluate the results
+\end{enumerate}
+
+Exposure on the London Underground was focused on in the third results chapter (as oppose to exposure in other environments) due to it becoming apparent during chapter two that the concentrations in this environment are some of the highest that Londoners are exposed to during their typical days.
+
+In more detail the movements of the subject's in the \gls{tfl} dataset will be modelled, their days reconstructed on a fine temporal and spatial scale, and this data used in conjunction with a novel exposure model. The air quality input used was the \gls{cmaq}-UK model (see Section \ref{subsec:cmaq_urban}). The results of the model allowed interrogation of exposure by individual, or grouped by various demographics, which enable epidemiologists to increase their understanding of exposure miss-classification. Results are compared to static modelling approaches of the type discussed in Section \ref{sec:staticexposurehealth}. The model is then refined with personal monitoring on the London Underground, before an introduction to validation/testing of the results is presented. The objectives follow the work-plan below.
+
+\subsection{Modelling Londoners movements}
+\label{sec:modelling_londoners_movements}
+
+\textbf{Aim} Create a model of Londoners daily movements based upon freely available TfL datasets
+
+\textbf{Objectives}
+
+\begin{enumerate}
+\item Source, explore and identify key TfL flow datasets
+\item Clean and import data to working environment
+\item Complete any required modal specific routing (interrogation, querying, storage)
+\item Quality assurance / quality check (QA/QC)
+\item Analysis by demographic / geographical area
+\end{enumerate}
+
+\subsection{Dynamic exposure modelling}
+\label{sec:dynamic_exposure_modelling}
+
+\textbf{Aim} Model exposure to \gls{pm25} and \gls{no2} of the \gls{ltdsx} subjects, and compare with traditional exposure methods.
+
+\textbf{Objectives}
+
+\begin{enumerate}
+\item Link population movement data to air quality data
+\item Incorporate I/O ratios and micro-environmental factors
+\item Create a postcode comparison dataset
+\item Create a address-point comparison dataset
+\item Create a monitoring site comparison dataset
+\item Analysis
+\end{enumerate}
+
+Thus far, these aims cover the first half of the conceptual exposure model shown in Figure \ref{fig:james_exposure_diagram} (which is repeated here for convenience). 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{james_exposure_diagram_v2}
+\caption{A conceptual dynamic exposure model}
+\label{fig:james_exposure_diagram_v2}
+\end{figure}
+
+The following two sets of aims and objectives focus on improving exposure estimates, and evaluating them respectively.
+
+\subsection{Exposure to \texorpdfstring{PM$_{2.5}$}{} on the London Underground}
+\label{sec:exposure_on_the_tube}
+
+\textbf{Aim} Create an exposure model for exposure to \gls{pm25} on the London Underground
+
+\textbf{Objectives}
+
+\begin{enumerate}
+\item Measure \gls{pm25} across the London Underground network
+\item Link measured air quality data to noted time-location data
+\item Import, process and clean other datasets for linking i.e. platform depths, station locations. 
+\item Analysis
+\end{enumerate}
+
+\subsection{Evaluating dynamic exposure models}
+\label{sec:evaluating}
+
+\textbf{Aim} Develop an understanding of methods to evaluate predictions of exposure from hybrid-type models
+
+\textbf{Objectives}
+
+\begin{enumerate}
+    \item Develop a data collection plan based on simulated and measured datasets
+    \item Undertake mobile monitoring to collect data representative journey(s)
+    \item Model exposure of the same journey(s)
+    \item Analysis: compare the monitored and modelled exposures
+\end{enumerate}

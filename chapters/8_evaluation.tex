@@ -11,10 +11,10 @@ Develop an understanding of methods to evaluate predictions of exposure from hyb
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{itemize}
-    \item Establish how to use mobile monitoring equipment to replicate static monitoring site datasets (which are used for air quality model evaluation)
-    \item Collect mobile monitoring data representative of a journey from the \gls{lhem}
-    \item Model exposure of this journey using \gls{lhem} methodology
-    \item Compare the monitored and modelled exposures
+    \item Develop a data collection plan based on simulated and measured datasets
+    \item Undertake mobile monitoring to collect data representative journey(s)
+    \item Model exposure of the same journey(s)
+    \item Analysis: compare the monitored and modelled exposures
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,7 +24,7 @@ Develop an understanding of methods to evaluate predictions of exposure from hyb
 
 The focus of this PhD research so far has been on developing a dynamic exposure model to better understand exposure to urban air pollution in the population of London. Having reconstructed the time-activity of the population, their exposure to \gls{pm25} and \gls{no2} was modelled, and then refined, with further investigation of the London Underground micro-environment. This next chapter will consider how to evaluate the \gls{no2} results that are calculated using an exposure model of this style.
 
-I defined the features that a hybrid exposure model should have in Section \ref{sec:dynamic_hybrid_models} as \textit{"It should have highly temporal and spatially resolved air quality inputs which consider both indoor and outdoor sources (including regional and local source for the latter), it should be able to model infiltration rates for different modes of transport and building types, it should reflect the multiple micro-environments that people spend their time in (and take account of the temporal resolution of these) and finally it should (for linkage through to epidemiological end-points) be able to consider different breathing rates to quantify exposure and dose for multiple pollutants"}. Section \ref{sec:dynamic_hybrid_models} examined models that were within this wider field (of varying levels of complexity), but it was noticeable that there was little evaluation of the exposure predictions that they made. There are to my knowledge no established protocols for evaluating exposure predictions from a hybrid/dynamic exposure model, as this type of method and field of research is relatively new. In addition, as the field grows the exact approaches are being refined and vary between studies, meaning one evaluation method would unlikely be fit for the next study. Possible sources of error in this type of model are classified in Table \ref{tab:exposure_error_table} (below), with a brief description, and whether they are unique to exposure models of this kind.
+The features that a hybrid exposure model should have were defined in Section \ref{sec:dynamic_hybrid_models} as \textit{"It should have highly temporal and spatially resolved air quality inputs which consider both indoor and outdoor sources (including regional and local source for the latter), it should be able to model infiltration rates for different modes of transport and building types, it should reflect the multiple micro-environments that people spend their time in (and take account of the temporal resolution of these) and finally it should (for linkage through to epidemiological end-points) be able to consider different breathing rates to quantify exposure and dose for multiple pollutants"}. Section \ref{sec:dynamic_hybrid_models} examined models that were within this wider field (of varying levels of complexity), but it was noticeable that there was little evaluation of the exposure predictions that they made. There are to my knowledge no established protocols for evaluating exposure predictions from a hybrid/dynamic exposure model, as this type of method and field of research is relatively new. In addition, as the field grows the exact approaches are being refined and vary between studies, meaning one evaluation method would unlikely be fit for the next study. Possible sources of error in this type of model are classified in Table \ref{tab:exposure_error_table} (below), with a brief description, and whether they are unique to exposure models of this kind.
 
 \newgeometry{margin=0.6cm}
 \thispagestyle{empty}
@@ -37,7 +37,7 @@ I defined the features that a hybrid exposure model should have in Section \ref{
 \textbf{Type of error} & \textbf{Description} & \textbf{Hybrid specific} \\ \hline
         Air quality annual average monitoring site predictions  &  Evaluation exercises of air quality models using high quality monitoring site data demonstrate that they (in our case \gls{cmaq}-UK) can make predictions of annual averages of most pollutants with reasonable accuracy.         &  No, \gls{cmaq}-UK and other similar models are commonly used in static exposure studies.         \\ \hline
         
-        Air quality annual average non-monitoring site predictions  &  How air quality models predict concentrations in locations that are not readily available for evaluation via monitoring sites is not well understood.         &   No, \gls{cmaq}-UK and other similar models are commonly used in static exposure studies.        \\ \hline
+        Predicting annual average concentrations at sites without monitoring data  &  How air quality models predict concentrations in locations that are not readily available for evaluation via monitoring sites is not well understood.         &   No, \gls{cmaq}-UK and other similar models are commonly used in static exposure studies.        \\ \hline
         
         Air quality temporal resolution  &  Annual averages are often used for exposure studies, which are relatively easy to quantify against monitoring sites (see above). However the complexity of the hybrid model we are now considering uses hourly diurnal profiles, which vary in their accuracy of prediction over time, and therefore the accuracy of their input to exposure varies by time of the day, and day of the week.         &   Partly. Not many static studies of large groups of people consider exposure at high temporal resolution (because they normally use annual averages), and even less quantify and include the errors that this produces.        \\ \hline
         
@@ -87,7 +87,7 @@ The predictions of air quality models, away from monitoring sites, is less well 
 \label{fig:cmaq_and_monitoring_sites}
 \end{figure}
 
-For these non-monitoring site locations, we presume that the model functions in the same manner, with the same error levels. In reality it seems likely that there are varying degrees of accuracy. This may be less of a concern within an exposure model looking at health effects between areas of high/low concentrations, providing it represents the spatial pattern adequately i.e. predicting lower concentrations and higher concentrations in the right places, even if the concentrations themselves are not exactly right. As part of this chapter I am going to aim to better understand how the model predicts away from monitoring sites. It is impractical to place a monitoring site at every location, so I will develop a method whereby I use mobile monitoring devices in-lieu of monitoring sites. As background to this, I searched for studies which have already attempted this. There is a small amount of literature which has tried to evaluate air quality away from monitoring sites using mobile monitors. \cite{Buteau2017} compared a number of methods for predicting concentrations of \gls{o3} and \gls{no2} in Montreal, Canada at the level three-character postal code area (~6km$^{2}$ square). Alongside traditional spatial interpolation using inverse-distance weighting, and nearest monitoring site methods, they also based a land-use regression model upon a dense monitoring survey. However, these were semi-permanent monitors at fixed sites for 9 months of a year, and so whilst their results were encouraging the method is not really transferable to portable monitors that I intend to use. \cite{Shi2016} also created a land-use regression model, with mobile measurements as an input, which achieved good results, but their study was based on repeated measurements using vehicles sampling along a set route for 14 consecutive days, and the choice of 14 rather than say 20 seemed to be a function of their available sampling time rather than calculated using statistical analysis.
+For these non-monitoring site locations, we presume that the model functions in the same manner, with the same error levels. In reality it seems likely that there are varying degrees of accuracy. This may be less of a concern within an exposure model looking at health effects between areas of high/low concentrations, providing it represents the spatial pattern adequately i.e. predicting lower concentrations and higher concentrations in the right places, even if the concentrations themselves are not exactly right. As part of this chapter the aim is to better understand how the model predicts away from monitoring sites. As it is impractical to place a monitoring site at every location, a method is developed whereby mobile monitoring devices are used in-lieu of monitoring sites. As background to this, a review of the small number of studies which have already attempted this was undertaken. \cite{Buteau2017} compared a number of methods for predicting concentrations of \gls{o3} and \gls{no2} in Montreal, Canada at the level three-character postal code area (~6km$^{2}$ square). Alongside traditional spatial interpolation using inverse-distance weighting, and nearest monitoring site methods, they also based a land-use regression model upon a dense monitoring survey. However, these were semi-permanent monitors at fixed sites for 9 months of a year, and so whilst their results were encouraging the method is not really transferable to portable monitors which are used here. \cite{Shi2016} also created a land-use regression model, with mobile measurements as an input, which achieved good results, but their study was based on repeated measurements using vehicles sampling along a set route for 14 consecutive days, and the choice of 14 rather than say 20 seemed to be a function of their available sampling time rather than calculated using statistical analysis.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Air quality temporal predictions}
@@ -115,7 +115,7 @@ Exposure predictions for an individual or group, over a time period, can be made
 \label{sec:4methods}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We can now see that there are a number of difficult and challenging sources of error to consider in evaluating a hybrid exposure model. Air quality models have quantifiable errors in their predictions at the monitoring sites they are evaluated against, errors at locations away from monitoring sites which are not well understood, further variation and errors when using a high time resolution air quality model, errors in the micro-environmental modelling, and more errors in terms of the representativeness of the exposure predictions arrived at. The following methods section outlines how I attempt to mitigate some of these sources of error, remove some of the others, and produce an evaluation of one short journey; comparing the \gls{lhem} prediction of this journey to measured exposure using personal monitoring. The process is summarised below in Figure \ref{fig:comparison_method_summary}.
+We can now see that there are a number of difficult and challenging sources of error to consider in evaluating a hybrid exposure model. Air quality models have quantifiable errors in their predictions at the monitoring sites they are evaluated against, errors at locations away from monitoring sites which are not well understood, further variation and errors when using a high time resolution air quality model, errors in the micro-environmental modelling, and more errors in terms of the representativeness of the exposure predictions arrived at. The following methods section outlines how efforts were made to mitigate some of these sources of error, how some were removed altogether, and then produces an evaluation of one short journey by comparing the \gls{lhem} prediction of this journey to measured exposure using personal monitoring. The process is summarised below in Figure \ref{fig:comparison_method_summary}.
 
 \begin{figure}[H]
 \centering
@@ -185,15 +185,16 @@ To simplify the evaluation, and make the experiment a reasonable undertaking, th
 \label{subsec:4microenvironmentaladjustments}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-As discussed in the introduction to this chapter, and within  Section \ref{subsec:microenvironments}, calculating exposure within micro-environments in relation to outdoor concentrations is not a well understood area of science and seems to be susceptible to a great deal of variation depending on conditions of the micro-environment (and other factors). To simplify, I decided to effectively remove this uncertainty from my evaluation by considering the exposure of a journey which did not need micro-environmental modelling, looking at journeys of the \gls{lhem} that take concentrations directly from \gls{cmaq}-UK i.e. walking and cycling. This is not to say that this is an unimportant area for investigation, due to the large amount of time that people spend indoors it clearly is, but I need to compartmentalise this chapter in order to make the research achievable, and this is an area that can be reasonably removed.
+As discussed in the introduction to this chapter, and within Section \ref{subsec:microenvironments}, calculating exposure within micro-environments in relation to outdoor concentrations is not a well understood area of science and seems to be susceptible to a great deal of variation depending on conditions of the micro-environment (and other factors). To simplify the uncertaintity, this evaluation only considered the exposure of a journey which did not need micro-environmental modelling, and looked at journeys of the \gls{lhem} that take concentrations directly from \gls{cmaq}-UK i.e. walking and cycling. This is not to say that these areas an unimportant, due to the large amount of time that people spend indoors they clearly are, but in an effort to compartmentalise this chapter in order to make the research achievable, these areas were removed.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Sample size}
 \label{subsec:samplesize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Having established that I will look to evaluate exposure on a cycling journey between 9am and 10am on weekdays in August and September, I now needed to establish how many cycling journeys (and measurements) would be needed to represent modelled exposure of this same journey. Repeat measurements will be needed as although \gls{cmaq}-UK has well resolved temporal and spatial inputs such as vehicle numbers and emissions by time of day and day of the week, with similar meteorological inputs, it cannot take account of inter-day variability of an unpredictable nature e.g. a car breaking down leading to a traffic jam, and increased emissions for an hour of a Saturday morning. By taking repeat measurements, the effects of these type of events on the evaluation should be reduced. But exactly how many we are not sure. 
-We can consider this question in a theoretical framework to start-with, based around the \gls{lhem}. If we presume that the mean daily \gls{pm25} exposures of the 45,000 \gls{ltds} subjects was 15 ug/m3, with a standard deviation of 2.5 ug/m3, and we use a random number generator with these parameters to assign each subject an exposure, we end up with a distribution like Figure \ref{fig:theoretical_lhem_pm25}.
+Having established that evaluation will only be undertaken for a cycling journey between 9am and 10am on weekdays in August and September, the number of cycling journeys (and measurements) now needed to be calculated in order to represent modelled exposure of this same journey. Repeat measurements were needed as although \gls{cmaq}-UK has well resolved temporal and spatial inputs such as vehicle numbers and emissions by time of day and day of the week, with similar meteorological inputs, it does not take account of inter-day variability of an unpredictable nature e.g. a car breaking down leading to a traffic jam, and increased emissions for an hour of a Saturday morning. By taking repeat measurements, the effects of these type of events on the evaluation should be reduced.
+
+Considering this question in a theoretical framework, based around the \gls{lhem}, we could presume that the mean daily \gls{pm25} exposures of the 45,000 \gls{ltds} subjects is 15 ug/m3, with a standard deviation of 2.5 ug/m3. We can then use a random number generator within these parameters to assign each subject an exposure, which creates a distribution shown in Figure \ref{fig:theoretical_lhem_pm25}.
 
 \begin{figure}[H]
 \centering
@@ -202,7 +203,7 @@ We can consider this question in a theoretical framework to start-with, based ar
 \label{fig:theoretical_lhem_pm25}
 \end{figure}
 
-This distribution of these exposures has a mean of 15 $\mu \text{g m}^{-3}$, a standard deviation of 2.5 $\mu \text{g m}^{-3}$, a max of 25.19 $\mu \text{g m}^{-3}$ and a min of 5.61 $\mu \text{g m}^{-3}$. If these were the real exposures of the \gls{lhem} subjects, and we wanted to undertake measurements on a sub-sample to evaluate our model, and we decided we would be happy with our sub-sample having a mean within 10\% of the population mean (15 $\mu \text{g m}^{-3}$), with 95\% confidence, we can then solve a sample size calculation (REF) and arrive at the answer of 43. That is, we only need to sample 43 people to evaluate the model within these parameters.  However this is just going to give us a sample distribution, that we can be relatively certain has a mean that is within the area highlighted in red in Figure \ref{fig:theoretical_lhem_pm25_samples}, but may or may not have the same shape of distribution, maximum, minimum, standard deviation etc. of the population. We are also likely to miss evaluating the exposures of the subjects who have exposures in the highest and lowest percentiles of the data, which as discussed in Section \ref{subsec:longtermvshortterm} may be important for understanding health effects.
+This distribution of exposures has a mean of 15 $\mu \text{g m}^{-3}$, a standard deviation of 2.5 $\mu \text{g m}^{-3}$, a max of 25.19 $\mu \text{g m}^{-3}$ and a min of 5.61 $\mu \text{g m}^{-3}$. If these were true exposures of \gls{lhem} subjects, and measurements were required to evaluate a modelling attempt of these subjects, and the following parameters were deemed acceptable; a mean within 10\% of the population mean (15 $\mu \text{g m}^{-3}$) with 95\% confidence, then a sample size calculation (\cite{PennStateEberlyCollegeofScience2017}) can be undertaken to arrive at the answer of 43. That is, only 43 subjects need to be measured to evaluate the model of the population in the theoretical exposure distribution. However this just gives a sample (n=43) distribution, that will have the same mean, that is within the area highlighted in red in Figure \ref{fig:theoretical_lhem_pm25_samples}; but may or may not have the same shape of distribution, maximum, minimum, standard deviation etc. of the population. It is also likely to miss evaluating the exposures of the subjects who have exposures in the highest and lowest percentiles of the data, which as discussed in Section \ref{subsec:longtermvshortterm} may be important for understanding health effects.
 
 \begin{figure}[H]
 \centering
@@ -211,41 +212,43 @@ This distribution of these exposures has a mean of 15 $\mu \text{g m}^{-3}$, a s
 \label{fig:theoretical_lhem_pm25_samples}
 \end{figure}
 
-To properly capture the distribution of the population in a sample we need to do stratified random sampling, ensuring proportional representation of each strata (exposure concentrations in our case).  However, to do this we would already need to have a priori understanding of the exposures of the larger group, and the drivers of the exposures, in order to be able to calculate the numbers of samples required from each strata.
-Given the difficultly in trying to evaluate a typical day of an individual in the \gls{lhem} and how these fit against an annual average, I will again simplify. By just evaluating the modelled and measured exposure of a single cycling journey from the \gls{lhem} most of these issues are put aside. I just need to calculate how many measurements of the journey on a weekday between 9am and 10am in August and September are needed to represent (within predefined boundaries) the typical exposure on the journey to compare to the model.
-I calculated this using one-minute data from a monitoring site (as a known, continuous, and reliable dataset), and then running sample size calculations on it, as a proxy for a \gls{cmaq}-UK grid square in the model. I took one year of one minute NO2 monitoring data from the site ‘Wandsworth - Putney High Street’, removed the data outside of our time period of interest (weekdays, 9am to 10am in August and September), and then calculated summary statistics on the remaining data (Shown in Table \ref{tab:wa7_summary_stats}). I chose this monitoring site as the site collects one-minute resolution \gls{no2} data (the only one currently in London which does so), which aligns with the temporal resolution of the equipment I intend to use for monitoring.
+To properly capture the distribution of the population in a sample, stratified random sampling is required, to ensure proportional representation of each strata (exposure concentrations in this case). However to do this a priori understanding of the exposures of the larger group, and the drivers of the exposures, is required in order to be able to calculate the numbers of samples required from each strata.
+
+Given these difficulties in trying to evaluate the typical day of an individual in the \gls{lhem}, and how this evaluation might be compared to an annual average exposure, it was decided to simplify and reduce the task by evaluating the modelled and measured exposure of a single cycling journey from the \gls{lhem} rather than a number of people or journeys.
+
+Calculations to estimate how many measurements of the journey on a weekday between 9am and 10am in August and September would be needed to represent (within predefined boundaries) the typical exposure on the journey to compare to the model were undertaken. One-minute data from a monitoring site (as a known, continuous, and reliable dataset) was downloaded, and sample size calculations were undertaken, as a proxy for a \gls{cmaq}-UK grid square in the model. By taking one year of one minute NO$_{2}$ monitoring data from the site ‘Wandsworth - Putney High Street’, removing the data outside of the time period of interest (weekdays, 9am to 10am in August and September), and then calculating summary statistics on the remaining data (Shown in Table \ref{tab:wa7_summary_stats}). This site was chosen as the site collects one-minute resolution \gls{no2} data (the only one currently in London which does so), which aligns with the temporal resolution of the equipment used for the monitoring.
 
 \begin{table}[H]
 \caption{Site WA7 summary statistics for weekday, 9am-10am during}
 \centering
     \begin{tabular}{ | l | l |}
     \hline 
-     \bfseries{Statistic}   & \bfseries{\gls{no2} $\mu \text{g m}^{-3}$}    \\ \hline
-     Minutes                & 2400                                         \\ \hline
+     \bfseries{Statistic}   & \bfseries{\gls{no2} $\mu \text{g m}^{-3}$}   \\ \hline
+     Minutes                & 2400.00                                      \\ \hline
      Mean                   & 90.92                                        \\ \hline
      Median                 & 77.70                                        \\ \hline
-     Max                    & 1074.4                                       \\ \hline
+     Max                    & 1074.40                                      \\ \hline
      Min                    & 11.67                                        \\ \hline
      Standard deviation     & 64.23                                        \\ \hline
     \end{tabular}
 \label{tab:wa7_summary_stats}
 \end{table}
 
-Now that I had summary statistics for the period of time of interest, I calculated how many samples were required within this time period to create a similar distribution and mean, as per the theoretical example from Figures \ref{fig:theoretical_lhem_pm25} and \ref{fig:theoretical_lhem_pm25_samples} using Equation \ref{eq:sample_size_equation_pt1} (\cite{PennStateEberlyCollegeofScience2017}). By taking this reliable and continuous dataset, in a known location, we extrapolate the results to locations where there is not a fixed site data collection method available.
+Using these summary statistics for the period of time of interest, the number of samples required was calculated using Equation \ref{eq:sample_size_equation_pt1} (\cite{PennStateEberlyCollegeofScience2017}) to create a similar distribution and mean, as per the theoretical example from Figures \ref{fig:theoretical_lhem_pm25} and \ref{fig:theoretical_lhem_pm25_samples}. By taking this reliable and continuous dataset, in a known location, the results were extrapolated to locations where there is not a fixed site data collection method available.
 
 \begin{equation}
   \chi = \textit{Z}^2 \times \frac{\sigma^2}{moe^2} 
   \label{eq:sample_size_equation_pt1}
 \end{equation}
 
-Where $\chi$ is the calculated sample size, \textit{Z} is the z-score of the desired confidence level, $\sigma$ is the standard deviation of the population (concentrations), and \textit{moe} is the allowed margin of error (in $\mu \text{g m}^{-3}$). By writing a loop in the R programming language (\cite{RFoundationforStatisticalComputing2014}), and testing a variety of input variables to this equation, I was able to see how many samples would be required in different scenarios of confidence levels and allowable margins of error. The results are shown in Table \ref{tab:no2_samples_needed}:
+Where $\chi$ is the calculated sample size, \textit{Z} is the z-score of the desired confidence level, $\sigma$ is the standard deviation of the population (concentrations), and \textit{moe} is the allowed margin of error (in $\mu \text{g m}^{-3}$). By testing a variety of input variables to this equation, the number of samples required in different scenarios of confidence levels and allowable margins of error was calculated, shown in Table \ref{tab:no2_samples_needed}:
 
 \begin{table}[H]
 \caption{Numbers of samples required for each confidence level and allowable margin of error based on measurements from WA7}
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|r|}
 \hline
-Confidence level     &            Allowed margin of error                            &        Sample required       \\
+\textbf{Confidence level}     &            \textbf{Allowed margin of error}                            &        \textbf{Sample required}       \\
 \hline
 \multirow{6}{*}{99\%}   &            10\% ($\pm$ 9   $\mu \text{g m}^{-3}$ )    &        1325                  \\ \cline{2-3} 
                         &            15\% ($\pm$ 14  $\mu \text{g m}^{-3}$ )    &        589                   \\ \cline{2-3} 
@@ -281,14 +284,14 @@ Confidence level     &            Allowed margin of error                       
 \label{tab:no2_samples_needed}
 \end{table}
 
-From these calculations we can see that to get a result which is within 10 $\mu \text{g m}^{-3}$ of the mean, with 99\% confidence, 1325 samples would need to be taken, at random in the time window, in a grid square. Given my aim is to take measurements on a cycling journey, and as there are only 44 weekdays in August and September, attaining 1325 samples is not achievable. I decided to take at least 27 samples, which would give a 80\% confidence interval (CI) and 32 $\mu \text{g m}^{-3}$ margin of error (\gls{moe}) in my results. Clearly it would be better to have may more samples and stronger results with a higher CI and lower MOE, but this was not possible in the time-frame (and not essential as the focus of this piece of research is to establish the methods and procedures that would be involved rather than to provide a comprehensive answer/evaluation). This issue is explored further in the Discussion, (Section \ref{sec:4Discussion}).
+This showed that in order to obtain a result which is within 10 $\mu \text{g m}^{-3}$ of the mean, with 99\% confidence, 1325 samples would need to be taken, at random, in the time window, in a grid square. Given the aim is to take measurements on a cycling journey, and as there are only 44 weekdays in August and September, attaining 1325 samples was not achievable. So it was decided to take 27 samples, which would give a 80\% confidence interval (CI) and 32 $\mu \text{g m}^{-3}$ margin of error (\gls{moe}). Clearly it would be better to have may more samples and stronger results with a higher CI and lower MOE, but this was not possible in the time-frame (and not essential as the focus of this research is to establish the methods and procedures that would be involved rather than to provide a comprehensive answer/evaluation). This issue is explored further in the Discussion, (Section \ref{sec:4Discussion}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Measuring journey exposure}
 \label{subsec:measuringjourneyexposure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Now that the time period of comparison was set and the minimum number of samples required had been established  the data collection was planned. Collecting \gls{no2} data on 27 journeys at one-minute resolution would be difficult, as King’s do not own a reliable and portable \gls{no2} sensor that can monitor at this frequency (indeed there are few commercially available at all). At the suggestion of a colleague, I decided to collect black carbon (BC) data using a microaeth (\cite{Hansen1984}, \cite{Aethlabs2016}), and then convert this to \gls{no2}, the microaeth being a well understood and reliable device used in many exposure studies ( /cite{Cheng2013}, /cite{Viana2015} ). To calculate the conversion factor between BC and \gls{no2}, \gls{no2} and BC data was downloaded from the Marylebone Road monitoring site (WA7) which collects both pollutants at 1-minute resolution, and then a linear regression model was created (Figure \ref{fig:black_carbon_no2_conversion}). 
+As collecting \gls{no2} data on 27 journeys at one-minute resolution would be difficult (King’s do not own a reliable and portable \gls{no2} sensor that can monitor at this frequency, indeed there are few commercially available at all). It was decided to collect black carbon (BC) data using an Aethlabs Microaeth AE51 (\cite{Hansen1984}, \cite{Aethlabs2016}), and to then convert these measurements to \gls{no2}; the microaeth being a well understood and reliable device used in many exposure studies ( \cite{Cheng2013}, \cite{Viana2015} ). To calculate the conversion factor between BC and \gls{no2}, \gls{no2} and BC data were downloaded from the Marylebone Road monitoring site (WA7) which collects both pollutants at 1-minute resolution, and then a linear regression model was created (Figure \ref{fig:black_carbon_no2_conversion}). 
 
 \begin{figure}[H]
 \centering
@@ -297,22 +300,22 @@ Now that the time period of comparison was set and the minimum number of samples
 \label{fig:black_carbon_no2_conversion}
 \end{figure}
 
-This gave a conversion of \gls{no2} = 41 + 9.1 x BC, with an adjusted R\textsuperscript{2} of 0.474. A higher R\textsuperscript{2} would obviously have been preferable to give more confidence to the BC to \gls{no2} conversion process. This limitation is in the Discussion ( Section \ref{sec:4Discussion} ).
+This gave a conversion of \gls{no2} = 41 + 9.1 x BC, with an adjusted R\textsuperscript{2} of 0.474. A higher R\textsuperscript{2} would have been preferable to give more confidence to the BC to \gls{no2} conversion process. This limitation is in the Discussion (Section \ref{sec:4Discussion} ).
 
 With regards to further sources of error in the evaluation of the \gls{lhem} using monitored data, it was presumed that the Microaeth AE51 was giving perfectly accurate readings of black carbon. Accepting that this is a limitation and in reality the device has been shown to have (relatively modest) measurement errors ( \cite{Cheng2013}, \cite{Viana2015} ).
 
-A monitoring campaign was then completed over August and September, taking measurements on 28 cycling journeys between Kennington Park and Waterloo  between 8am and 9am using the Microaeth AE51. The journey between Kennington Park and Waterloo was chosen due to convenience for the researcher and is purely arbitrary; the method could have been applied anywhere within the model domain.
+A monitoring campaign was then completed over August and September, taking measurements on 28 cycling journeys between Kennington Park and Waterloo between 8am and 9am using the Microaeth AE51. The journey between Kennington Park and Waterloo was chosen due to convenience for the researcher and is purely arbitrary; the method could have been applied anywhere within the model domain.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Modelling journey exposure}
 \label{subsec:modellingjourneyexposure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Using the \gls{cmaq}-UK air quality layer as an input I now modelled the exposure of the journey using the same methods as used in the \gls{lhem} from Chapter \ref{chap:the_lhem}. The route and concentrations along it are shown in Figure \ref{fig:dual_exposure_cycling} below.
+Using the \gls{cmaq}-UK air quality layer as an input the exposure of the journey between Kenningtona and Waterloo was now modelled, using the same methods as used in the \gls{lhem} from Chapter \ref{chap:the_lhem}. The route and concentrations are shown in Figure \ref{fig:dual_exposure_cycling} below.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=1]{images/dual_exposure_cycling.png}
+\includegraphics[scale=1.4]{images/dual_exposure_cycling.png}
 \caption{Cycling journey between Kennington Park and Waterloo, overlain on modelled \gls{cmaq}-UK concentrations for 9am to 10am on weekdays in August to September}
 \label{fig:dual_exposure_cycling}
 \end{figure}
@@ -325,27 +328,26 @@ Using the \gls{cmaq}-UK air quality layer as an input I now modelled the exposur
 Before the measured exposure datasets could be compared to the modelled exposure of the same journey the following steps were completed:
 
 \begin{itemize}
-    \item Download raw \gls{csv} data from the Microaeth. Remove unnecessary columns and header meta-data.
-    \item Import to R
-    \item Divide black carbon concentrations by 1000 to convert into micrograms per metre cubed (for comparison with the \gls{no2})
-    \item Manually fill in missing \gls{gps} data (device does not record position for first few minutes of operation, which was unknown at the time of data collection)
-    \item Correct poor quality \gls{gps} data / drift by snapping \gls{gps} points to the nearest road segment (Shown in Figure 9)
-    \item Create line segments instead of point positions.
+    \item Raw \gls{csv} data from the Microaeth was downloaded, and unnecessary columns and header meta-data were removed.
+    \item Black carbon concentrations were divided by 1000 to convert into micrograms per metre cubed (for comparison with the \gls{no2})
+    \item Missing \gls{gps} data was manually inferred and inserted (the device does not record position for first few minutes of operation, which was unknown at the time of data collection)
+    \item Poor quality \gls{gps} data / drift was corrected by snapping points to the nearest road segment (Shown in Figure \ref{fig:snapping_cycle_to_road}
+    \item Line segments were created from the point positions.
 \end{itemize}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.4]{images/snapping_cycle_to_road.png}
-\caption{Locations of sampled BC concentrations along the cycle journey (purple), which have been snapped to the road (pink) to correct for \gls{gps} drift}
+\fbox{\includegraphics[scale=0.4]{images/snapping_cycle_to_road.png}}
+\caption{Locations of sampled BC concentrations along the cycle journey (red), which have been snapped to the road (green) to correct for \gls{gps} drift}
 \label{fig:snapping_cycle_to_road}
 \end{figure}
 
-The final  step of creating line segments from points was required as the microaeth concentration that is stored each minute is at the end of one minute of sampling, meaning that the \gls{gps} position is the mean concentration from the previous minute of movement. To enable linking of this concentration with the \gls{cmaq}-UK grid squares during that period of movement, I created a SpatialLinesDataFrame line between each \gls{gps} point, and the previous \gls{gps} point in that journey, and assigned the concentration to that whole line.
+The final step of creating line segments from points was required as the microaeth concentration are stored each minute, representing the end of one minute of sampling, meaning that the \gls{gps} position is the mean concentration from the previous minute of movement. To enable linking of these concentrations with the \gls{cmaq}-UK grid squares during that period of movement, a SpatialLinesDataFrame line between each \gls{gps} point, and the previous \gls{gps} point in that journey was created, and assigned the concentration of that whole line.
 The result of this processing of the monitoring data was 27 lines, stored as a SpatialLinesDataFrame (\gls{sldf}), split into segments of varying lengths, along the length of the journey from Kennington Park to the Waterloo. The start of one of the journeys is shown in Figure \ref{fig:cmaq_cycle_route_zoomed} below. Although not shown in the figure, the line has concentration attributes linked to it.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.2]{images/cmaq_cycle_route_zoomed.png}
+\includegraphics[scale=0.4]{images/cmaq_cycle_route_zoomed.png}
 \caption{Start of a cycling journey from Kennington Park to Waterloo, cycle route shown by a black line, \gls{cmaq} model concentrations shown behind.}
 \label{fig:cmaq_cycle_route_zoomed}
 \end{figure}
@@ -353,7 +355,7 @@ The result of this processing of the monitoring data was 27 lines, stored as a S
 Using the \gls{sldf} of measured concentrations, and the \gls{cmaq}-UK raster of modelled concentrations, two result datasets were now created:
 \begin{itemize}
     \item \textbf{Concentration comparison}: The mean concentration from each journey, compared to the mean concentration of the grid cells that the journey intersected.
-    \item \textbf{Spatial comparison}: For each grid cell the route intersected, I took the mean concentration from the 27 monitored lines that went through it. I then calculated the difference, by grid square, between the monitoring concentrations and the modelled concentrations and outputted this as a new raster file.
+    \item \textbf{Spatial comparison}: For each grid cell the route intersected, the mean concentration from the 27 monitored journeys. Then, by grid square, the difference between monitoring concentrations and the modelled concentrations - output as a new raster file.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -391,7 +393,7 @@ The summary statistics for these two datasets are shown in Table \ref{tab:modell
 \begin{table}[H]
 \caption{Comparison of measured and modelled exposure on the cycling journey}
 \centering
-    \begin{tabular}{ | l | l | l |}
+    \begin{tabular}{ | l | c | c |}
     \hline 
         & \bfseries{Modelled \gls{no2} $\mu \text{g m}^{-3}$} & \bfseries{Monitored \gls{no2} $\mu \text{g m}^{-3}$ (MOE)}                \\ \hline
      Minimum         & 37.58 & 40.35                \\ \hline
@@ -409,7 +411,7 @@ The summary statistics for these two datasets are shown in Table \ref{tab:modell
 \label{subsec:spatialcomparisons}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-For reference, figure \ref{fig:cycling_journey} shows the journey from Kennington Park to Waterloo that we have been comparing.
+For reference, figure \ref{fig:cycling_journey} shows the journey from Kennington Park to Waterloo .
 
 \begin{figure}[H]
 \centering
@@ -418,7 +420,7 @@ For reference, figure \ref{fig:cycling_journey} shows the journey from Kenningto
 \label{fig:cycling_journey}
 \end{figure}
 
-Figure \ref{fig:monitored_modelled_summary} below shows the monitoring data, the modelled data, and a comparison of the two on this route.
+Figure \ref{fig:monitored_modelled_summary} below shows the monitoring data, the modelled data, and a comparison of the two, on the route.
 
 \begin{figure}[H]
 \centering
@@ -434,27 +436,21 @@ By spatially comparing the results in this manner (Figure \ref{fig:monitored_mod
 \label{sec:4Discussion}
 
 As discussed in the Background (Section \ref{sec:4background}), to my knowledge, there have not been any studies which have attempted to evaluate a dynamic approach to exposure in this manner. Studies have tended to measure certain micro-environments for a time-span often determined by practical constraints such as battery life, staff time and convenience; and then use these as empirical comparisons to their model outputs.
-This piece of research was novel in that exposure was modelled, and then an attempt to evaluate the predictions (of an example journey) was undertaken by calculating how many personal monitoring samples would be needed, and then going out to collect that data. Despite various sources of possible error, this research demonstrated this as a possible process, and highlighted the difficulties of it. Reasonable ‘ball-park’ results were found, and clear spatial patterns were discernible. 
 
-There were many issues and challenges to overcome whilst undertaking this evaluation that will have impacted the accuracy of the results. The main one being (mostly unavoidable) sources of error at each stage of the process. On the modelling side of the comparison \gls{cmaq}-UK has been shown to perform well when evaluated against monitoring sites, but it is far from perfect -– the input the modelling uses for this chapter has \gls{no2} R values of 0.75. Against this, it was calculated that 27 samples would be needed to get a monitored concentration estimate that had a 30 $\mu \text{g m}^{-3}$ MOE (and 80\% CI). Black carbon samples were collected to do this, using a MA300 Microaeth, which has not yet been evaluated by academic literature (although previous models of similar equipment has R\textsuperscript{2} values of 0.8), and these data were converted to \gls{no2} using a linear regression with an R\textsuperscript{2} of 0.47. These multiple sources of error are bound to have confounded the results, but to what degree is uncertain. Post-hoc, it is not possible to go back and improve the \gls{cmaq}-UK model, or to collect more samples, or to improve the accuracy of the portable monitor, but it is interesting to reconsider the conversion process of black carbon to \gls{no2} from Figure \ref{fig:black_carbon_no2_conversion}. Visually the intercept of 41 looks high, and if this was theoretically changed to 0, then the measured concentrations would all be reduced, and the comparison between modelled and monitored would be much closer. Figures \ref{fig:grouped_journey_boxplots_new_intercept} and \ref{fig:monitored_minus_cmaq_route_cells_concs_zero_intercept} below show revised box-plot comparisons and spatial comparisons.
+This piece of research was novel in that exposure was modelled, and then an attempt to evaluate the predictions (of an example journey) was undertaken by calculating how many personal monitoring samples would be needed, and then going out to collect that data. Despite various sources of possible error, this research demonstrated this as a possible process, and highlighted the difficulties of it. The results were not particularly encouraging in terms of comparing modelled v. measured absolute values, but clear spatial patterns were discernible. 
+
+There were many issues and challenges to overcome whilst undertaking this evaluation that will have impacted the accuracy of the results. The main one being (mostly unavoidable) sources of error at each stage of the process. On the modelling side of the comparison \gls{cmaq}-UK has been shown to perform well when evaluated against monitoring sites, but it is far from perfect -– the input the modelling uses for this chapter has \gls{no2} R values of 0.75. Against this, it was calculated that 27 samples would be needed to get a monitored concentration estimate that had a 30 $\mu \text{g m}^{-3}$ MOE (and 80\% CI). Black carbon samples were collected to do this, using a MA300 Microaeth, which has not yet been evaluated by academic literature (although previous models of similar equipment has R\textsuperscript{2} values of 0.8), and these data were converted to \gls{no2} using a linear regression with an R\textsuperscript{2} of 0.47. These multiple sources of error are bound to have confounded the results, but to what degree is uncertain. Post-hoc, it is not possible to go back and improve the \gls{cmaq}-UK model, or to collect more samples, or to improve the accuracy of the portable monitor, but it is interesting to reconsider the conversion process of black carbon to \gls{no2} from Figure \ref{fig:black_carbon_no2_conversion}. Visually the intercept of 41 looks high, and if this was theoretically changed to 0, then the measured concentrations would all be reduced, and the comparison between modelled and monitored would be much closer. Figure \ref{fig:grouped_journey_boxplots_new_intercept} below shows a revised box-plot comparisons in this situation.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.4]{images/grouped_journey_boxplots_new_intercept.png}
+\includegraphics[scale=0.6]{images/grouped_journey_boxplots_new_intercept.png}
 \caption{Boxplot comparison of modelled and monitored concentrations with an intercept of 0 between BC and \gls{no2}}
 \label{fig:grouped_journey_boxplots_new_intercept}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.2]{images/monitored_minus_cmaq_route_cells_concs_zero_intercept.png}
-\caption{Spatial comparison of modelled and monitored concentrations with an intercept of 0 between BC and \gls{no2}}
-\label{fig:monitored_minus_cmaq_route_cells_concs_zero_intercept}
-\end{figure}
+Putting measurement errors and modelling errors aside, there are practical improvements that could be implemented in repeating this work which might lead to improved results. The most notable being the sample size. If the journey had been shorter, or more researchers were available, it would have been possible to collect a much larger number of samples, which according to the sample size calculations would have increased the reliability of the results. A more practical long-term approach to evaluating air quality model inputs to a hybrid exposure model could be to fix reliable portable monitors to cars or public transport and increase sample size in this manner. For example, mobile monitors might be attached to the outside of a fleet of No.59 buses which run along the route monitored, meaning each grid square would be sampled 10-15 times between 9am and 10am, resulting in 400-500 measurements over the same time period; within King's colleagues are already trialling a similar method to this, but with the monitors inside a bus to measure the changes in passenger exposure from the electrification of a bus route in London.
 
-Putting measurement errors and modelling errors aside, there are practical improvements that could be implemented in repeating this work which might lead to improved results. The most notable being the sample size. If the journey had been shorter, or more researchers were available, it would have been possible to collect a much larger number of samples, which according to the sample size calculations would have increased the reliability of the results. A more practical long-term approach to evaluating air quality model inputs to a hybrid exposure model could be to fix reliable portable monitors to cars or public transport and increase sample size in this manner. For example, mobile monitors might be attached to the outside of a fleet of No.59 buses which run along the route I cycled, meaning each grid square would be sampled 10-15 times between 9am and 10am, resulting in 400-500 measurements over the same time period. Indeed, our group are already trialling a similar method, but with the monitors inside a bus to measure the changes in passenger exposure from the electrification of a bus route in London.
-
-Focusing on the equipment, an unforeseen issue in collecting the monitoring data was a mismatch between cycling speed, the resolution of the \gls{cmaq}-UK grid squares, and the temporal resolution of the Microaeth MA300. I wanted to measure concentrations in each grid square along a route, but as the Microaeth was set to 1-minute resolution, the grid squares are 20m by 20m, and typical cycling speed is 15 km/h (or 250 metres per minute), this meant that each minute of Microaeth data might coved 250/20 = 12.5 grid squares (though in reality due to traffic lights, junctions, and a slower than average cycling speed this was not as pronounced). Repeating this experiment, a researcher could calculate the sampling rate of the device based upon the likely speed of the movement, and the air quality model resolution it will be compared to, as per equation \ref{eq:sampling_rate_equation}
+Focusing on the equipment, an unforeseen issue in collecting the monitoring data was a mismatch between cycling speed, the resolution of the \gls{cmaq}-UK grid squares, and the temporal resolution of the Microaeth MA300. The aim was to measure concentrations in each grid square along a route, but as the Microaeth was set to 1-minute resolution, the grid squares were 20m by 20m, and typical cycling speeds are 15 km/h (or 250 metres per minute), the result was that each minute of Microaeth data often covered multiple grid squares. An improvement would be to calculate the sampling rate of the device based upon the likely speed of the movement, and the air quality model resolution it will be compared to, as per equation \ref{eq:sampling_rate_equation}
 
 \begin{equation}
   sampling rate_{(minutes)} = \frac{AQ_{(metres)}}{speed_{(metres/minute)}}
@@ -476,11 +472,11 @@ Within the \gls{gis} and data processing section of this work, the main issue wa
 \section{Conclusions}
 \label{sec:4conclusions}
 
-The main conclusions from this chapter are method-orientated, rather than definitive answers about the reliability of a hybrid exposure method. The amount of data collection and data processing were both extremely onerous in order to even evaluate one journey, requiring skills in data processing,spatial analysis, statistics and personal monitoring. To repeat this method on a larger scale initial consideration should be given to the monitors that are going to be used, and in which possible transport modes, to ensure that they provide a high enough temporal and spatial resolution for alignment with the modelled air quality being used by the exposure modelling.
+The main conclusions from this chapter are method-orientated, rather than definitive answers about the reliability of a dynamic exposure model as demonstrated in the previous chapters. The amount of data collection and data processing were both extremely onerous in order to even evaluate one journey, requiring skills in data processing,spatial analysis, statistics and personal monitoring. To repeat this method on a larger scale initial consideration should be given to the monitors that are going to be used, and in which possible transport modes, to ensure that they provide a high enough temporal and spatial resolution for alignment with the modelled air quality being used by the exposure modelling.
 
 The sample size calculations here demonstrated a method (given a fixed reliable ‘base’ dataset) to estimate the number of samples that are required to arrive at monitored concentrations that have a low margin of error and high confidence. For this piece of research, it was calculated that over 1,000 measurements would have been needed to give a low margin of error with high confidence, but it is worth noting that this figure depends on the pollutant of interest, the base data, and the geographical area.
 
-Regarding results rather than method, the \gls{cmaq}-UK \gls{no2} model used as an input to the London Hybrid Exposure Model appears to be underestimating concentrations for the journey examined. Whether this can be extrapolated to draw wider conclusions about the model are unclear; the findings have large caveats due to multiple, mostly unavoidable, sources of error in the method e.g. the black carbon to \gls{no2} conversion and sample size, that require fuller exploration of their impact and propagation.
+Regarding results rather than method, the \gls{cmaq}-UK \gls{no2} model used as an input to the London Hybrid Exposure Model appeared to underestimate concentrations for the journey examined. Whether this can be extrapolated to draw wider conclusions about the model are unclear; the findings have large caveats due to multiple, mostly unavoidable, sources of error in the method (e.g. the black carbon to \gls{no2} conversion and sample size) that require fuller exploration of their impact and propagation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

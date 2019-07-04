@@ -3,7 +3,7 @@
 \label{sec:3aim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Create an exposure model for \gls{pm25} on the London Underground
+Create an exposure model for exposure to \gls{pm25} on the London Underground
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Objectives}
@@ -12,9 +12,9 @@ Create an exposure model for \gls{pm25} on the London Underground
 
 \begin{itemize}
 \item Measure \gls{pm25} across the London Underground network
-\item Transcribe a time-location diary and link to pollutant data
-\item Import other relevant data
-\item Analyse data to characterise \gls{pm25} on the London Underground
+\item Link measured air quality data to noted time-location data
+\item Import, process and clean other datasets for linking i.e. platform depths, station locations. 
+\item Analysis
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -134,22 +134,13 @@ To be able to investigate any spatial patterns in the data collected, we needed 
 \item Visualise and error check
 \end{itemize}
 
-The key \gls{sql} code to create this is shown in Appendix \autoref{code:make_tube_network_from_scratch}. Loaded into \gls{qgis} for visualisation the network is shown below in Figure \ref{fig:postgis_tube_map}.
-
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.5]{postgis_tube_map}
-\caption{PostGIS Tube Map}
-\label{fig:postgis_tube_map}
-\end{figure}
-
-The map looks different to the traditional London Underground map due to the lines between stations being straight, rather than adjusted for cartographic purposes. The created lines are also not exactly geographically correct, however it was decided that creating a geographically accurate dataset to represent the real-life complexity of the exact routes of the lines was not needed for this work.
+The key \gls{sql} code to create this is shown in Appendix \autoref{code:make_tube_network_from_scratch}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{London Underground station characteristics}
 \label{subsec:station_characteristics}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-As briefly mentioned above, one of my hypotheses is that line and station depths influence \gls{pm25} concentrations on the network. However the data to add a 'z' attribute (depth) of each station was not freely available via the London Datastore or similar official data sources. I was however able to find a Freedom of Information request made by Hamechan Madhoo in January 2013 (\url{https://www.whatdotheyknow.com/request/depth_of_tube_stations_and_tube#incoming-366374}), in which \gls{tfl} provided this data. These data were downloaded, quality checked, errors corrected, and then loaded as a \gls{csv} file into the PostGIS database, and then matched to the existing data by station name and line. Stations on the DLR are all above ground except for Bank, and were missing from this dataset, so for simplicity they were all assigned a depth z value of -10 i.e. 10 metres above ground.
+As briefly mentioned above, the hypotheses is that line and station depths influence \gls{pm25} concentrations on the network. However the data to add a 'z' attribute (depth) of each station, to test this, was not freely available via the London Datastore or similar official data sources. However a Freedom of Information request made by Hamechan Madhoo in January 2013 (\url{https://www.whatdotheyknow.com/request/depth_of_tube_stations_and_tube#incoming-366374}), in which \gls{tfl} provided this data was found. These data were downloaded, quality checked, errors corrected, and then loaded as a \gls{csv} file into the PostGIS database, and then matched to the existing data by station name and line. Stations on the DLR are all above ground except for Bank, and were missing from this dataset, so for simplicity they were all assigned a depth z value of -10 i.e. 10 metres above ground.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Trains}
@@ -202,14 +193,15 @@ Although plotting all the lines on top of each other in this way makes the data 
 
 \begin{figure}[H]
 \centering
-\caption{Timelines of \gls{pm25} on the tube (Note differing axis scales)}
 \includegraphics[scale=0.8]{all_lines_individual_pm25_p1}
+\caption{}
 \label{fig:all_lines_individual_pm25_p1}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{all_lines_individual_pm25_p2}
+\caption{Timelines of \gls{pm25} on the tube (Note differing axis scales)}
 \label{fig:all_lines_individual_pm25_p2}
 \end{figure}
 
@@ -220,12 +212,12 @@ We can see that the concentrations vary by line and within lines, for example th
 \label{subsec:line_averages}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Box and whisker plots using the ggplot2 package of R (\cite{ggplot2}) were created in Figure \ref{fig:boxplot_pm25_lines} to compare concentrations between lines. 
+Box and whisker plots were created in Figure \ref{fig:boxplot_pm25_lines} to compare concentrations between lines. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.55]{pm25_on_underground}
-\caption{PM${2.5}$ $\mu \text{g m}^{-3}$ on the tube, summarised by line. The lower and upper hinges correspond to the 25th and 75th percentiles, the horizontal line to the median, and the whiskers to 1.5 x the inter-quartile-range (approx. 95\% percentile).}
+\caption{PM$_{2.5}$ $\mu \text{g m}^{-3}$ on the tube, summarised by line. The lower and upper hinges correspond to the 25th and 75th percentiles, the horizontal line to the median, and the whiskers to 1.5 x the inter-quartile-range (approx. 95\% percentile).}
 \label{fig:boxplot_pm25_lines}
 \end{figure}
 
@@ -294,16 +286,16 @@ In summary, from this small sample, it seems that \gls{pm25} concentrations in t
 \label{subsec:spatial_distribution_tube_air}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Figure \ref{fig:tube_map_pm25} shows all the tube stations in London and their location, with the size of the point used to indicate the mean levels of \gls{pm25} recorded i.e. larger circles on the map, show higher concentrations.
+Figure \ref{fig:tube_map_pm25} shows a screenshot of an online map of tube stations, with the colour of the station name used to indicate the mean levels of \gls{pm25} recorded (in conjunction with the scale on the right). The map is available at: \url{http://londonair.org.uk/modeling/tube-pm25/map.html}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.55]{tube_map_pm25}
+\includegraphics[scale=0.4]{tube_map_pm25}
 \caption{Locations of tube stations and \gls{pm25} levels}
 \label{fig:tube_map_pm25}
 \end{figure}
 
-As expected from the results of the previous sections, there looks to be a relationship between depth and \gls{pm25} concentrations, with stations in central London having higher concentrations, due to the lines being deeper and more frequently underground than in outer London. However as noted in \autoref{subsec:concentrations_v_depth} taking means at stations can hide variation, so whilst this figure is useful for giving a general impression of the spatial variation of concentrations, a more complicated approach might be more useful for modelling exposure.
+When using the map and interacting with the data, as noted previously, there looks to be a relationship between depth and \gls{pm25} concentrations i.e. stations in central London have higher concentrations, due to the lines being deeper and more frequently underground than in outer London. However as noted in \autoref{subsec:concentrations_v_depth} taking means at stations can hide variation, so whilst this map is useful for giving a general impression of the spatial variation of concentrations, a more sophisticated approach might be more useful for modelling exposure.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{PM build-up and dissipation}
@@ -318,7 +310,7 @@ In Figure \ref{fig:all_lines_individual_pm25_p1}, where timelines of \gls{pm25} 
 \label{fig:decay_time_jubilee}
 \end{figure}
 
-Taking the first and third highlighted sections above, concentrations build-up inside the cabin while the train is underground, but then start to fall after Canada Water, reaching background levels by the time the train is at West Ham. The depth of these stations are, in order, Canada Water (18m), Canary Wharf (18m), North Greenwich (15m), Canning Town (2), and West Ham (0m). These stations do not have the step-by-step change in depth in the way that the concentrations do. If anything, the first three stations in this subset might be grouped as deep, and then the final two as surface. However the concentrations do not immediately change from high to background, they gradually decline. This suggests that in addition to depth being an indicator of concentrations inside the tube trains, distance from cleaner outside air, and it's exchange with air inside the cabin when the doors open, also effects concentrations. To elaborate, the concentrations between Canada Water and North Greenwich fall by about 40\%, despite there only being a small change in depth. I suggest that the change in concentrations is due to the doors opening at North Greenwich, and an air exchange happening with the air on the platform, which is cleaner 'platform air' than is the case at Canada Water, due to North Greenwich being closer to a surface station (Canning Town). 
+Taking the first and third highlighted sections above, concentrations build-up inside the cabin while the train is underground, but then start to fall after Canada Water, reaching background levels by the time the train is at West Ham. The depth of these stations are, in order, Canada Water (18m), Canary Wharf (18m), North Greenwich (15m), Canning Town (2), and West Ham (0m). These stations do not have the step-by-step change in depth in the way that the concentrations do. If anything, the first three stations in this subset might be grouped as deep, and then the final two as surface. However the concentrations do not immediately change from high to background, they gradually decline. This suggests that in addition to depth being an indicator of concentrations inside the tube trains, distance from cleaner outside air, and it's exchange with air inside the cabin when the doors open, also effects concentrations. To elaborate, the concentrations between Canada Water and North Greenwich fall by about 40\%, despite there only being a small change in depth. This suggests that the change in concentrations is due to the doors opening at North Greenwich, and an air exchange happening with the air on the platform, which is cleaner 'platform air' than is the case at Canada Water, due to North Greenwich being closer to a surface station (Canning Town). 
 Now taking the second and fourth sections highlighted in Figure \ref{fig:decay_time_jubilee} the stations under consideration are Swiss Cottage (17m), Finchley Road (3m), West Hampstead (5m), Kilburn (7m) and Willesden Green (5m). Here we see a similar pattern, in that the concentrations do not immediately drop to background levels in the way that might be expected if depth was the sole determinant. It takes a couple of stations (and subsequent doors opening and air exchange) for the air in the train cabin to be sufficiently replaced with cleaner outside air.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -377,7 +369,7 @@ By collecting \gls{pm25} concentrations and linking them to time-resolved locati
 %% What are some of the issues and problems with the methods, and what makes the findings weak
 Firstly, all of our measurements are taken from within the carriage of the tube. So whilst there is often discussion of stations within this chapter, this is actually the tube train (normally with doors open) pausing at the platform of a station for a minute or two before moving away again, and the reader must be careful not to misinterpret the findings as such. 
 
-Another area that might warrant further refinement is around the effect that passenger numbers have on concentrations. The theory of the 'personal cloud', that being that a persons movements and activity can stir-up particles into the air that otherwise may have settled on surfaces. With so many people moving inside trains and on the platforms of the stations, this might contribute to increased concentrations independently of other factors i.e. the movement of the trains. This said, studies (\cite{Ferro2004a}) have found that this personal cloud effect to only increase concentrations by a few $\mu \text{g m}^{-3}$, which when set alongside the 100s of $\mu \text{g m}^{-3}$ being recorded are quite insignificant, and thus I feel that the effect of passenger numbers can be largely ignored in efforts to understand \gls{pm25} levels in this environment.
+Another area that might warrant further refinement is around the effect that passenger numbers have on concentrations. The theory of the 'personal cloud', that being that a persons movements and activity can stir-up particles into the air that otherwise may have settled on surfaces. With so many people moving inside trains and on the platforms of the stations, this might contribute to increased concentrations independently of other factors i.e. the movement of the trains. This said, studies (\cite{Ferro2004a}) have found that this personal cloud effect to only increase concentrations by a few $\mu \text{g m}^{-3}$, which when set alongside the 100s of $\mu \text{g m}^{-3}$ being recorded are quite insignificant, and thus it seems that the effect of passenger numbers can be largely ignored in efforts to understand \gls{pm25} levels in this environment.
 
 Similarly, \cite{Adams2001a} discusses that wind direction and outdoors concentrations may be linked to increased concentrations in the tube system, with particles being blown into the tunnels and recirculating. But with background concentrations of \gls{pm25} in London normally around the 10--15 $\mu \text{g m}^{-3}$ mark, it seems unlikely that pollutants from outside the system are contributing in a meaningful way to the high concentrations found (when the tube is in the underground environment anyway). 
 
@@ -396,7 +388,7 @@ Future work in this area should focus on creation of a geographically defined da
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{images/pulse_of_london.png}
-\caption{Dr Reades explaining the 'pulse of London' through geographical data}
+\caption{Dr Reades explaining the 'pulse of London' through geographical data, explaining how travel data can be used to investigate wider sociological questions}
 \label{fig:pulse_of_london}
 \end{figure}
 

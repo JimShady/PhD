@@ -3,7 +3,7 @@
 \label{sec:1aim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Create a model of Londoners daily movements based upon the London Transport Demand Survey
+Create a model of Londoners daily movements based upon freely available TfL datasets
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Objectives}
@@ -11,20 +11,54 @@ Create a model of Londoners daily movements based upon the London Transport Dema
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{itemize}
-\item Explore the \gls{ltds} dataset and identify key data
-\item Move data from local \gls{msaccess} database into a PostgreSQL + PostGIS database on Ubuntu server
-\item Clean data
-\item Complete modal specific routing (interrogation, querying, storage) between origin and destinations
-\item Quality check the routing results and do further data cleaning
-\item Create and populate final dynamic location database table
-\item Analyse results
+\item Source, explore and identify key TfL flow datasets
+\item Clean and import data to working environment
+\item Complete any required modal specific routing (interrogation, querying, storage)
+\item Quality assurance / quality check (QA/QC)
+\item Analysis by demographic / geographical area
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Background}
 \label{sec:1_background}
 
-As was heavily discussed in Section \ref{sec:staticexposurehealth} (\nameref{sec:staticexposurehealth}) many air quality exposure studies do not consider the movements of the subjects and/or to varying degrees other factors such as the temporal fluctuations in pollutant concentrations and levels of infiltration into micro-environments such as the home. The aim of this chapter was to process and characterise the \gls{ltds} as an input to a hybrid exposure model. This was achieved by using the methods outlined in Sections \ref{sec:spatialdatabases} (\nameref{sec:spatialdatabases}), \ref{sec:gis} (\nameref{sec:gis}) and \ref{sec:routing} (\nameref{sec:routing}), and reconstructing the time-space location of the population of London on a minute-by-minute basis, using the \gls{ltds} dataset. This allowed interrogation of the data and such questions to be answered as; how much time do people spend indoors each day, and is there ethnic bias in the distance that people travel to work? To demonstrate the capacity of the model/dataset visualisations/maps of peoples routes are created and summary graphs of interesting information.
+As discussed in detail in Section \ref{sec:staticexposurehealth} (\nameref{sec:staticexposurehealth}) many air quality exposure studies do not consider the movements of the subjects and/or to varying degrees other factors such as the temporal fluctuations in pollutant concentrations and levels of infiltration into micro-environments such as the home. The aim of this chapter was to process and characterise the London Transport Demand Survey (The '\gls{ltds}', introduced in Section \ref{subsec:the_ltds} below) as an input to a hybrid exposure model. This was achieved by estimating the time-space location of the population of London on a minute-by-minute basis using the \gls{ltds} dataset, allowing interrogation of the data and such questions to be answered as; how much time do people spend indoors each day, and is there ethnic bias in the distance that people travel to work? To demonstrate the capacity of the model/dataset visualisations/maps of peoples routes are created and summary graphs of interesting information.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% The LTDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The London Transport Demand Survey}
+\label{subsec:the_ltds}
+
+The \gls{ltds} is a survey of households in the London area, covering all London Borough's as well as the area between those Borough's and the M25. It is organised by the Strategic Analysis section of the Planning department at \gls{tfl}. The survey is an ongoing rolling--survey which started in 2005--2006, surveying approximately 8,000 households per year. It is a key input to the first three stages of the London four-step transport planning model (\cite{TFL2018}), illustrated in Figure \ref{fig:tfl_four_step} below.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{images/tfl_four_step.png}
+\caption{The TfL four-step transport planning model}
+\label{fig:tfl_four_step}
+\end{figure}
+
+The \gls{ltds} captures information on households, the people that live in those households, the trips that those people make in the day, and the vehicles that they use/own. Everyone in the house that is surveyed answers the questionnaires, except for children under the age of 5. There are three questionnaires for each person. The household questionnaire gives details on household structure and includes demographic information such as income, housing tenure and vehicle ownership. The individual questionnaire contains demographic information about the individuals in the household, working status, frequency of transport mode use, driving licenses, public transport tickets held and similar. The third questionnaire is the trip sheet, it captures data on all the trips made on the designated day of travel (which is the same day for all members of the household). The details include the purpose of the trip, the transport modes that were used, the time of the day the trip started, the time of the day the trip ended, and the origin and destination of the trips. With additional processing, this section of the database can effectively be used to interrogate exactly where each person was during the 24 hours that the survey covers (it covers 4am on the day of the survey, to 4am on the following day, unless that person was in-transit at 4am in which case it continues until the journey is complete).
+
+The \gls{ltds} is designed to enable statistically-robust representative estimates of travel patterns and demand in London. Results from a single year are robust enough to analyse at the London-wide level, however combining three or more years data for analysis is preferable. The results can be considered at a London-wide level, or disaggregated to Borough of residence.
+
+The database contains 100 tables of data, however many of these are 'look-up' tables for data in the main tables. For example the year that a household was surveyed is stored in a column called 'hyearid' which simply contains a number between 5 and 9. These numbers allow linkage to a table called YEARID\_T where the value 5 can be seen to correspond to the description of '2005/2006'. A summary of the key tables and numbers of records in these tables of the \gls{ltds} is shown below (Table \ref{tab:ltds_data}).
+
+\begin{table}[H]
+    \caption{Data contained in the \gls{ltds}}
+    \begin{tabular}{ | p{2.2cm} | p{2.2cm} | p{2.2cm} | p{2.2cm} | p{2.2cm} |}
+    \hline
+    \textbf{Year} & \textbf{Households} & \textbf{People} & \textbf{Trips} & \textbf{Stages} \\ \hline
+    2005--2006 & 5,008 & 11,583 & 29,797 & 61,542 \\ \hline
+    2006--2007 & 8,005 & 18,241 & 47,029 & 95,930 \\ \hline
+    2007--2008 & 7,873 & 17,926 & 44,828 & 91,967 \\ \hline
+    2008--2009 & 8,134 & 18,975 & 43,076 & 89,701 \\ \hline
+    2009--2010 & 8,290 & 19,187 & 43,475 & 92,121 \\ \hline
+    \end{tabular}
+    \label{tab:ltds_data}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Methods}
@@ -33,7 +67,7 @@ As was heavily discussed in Section \ref{sec:staticexposurehealth} (\nameref{sec
 \subsection{Data Processing}
 \label{sec:reconstruction_data_processing}
 
-The \gls{ltds} comprised of around 58 tables of data stored in an \gls{msaccess} database. The majority of these tables were 'look-up' tables that store information that can be linked too from other tables e.g. the Stages table described the stages of trips that the subjects made, and had a column for transport mode which simply contains integers in the range 1-26. These integers needed cross-referencing against the Mode table to ascertain their meaning (1 = walk, 3 = car etc). This allows for more efficient storage of data, but made gaining a full understanding of the dataset and how tables linked together a lenghty process. The four key tables that were required were the 'Household', 'Person', 'Trip' and 'Stage' tables. Table \ref{tab:key_ltds_fields} below lists some of the more important fields within these tables:
+The \gls{ltds} comprises 58 tables of data stored in an \gls{msaccess} database. The main tables used for this analysis were the 'Household', 'Person', 'Trip' and 'Stage' tables. Table \ref{tab:key_ltds_fields} below lists some of the more important fields within these tables:
 
 \newpage
 
@@ -82,7 +116,7 @@ The \gls{ltds} comprised of around 58 tables of data stored in an \gls{msaccess}
 \end{table}
 \end{center}
 
-Figure \ref{fig:database_schema} below shows a basic database schema of seven of the tables (although many more are used).
+Figure \ref{fig:database_schema} below shows a basic database schema of seven of the tables as an example of the database structure.
 
 \begin{figure}[H]
 \centering
@@ -114,16 +148,53 @@ To ensure that removal of subjects (9\%) from the dataset had not compromised th
 \subsection{Mode-specific routing}
 \label{sec:reconstruction_mode_routing}
 
-To calculate the locations of the subjects while they were travelling between places the stages table of the \gls{ltds} was used, specifically the start easting and northing, the destination easting and northing, the transport mode, and the stage departure time (if allowed as an input by the routing \gls{api}). These columns were extracted from the database directly into R using the RPostgreSQL extension and stored in an R dataframe. These details were then formed into URL requests and sent to the routing \gls{api}s. A small extract of the large XML file that is received in response to a request to the \gls{tfl} Journey Planner \gls{api} is shown in Figure \ref{fig:tfl_response_example}. This was parsed using the RJSONIO and XML packages, and the route between the two locations extracted and stored (and then decoded in the case of the Google API which returns routes as encoded polylines). The route was then formed into a linestring data type (which PostGIS can store as a spatial object) and stored back in the database.
+To calculate the locations of the subjects while they were travelling between places the stages table of the \gls{ltds} was used, specifically the start easting and northing, the destination easting and northing, the transport mode, and the stage departure time. These columns were extracted from the database directly into R using the RPostgreSQL extension and stored in an R dataframe. 
+
+In the first iteration of this research, routing graphs in the PostgreSQL+PostGIS database were created for the road and London Underground, to undertake estimation of the routes that survey participants took between locations. The data was sourced from OpenStreetMap and TfL, processed, the 'pgRouting' extension to PostgreSQL installed, and routes were generated.
+
+The benefit of this approach to routing was that the network could be easily customised, for example road speed-limits can be adjusted (which will affect routes chosen by the algorithms), a preference for certain road types factored in, one-way restrictions either ignored or obeyed. There was also a certain independence to this approach i.e. no reliance on an external provider keeping the dataset up-to-date or needing a web connection for the routing to take place (as is required for the API approach discussed shortly). However having spent some time doing routing in this manner, we decided to use routing APIs instead. This change was deemed necessary as networks for the other transport modes appeared difficult and time-consuming to set-up, the amount of data to download and process was large and complex (depending on the size and complexity of the graph), and that a new network would be required for each transport mode. This was particularly pertinent for the LTDS as routing on many different transport modes is required including underground, bus, cycling, driving, walking and overground/mainline trains - and data to create networks for each of these modes is difficult to obtain and maintain, particularly for bus routes and train lines as the data is held by the relevant companies that operate these services and even when made publicly available is often not in a suitable format or there is missing information.
+
+APIs offered an alternative approach to routing. Instead of building and maintaining network datasets in our own database/server, the networks are hosted by commercial and non-commercial organisations who allowed interaction with the data (but not to edit it or use it in ways which they do not allow). A user, having read the documentation, first forms a query string (similar to a website address but longer and more complex) and then ’sends’ this to the organisations API service. The API interprets the request that the user has made, and ’returns’ the data required. In the case of routing,the request from the user is typically a start-point, end-point, transport mode and time of travel, and the return from the API is a route made up of such information as a list of tube stations, or coordinates, or text instructions. The amount of detail that can be submitted as a request, and the amount of detail that is provided by the reply, varies by service. A typical request string to the TfL directions API is shown figure \ref{fig:tfl_api_call}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.9]{tfl_response_example}
-\caption{An example of the route coordinates from a XML response from the TfL \gls{api}}
-\label{fig:tfl_response_example}
+\includegraphics[scale=0.5]{tfl_api_call}
+\caption{A 'call' to the TfL routing API}
+\label{fig:tfl_api_call}
 \end{figure}
 
-Due to restrictions on usage limits, and the modes of transport that each \gls{api} had available, different \gls{api}s were used for each transport modes. Pre-processing was also required to simplify and harmonise the transport modes before this, for example the \gls{ltds} contains transport modes such as 'Car (passenger)', 'Taxi', 'Van (driver)', 'Van (passenger)' and 'Motorcycle (driver)' which were combined to the mode of 'car'. The transport modes and the API used for those are shown below in Table \ref{tab:api_transport_modes}.
+This 'request' is submitted to the API using software of the users choice, code is written to parse (made into a format that the software can read) the data that is returned, and then the results are stored and used as the user wishes.
+
+For this research a search of routing API services was undertaken based upon the list detailed in the Wikipedia page 'Online Routers' (\url{http://wiki.openstreetmap.org/wiki/Routing/online_routers}) as well as an internet search of the term 'Online routing API'. A review of those considered is presented in table \ref{tab:api_summary_table}. A small handful of other APIs were dismissed before this stage as they were unsuitable for reasons such as geography (e.g. only covers Germany) or the API does not expose the route to the user (e.g. At the time of writing, Bing Maps Directions plots the line onto a map, but does not give the actual data for the line back to the user).
+
+\begin{landscape}
+
+\begin{table}
+\caption{Summary of suitable routing APIs}
+    \hspace*{-.1cm}%
+    \begin{tabular}{@{}| R{3.3cm} | R{3.2cm} | R{1.9cm} | R{3.2cm} | R{3.4cm} | R{4.5cm} |@{}}
+
+    \hline
+
+\textbf{Service \& coverage} & \textbf{Available transport modes} & \textbf{Usage limits} & \textbf{Documentation} & \textbf{Simplicity of use} & \textbf{Customisation and notes} \\ \hline
+
+Google Directions API (Worldwide) & Car, pedestrian, cycling, public transport & 750 per day (without license) & Provided, with many examples & Very simple to use & Limited. Parameters such as use of tolls, language of content, shortest or quickest. Public transport modes cannot be distinguished \\ \hline
+
+OpenRouteService (Worldwide, but dependant on OSM data quality) & Car, pedestrian, cycling & Unlimited & In the form of a Wikipedia entry. Covers some examples but is not comprehensive. & Very simple & Limited. Road types, languages, zoom levels \\ \hline
+
+Project OSRM (Open Source Routing Machine) (Worldwide, but dependant on OSM data quality) & Car & Unlimited & Basic instructions provided on GitHub & Very simple to use & Limited. Zoom level and output file type \\ \hline
+
+Transport for London (Greater London) & Underground, overground, bus, train, tram, boat, cable---car, Docklands Light Railway & Unlimited (once registered) & Extremely comprehensive manual, but unclear in many places and often seemingly contradictory & Very difficult. Only simple examples are provided. So many parameters must be considered for a properly formed request & Fully customisable in almost every way. However it is limited to Greater London and does not alert when routes go outside. \\ \hline
+
+MapQuest (Worldwide) & Car & Unlimited & Basic instructions provided on GitHub & Very simple to use & Limited. Zoom level and output file type \\ \hline
+
+\end{tabular}\hspace*{-2cm}%%stop complaining
+\label{tab:api_summary_table}
+\vspace{-1cm}%%stop complaining
+\end{table}
+\end{landscape}
+
+Due to restrictions on usage limits it was decided to use a selection of routing APIs, depending on the transport mode required. Pre-processing was also required to simplify and harmonise the LTDS transport modes before this, for example the \gls{ltds} contains transport modes such as 'Car (passenger)', 'Taxi', 'Van (driver)', 'Van (passenger)' and 'Motorcycle (driver)' which were combined to the mode of 'car'. The transport modes and the API used for those are shown below in Table \ref{tab:api_transport_modes}.
 
 \begin{table}[H]
 \caption{\gls{api} used for each \gls{ltds} transport mode}
@@ -143,7 +214,16 @@ Due to restrictions on usage limits, and the modes of transport that each \gls{a
 \label{tab:api_transport_modes}
 \end{table}
 
-The cleaned data contained 45,079 people, who took 98,770 trips during the day of the survey. Each trip consisted of multiple stages that needed routing independently, totally 340,754. These 340,000 routes were stored as linestrings in the PostGIS database linked to the id ('ssid') of the stage.
+Each journey request was therefore formed into a suitable URL request, similar to the example in Figure \ref{fig:tfl_api_call}, and then the request was sent to the routing \gls{api}s. A small extract of the large XML file that is received in response to a request to the \gls{tfl} Journey Planner \gls{api} is shown in Figure \ref{fig:tfl_response_example}. This was parsed using the RJSONIO and XML packages, and the route between the two locations extracted and stored (and then decoded in the case of the Google API which returns routes as encoded polylines). The route was then formed into a linestring data type (which PostGIS can store as a spatial object) and stored back in the database.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.9]{tfl_response_example}
+\caption{An example of the route coordinates from a XML response from the TfL \gls{api}}
+\label{fig:tfl_response_example}
+\end{figure}
+
+The cleaned LTDS data contained 45,079 people, who took 98,770 trips during the day of the survey. Each trip consisted of multiple stages that needed routing independently, totally 340,754. These ~340,000 routes were routed using the relevant API, and the result stored as a linestring in the PostGIS database linked to the id ('ssid') of the stage.
 
 \subsection{Quality checking}
 \label{sec:reconstruction_quality_checking}
@@ -198,7 +278,7 @@ Before starting to analyse the results, Figures \ref{fig:routed_results_example}
 \begin{figure}[H]
 \centering
 \frame{\includegraphics[scale=0.55]{routed_results_example}}
-\caption{Example one of the reconstruction of a subjects day}
+\caption{Example one of the estimated movements of a subjects day}
 \label{fig:routed_results_example}
 \end{figure}
 
@@ -207,7 +287,7 @@ Before starting to analyse the results, Figures \ref{fig:routed_results_example}
 \begin{figure}[H]
 \centering
 \frame{\includegraphics[scale=0.55]{routed_results_example2}}
-\caption{Example two of the reconstruction of a subjects day}
+\caption{Example two of the estimated movements of a subjects day}
 \label{fig:routed_results_example2}
 \end{figure}
 
@@ -283,7 +363,7 @@ Figure \ref{fig:mean_distance_by_age} showed a clear rise in the distance that p
 \subsection{Journey distances by Borough of residence}
 \label{sec:journey_distances_by_borough_of_residence}
 
-The distances that the people of London travel, depending on their Borough of residence, was now considered. The centre of London was defined (the monument outside of Charing Cross station) and then the distance between this point and the centroid of each London Borough was calculated (Figure \ref{fig:borough_centroids}). Figure \ref{fig:mean_distance_by_borough} was then created, with the Boroughs ordered by this distance metric i.e. the centroid of the City of London is the closest Borough centroid to Charing Cross, so was plotted first. This ordering was undertaken as I decided to test the hypothesis that individuals living nearer the centre of London would spend less time travelling than those in outer London.
+The distances that the people of London travel, depending on their Borough of residence, was now considered. The centre of London was defined (the monument outside of Charing Cross station) and then the distance between this point and the centroid of each London Borough was calculated (Figure \ref{fig:borough_centroids}). Figure \ref{fig:mean_distance_by_borough} was then created, with the Boroughs ordered by this distance metric i.e. the centroid of the City of London is the closest Borough centroid to Charing Cross, so was plotted first. This ordering was undertaken to test the hypothesis that individuals living nearer the centre of London would spend less time travelling than those in outer London.
 
 \begin{figure}[H]
 \centering
@@ -322,7 +402,7 @@ This graph agrees well with Figure \ref{fig:mean_distance_by_age} (travel distan
 \subsection{Time near residence}
 \label{sec:time_near_residence}
 
-One of the main motivations behind this research was to examine where people spend time, and therefore accumulate their exposure to poor air quality; and thus whether using address or postcodes (or dynamic methods) for exposure assessment was valid. To examine this a 1km buffer was created around each residents recorded residential address (Shown in Figure \ref{fig:one_km_buffer_house}), then the percent of time that each occupant of each house spends within that buffer was calculated. The results are shown in Figure \ref{fig:time_with_one_km_home_by_age}.
+One of the main motivations behind this research was to examine where people spend time, and therefore accumulate their exposure to poor air quality; and thus whether using address or postcodes (or dynamic methods) for exposure assessment was valid. To examine this a 1km buffer was created around each residents recorded residential address (Shown in Figure \ref{fig:one_km_buffer_house}), then the percent of time that each occupant of each house spends within that buffer was calculated (that time being the start of each subjects day, then end, and any time between trips which ended/started in that area). The results are shown in Figure \ref{fig:time_with_one_km_home_by_age}.
 
 \begin{figure}[H]
 \centering
